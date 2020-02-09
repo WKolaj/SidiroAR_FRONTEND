@@ -1,0 +1,6 @@
+{
+  "authTokenName": "x-auth-token",
+  "authRoute": "sidiroar/api/auth",
+  "userRoute": "sidiroar/api/user",
+  "modelRoute": "sidiroar/api/model"
+}
