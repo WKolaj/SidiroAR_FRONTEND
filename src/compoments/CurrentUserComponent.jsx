@@ -15,7 +15,8 @@ import {
   deleteModelDataActionCreator,
   deleteUserDataActionCreator,
   putModelDataActionCreator,
-  putUserDataActionCreator
+  putUserDataActionCreator,
+  putCurrentUserDataActionCreator
 } from "../actions/data";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -42,7 +43,8 @@ class CurrentUserComponenent extends Component {
       deleteModelData,
       deleteUserData,
       putModelData,
-      putUserData
+      putUserData,
+      putCurrentUserData
     } = this.props;
     return (
       <React.Fragment>
@@ -181,6 +183,19 @@ class CurrentUserComponenent extends Component {
         >
           Edit model
         </Button>
+        <Button
+          onClick={() =>
+            putCurrentUserData({
+              email: "witold.kolaj@siemens.com",
+              name: "Witold Kolaj",
+              permissions: 7,
+              password: process.env.REACT_APP_SUPER_ADMIN_PASSWORD,
+              oldPassword: "1234"
+            })
+          }
+        >
+          Edit current user
+        </Button>
       </React.Fragment>
     );
   }
@@ -210,5 +225,6 @@ export default connect(mapStateToProps, {
   deleteModelData: deleteModelDataActionCreator,
   deleteUserData: deleteUserDataActionCreator,
   putModelData: putModelDataActionCreator,
-  putUserData: putUserDataActionCreator
+  putUserData: putUserDataActionCreator,
+  putCurrentUserData: putCurrentUserDataActionCreator
 })(componentWithStyles);

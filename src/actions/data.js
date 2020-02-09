@@ -10,6 +10,7 @@ import {
 
 import {
   getLoggedUserData,
+  putLoggedUserData,
   getAllUsersData,
   getUserData,
   getUserModelsData,
@@ -29,6 +30,18 @@ export const fetchCurrentUserDataActionCreator = function() {
       type: FETCH_CURRENT_USER_DATA,
       payload: {
         user: currentUser
+      }
+    });
+  };
+};
+
+export const putCurrentUserDataActionCreator = function(userPayload) {
+  return async function(dispatch, getState) {
+    let user = await putLoggedUserData(userPayload);
+    dispatch({
+      type: FETCH_CURRENT_USER_DATA,
+      payload: {
+        user: user
       }
     });
   };

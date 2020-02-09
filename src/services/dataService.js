@@ -93,6 +93,16 @@ export async function getLoggedUserData() {
   return getUserDataFromPayload(userPayload);
 }
 
+export async function putLoggedUserData(userPayload) {
+  //Returning null if there is no logged user
+  if (!exists(getCurrentJWT())) return null;
+
+  let response = await http.put(`${userRoute}/me`, userPayload);
+  let userData = getUserDataFromPayload(response.data);
+
+  return userData;
+}
+
 export async function getUserData(id) {
   let response = await http.get(`${userRoute}/${id}`);
   let userPayload = response.data;
