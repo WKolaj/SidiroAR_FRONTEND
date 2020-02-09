@@ -123,3 +123,48 @@ export async function getUserModelData(userId, modelId) {
 
   return modelData;
 }
+
+export async function postUserData(userPayload) {
+  let response = await http.post(`${userRoute}`, userPayload);
+  let userData = getUserDataFromPayload(response.data);
+
+  return userData;
+}
+
+export async function postModelData(userId, modelPayload) {
+  let response = await http.post(`${modelRoute}/${userId}`, modelPayload);
+  let modelData = getModelDataFromPayload(response.data);
+
+  return modelData;
+}
+
+export async function deleteUserData(userId) {
+  let response = await http.delete(`${userRoute}/${userId}`);
+  let userData = getUserDataFromPayload(response.data);
+
+  return userData;
+}
+
+export async function deleteModelData(userId, modelId) {
+  let response = await http.delete(`${modelRoute}/${userId}/${modelId}`);
+  let modelData = getModelDataFromPayload(response.data);
+
+  return modelData;
+}
+
+export async function putUserData(userId, userPayload) {
+  let response = await http.put(`${userRoute}/${userId}`, userPayload);
+  let userData = getUserDataFromPayload(response.data);
+
+  return userData;
+}
+
+export async function putModelData(userId, modelId, modelPayload) {
+  let response = await http.put(
+    `${modelRoute}/${userId}/${modelId}`,
+    modelPayload
+  );
+  let modelData = getModelDataFromPayload(response.data);
+
+  return modelData;
+}

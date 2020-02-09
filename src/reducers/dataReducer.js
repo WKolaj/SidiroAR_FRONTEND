@@ -3,7 +3,9 @@ import {
   FETCH_ALL_USERS_DATA,
   FETCH_USER_DATA,
   FETCH_USER_MODELS_DATA,
-  FETCH_USER_MODEL_DATA
+  FETCH_USER_MODEL_DATA,
+  DELETE_MODEL_DATA,
+  DELETE_USER_DATA
 } from "../actions/types";
 
 export default function(
@@ -38,7 +40,6 @@ export default function(
         }
       };
     }
-
     case FETCH_USER_MODEL_DATA: {
       let userId = action.payload.userId;
       let modelData = action.payload.model;
@@ -53,6 +54,34 @@ export default function(
               ...state.usersData[userId].models,
               [modelData._id]: modelData
             }
+          }
+        }
+      };
+    }
+    case DELETE_USER_DATA: {
+      let newUserData = { ...state.usersData };
+      delete newUserData[action.payload.user._id];
+
+      return {
+        ...state,
+        usersData: newUserData
+      };
+    }
+    case DELETE_MODEL_DATA: {
+      let userId = action.payload.userId;
+      let modelData = action.payload.model;
+      let newModels = {
+        ...state.usersData[userId].models
+      };
+      delete newModels[modelData._id];
+
+      return {
+        ...state,
+        usersData: {
+          ...state.usersData,
+          [userId]: {
+            ...state.usersData[userId],
+            models: newModels
           }
         }
       };
