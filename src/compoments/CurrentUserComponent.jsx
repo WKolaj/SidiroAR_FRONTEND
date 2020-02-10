@@ -18,6 +18,7 @@ import {
   putUserDataActionCreator,
   putCurrentUserDataActionCreator
 } from "../actions/data";
+import UploadFileComponent from "./UploadFile/UploadFileComponent";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
@@ -196,6 +197,14 @@ class CurrentUserComponenent extends Component {
         >
           Edit current user
         </Button>
+        <UploadFileComponent
+          userId="5e405715f7a175266311b70d"
+          modelId="5e405eb4f7a175266311b710"
+        />
+        <UploadFileComponent
+          userId="5e402e60d4f3091c08b6df42"
+          modelId="5e405e72f7a175266311b70f"
+        />
       </React.Fragment>
     );
   }
