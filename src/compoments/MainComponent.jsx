@@ -7,10 +7,9 @@ import { getCurrentJWT } from "../services/authService";
 import ToolbarComponent from "./Toolbar/ToolbarComponent";
 import BusyDialogComponent from "./BusyDialog/BusyDialogComponent";
 import {
-  closeSnackbar,
-  enqueueSnackbar,
-  removeSnackbar
-} from "../actions/snackbar";
+  showBusyDialogWindowActionCreator,
+  hideBusyDialogWindowActionCreator
+} from "../actions/busyDialog";
 import SnackbarNotifier from "./Snackbar/SnackbarNotifier";
 
 const styles = theme => ({});
@@ -20,10 +19,11 @@ class MainComponent extends Component {
     let jwt = getCurrentJWT();
     if (existsAndIsNotEmpty(jwt)) this.props.loginUserWithJWT(jwt);
 
-    this.props.enqueueSnackbar({
-      message: "Jakiś tam błąd",
-      options: { variant: "error" }
-    });
+    this.props.showBusyDialogWindow();
+
+    await snooze(5000);
+
+    this.props.hideBusyDialogWindow();
   };
 
   render() {
@@ -45,5 +45,6 @@ const componentWithStyles = withStyles(styles)(MainComponent);
 
 export default connect(mapStateToProps, {
   loginUserWithJWT: loginUserWithJWTActionCreator,
-  enqueueSnackbar: enqueueSnackbar
+  showBusyDialogWindow: showBusyDialogWindowActionCreator,
+  hideBusyDialogWindow: hideBusyDialogWindowActionCreator
 })(componentWithStyles);

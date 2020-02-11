@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import { Dialog, CircularProgress } from "@material-ui/core";
+import { Dialog, CircularProgress, Grid } from "@material-ui/core";
+import { zIndex } from "@material-ui/core/styles/zIndex";
 const styles = theme => {
   return {
     dialog: {},
-    dialogDiv: {
-      width: 200,
-      height: 200
-    },
-    progress: {
-      width: 200,
-      height: 200,
+    circularProgress: {
+      overflow: "visible",
       color: "#055f87"
     }
   };
@@ -20,29 +16,26 @@ const styles = theme => {
 class BusyDialog extends Component {
   render() {
     let { busyDialogWindow, classes } = this.props;
-
     return (
       <div>
         <Dialog
-          className={classes.dialog}
           open={busyDialogWindow.visible}
+          className={classes.dialog}
           disableBackdropClick={true}
           disableEscapeKeyDown={true}
           PaperProps={{
             style: {
               backgroundColor: "transparent",
-              boxShadow: "none"
+              boxShadow: "none",
+              overflow: "visible"
             }
           }}
         >
-          <div className={classes.dialogDiv}>
-            <CircularProgress
-              className={classes.progress}
-              size={150}
-              thickness={5}
-              m="1"
-            />
-          </div>
+          <CircularProgress
+            className={classes.circularProgress}
+            size={150}
+            thickness={4}
+          />
         </Dialog>
       </div>
     );
