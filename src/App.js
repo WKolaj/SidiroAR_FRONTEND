@@ -6,6 +6,7 @@ import theme from "./theme";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter } from "react-router-dom";
 import MainComponent from "./compoments/MainComponent";
+import { SnackbarProvider } from "notistack";
 
 class App extends Component {
   render() {
@@ -13,7 +14,9 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <MuiThemeProvider theme={theme}>
-            <MainComponent />
+            <SnackbarProvider maxSnack={1}>
+              <MainComponent />
+            </SnackbarProvider>
           </MuiThemeProvider>
         </BrowserRouter>
       </Provider>
