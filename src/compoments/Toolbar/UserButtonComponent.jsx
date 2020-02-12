@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
 import { logoutUserActionCreator } from "../../actions/auth";
+import { showLoginDialogActionCreator } from "../../actions/loginDialog";
 import {} from "@material-ui/icons";
 
 const styles = theme => ({
@@ -12,12 +13,12 @@ const styles = theme => ({
 
 class UserButtonComponent extends Component {
   renderLogInButton = () => {
-    let { classes, logoutUser } = this.props;
+    let { classes, showLoginDialog } = this.props;
     return (
       <Button
         color="inherit"
         className={classes.logInButton}
-        onClick={logoutUser}
+        onClick={showLoginDialog}
       >
         Log in
       </Button>
@@ -25,9 +26,13 @@ class UserButtonComponent extends Component {
   };
 
   renderLogOutButton = () => {
-    let { classes } = this.props;
+    let { classes, logoutUser } = this.props;
     return (
-      <Button color="inherit" className={classes.logOutButton}>
+      <Button
+        color="inherit"
+        className={classes.logOutButton}
+        onClick={logoutUser}
+      >
         Log out
       </Button>
     );
@@ -48,5 +53,6 @@ const mapStateToProps = (state, props) => {
 const componentWithStyles = withStyles(styles)(UserButtonComponent);
 
 export default connect(mapStateToProps, {
-  logoutUser: logoutUserActionCreator
+  logoutUser: logoutUserActionCreator,
+  showLoginDialog: showLoginDialogActionCreator
 })(componentWithStyles);

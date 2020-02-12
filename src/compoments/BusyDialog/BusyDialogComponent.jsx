@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import { Dialog, CircularProgress, Grid } from "@material-ui/core";
-import { zIndex } from "@material-ui/core/styles/zIndex";
+import { Dialog, CircularProgress } from "@material-ui/core";
 const styles = theme => {
   return {
     dialog: {},
@@ -15,11 +14,11 @@ const styles = theme => {
 
 class BusyDialog extends Component {
   render() {
-    let { busyDialogWindow, classes } = this.props;
+    let { busyDialog, classes } = this.props;
     return (
       <div>
         <Dialog
-          open={busyDialogWindow.visible}
+          open={busyDialog.visible}
           className={classes.dialog}
           disableBackdropClick={true}
           disableEscapeKeyDown={true}
@@ -44,7 +43,7 @@ class BusyDialog extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    busyDialogWindow: state.busyDialogWindow
+    busyDialog: state.busyDialog
   };
 };
 

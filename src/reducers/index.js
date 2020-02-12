@@ -4,6 +4,7 @@ import authReducer from "./authReducer";
 import dataReducer from "./dataReducer";
 import fileReducer from "./fileReducer";
 import busyDialogReducer from "./busyDialog";
+import loginDialogReducer from "./loginDialog";
 import snackbarReducer from "./snackbarReducer";
 
 export default combineReducers({
@@ -11,6 +12,7 @@ export default combineReducers({
   auth: authReducer,
   data: dataReducer,
   file: fileReducer,
-  busyDialogWindow: busyDialogReducer,
+  busyDialog: busyDialogReducer,
+  loginDialog: loginDialogReducer,
   snackbar: snackbarReducer
 });

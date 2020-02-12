@@ -1,13 +1,13 @@
-import { BUSY_DIALOG_WINDOW_SHOW, BUSY_DIALOG_WINDOW_HIDE } from "./types";
+import { BUSY_DIALOG_SHOW, BUSY_DIALOG_HIDE } from "./types";
 
-export const showBusyDialogWindowActionCreator = function() {
+export const showBusyDialogActionCreator = function() {
   return {
-    type: BUSY_DIALOG_WINDOW_SHOW
+    type: BUSY_DIALOG_SHOW
   };
 };
 
-export const hideBusyDialogWindowActionCreator = function() {
+export const hideBusyDialogActionCreator = function() {
   return {
-    type: BUSY_DIALOG_WINDOW_HIDE
+    type: BUSY_DIALOG_HIDE
   };
 };
