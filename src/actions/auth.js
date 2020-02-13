@@ -1,15 +1,26 @@
 import { LOGIN_USER, LOGIN_USER_WITH_JWT, LOGOUT_USER } from "./types";
 import { logout, login, loginWithJWT } from "../services/authService";
 import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
+import { fetchCurrentUserDataActionCreator } from "./data";
 
 export const loginUserWithJWTActionCreator = function(jwt) {
-  let currentUser = loginWithJWT(jwt);
-  return {
-    type: LOGIN_USER_WITH_JWT,
-    payload: {
-      user: currentUser
-    }
+  return async function(dispatch, getState) {
+    let currentUser = loginWithJWT(jwt);
+
+    await dispatch({
+      type: LOGIN_USER_WITH_JWT,
+      payload: {
+        user: currentUser
+      }
+    });
+
+    //Refreshing data also regarind current user data
+    await dispatch(fetchCurrentUserDataActionCreator());
   };
+};
+
+export const loginUserWithJWTActionCreatorWrapped = function(jwt) {
+  return wrapAsyncActionToHandleError(loginUserWithJWTActionCreator(jwt));
 };
 
 export const loginUserActionCreator = function(email, password) {
@@ -21,6 +32,9 @@ export const loginUserActionCreator = function(email, password) {
         user: currentUser
       }
     });
+
+    //Refreshing data also regarind current user data
+    await dispatch(fetchCurrentUserDataActionCreator());
   };
 };
 
@@ -32,8 +46,18 @@ export const loginUserActionCreatorWrapped = function(email, password) {
 };
 
 export const logoutUserActionCreator = function() {
-  logout();
-  return {
-    type: LOGOUT_USER
+  return async function(dispatch, getState) {
+    logout();
+
+    await dispatch({
+      type: LOGOUT_USER
+    });
+
+    //Refreshing data also regarind current user data
+    await dispatch(fetchCurrentUserDataActionCreator());
   };
+};
+
+export const logoutUserActionCreatorWrapped = function() {
+  return wrapAsyncActionToHandleError(logoutUserActionCreator());
 };

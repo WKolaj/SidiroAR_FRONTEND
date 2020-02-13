@@ -51,18 +51,12 @@ class LoginDialog extends Component {
       />
       {touched &&
         ((error && (
-          <FormHelperText
-            className={this.props.classes.errorLabel}
-            variant="caption"
-          >
+          <FormHelperText className={this.props.classes.errorLabel}>
             {error}
           </FormHelperText>
         )) ||
           (warning && (
-            <FormHelperText
-              className={this.props.classes.errorLabel}
-              variant="caption"
-            >
+            <FormHelperText className={this.props.classes.errorLabel}>
               {warning}
             </FormHelperText>
           )))}
@@ -70,13 +64,19 @@ class LoginDialog extends Component {
   );
 
   handleLoginClicked = async () => {
-    let { loginUser, formData, syncErrors } = this.props;
+    let { loginUser, formData, syncErrors, hideLoginDialog } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
 
     let { email, password } = formData.values;
 
     await loginUser(email, password);
+    await hideLoginDialog();
+  };
+
+  handleCancelClicked = async () => {
+    let { hideLoginDialog } = this.props;
+    await hideLoginDialog();
   };
 
   render() {
@@ -113,6 +113,9 @@ class LoginDialog extends Component {
             />
           </DialogContent>
           <DialogActions>
+            <Button onClick={this.handleCancelClicked} color="secondary">
+              Anuluj
+            </Button>
             <Button
               onClick={this.handleLoginClicked}
               disabled={

@@ -5,7 +5,7 @@ import {
   showUserMenuActionCreator,
   hideUserMenuActionCreator
 } from "../../../actions/userMenu";
-import { logoutUserActionCreator } from "../../../actions/auth";
+import { logoutUserActionCreatorWrapped } from "../../../actions/auth";
 import { showChangePasswordDialogActionCreator } from "../../../actions/changePasswordDialog";
 import { ExitToApp, Lock } from "@material-ui/icons";
 import {
@@ -80,6 +80,6 @@ const componentWithStyles = withStyles(styles)(UserMenuComponent);
 export default connect(mapStateToProps, {
   showUserMenu: showUserMenuActionCreator,
   hideUserMenu: hideUserMenuActionCreator,
-  logoutUser: logoutUserActionCreator,
+  logoutUser: logoutUserActionCreatorWrapped,
   showChangePasswordDialog: showChangePasswordDialogActionCreator
 })(componentWithStyles);
