@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import {} from "../utilities/utilities";
 import ToolbarComponent from "./Toolbar/ToolbarComponent";
@@ -17,8 +18,19 @@ import {
   hideLoginDialogActionCreator
 } from "../actions/loginDialog";
 import { loginUserWithJWTActionCreatorWrapped } from "../actions/auth";
+import MainMenuComponent from "./MainMenu/MainMenuComponent";
 
-const styles = theme => ({});
+const styles = theme => ({
+  root: {
+    display: "flex"
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto"
+  }
+});
 
 class MainComponent extends Component {
   componentDidMount = async () => {
@@ -28,19 +40,27 @@ class MainComponent extends Component {
   };
 
   render() {
+    let { classes } = this.props;
     return (
       <React.Fragment>
         <SnackbarNotifier />
         <BusyDialogComponent />
         <LoginDialogComponent />
         <EditCurrentUserDialogComponent />
-        <ToolbarComponent />
-        <Switch>
-          <ProtectedRouteComponent
-            path="/me"
-            component={CurrentUserOverviewComponent}
-          ></ProtectedRouteComponent>
-        </Switch>
+        <div className={classes.root}>
+          <ToolbarComponent />
+          <MainMenuComponent />
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Switch>
+              <ProtectedRouteComponent
+                permissionsBit={2}
+                path="/me"
+                component={CurrentUserOverviewComponent}
+              ></ProtectedRouteComponent>
+            </Switch>
+          </main>
+        </div>
       </React.Fragment>
     );
   }
