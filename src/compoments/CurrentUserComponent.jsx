@@ -28,9 +28,6 @@ const styles = theme => ({});
 class CurrentUserComponenent extends Component {
   componentDidMount = async () => {};
   render() {
-    console.log(this.props.currentUser);
-    console.log(this.props.currentUserData);
-    console.log(this.props.allUsers);
     let {
       loginUser,
       logoutUser,

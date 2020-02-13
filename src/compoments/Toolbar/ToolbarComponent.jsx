@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Toolbar, AppBar, IconButton, Typography } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
-import UserButtonComponent from "./UserButtonComponent";
+import UserButtonComponent from "./UserButton/UserButtonComponent";
 
 const styles = theme => ({
   appBar: {},

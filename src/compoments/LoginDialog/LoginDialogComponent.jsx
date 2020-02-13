@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Typography,
+  FormHelperText,
   TextField
 } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form";
@@ -17,7 +17,7 @@ import {
   showLoginDialogActionCreator,
   hideLoginDialogActionCreator
 } from "../../actions/loginDialog";
-import { loginUserActionCreator } from "../../actions/auth";
+import { loginUserActionCreatorWrapped } from "../../actions/auth";
 import { exists } from "../../utilities/utilities";
 
 const styles = theme => {
@@ -25,7 +25,8 @@ const styles = theme => {
     dialog: {},
     dialogTitle: {},
     dialogContent: {},
-    textField: {
+    textField: {},
+    textFieldDiv: {
       "margin-bottom": theme.spacing(2),
       display: "block"
     },
@@ -39,30 +40,31 @@ const styles = theme => {
 class LoginDialog extends Component {
   //Method for rendering single Field of form
   renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
+    <div className={this.props.classes.textFieldDiv}>
       <TextField
         className={this.props.classes.textField}
         {...input}
+        label={label}
         placeholder={label}
         type={type}
         fullWidth
       />
       {touched &&
         ((error && (
-          <Typography
+          <FormHelperText
             className={this.props.classes.errorLabel}
             variant="caption"
           >
             {error}
-          </Typography>
+          </FormHelperText>
         )) ||
           (warning && (
-            <Typography
+            <FormHelperText
               className={this.props.classes.errorLabel}
               variant="caption"
             >
               {warning}
-            </Typography>
+            </FormHelperText>
           )))}
     </div>
   );
@@ -157,7 +159,7 @@ const formComponentWithStyles = reduxForm({
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
-  loginUser: loginUserActionCreator,
+  loginUser: loginUserActionCreatorWrapped,
   showLoginDialog: showLoginDialogActionCreator,
   hideLoginDialog: hideLoginDialogActionCreator
 })(formComponentWithStyles);

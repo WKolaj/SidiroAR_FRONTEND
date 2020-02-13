@@ -23,6 +23,8 @@ import {
   putUserData
 } from "../services/dataService";
 
+import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
+
 export const fetchCurrentUserDataActionCreator = function() {
   return async function(dispatch, getState) {
     let currentUser = await getLoggedUserData();
@@ -35,6 +37,11 @@ export const fetchCurrentUserDataActionCreator = function() {
   };
 };
 
+export const fetchCurrentUserDataActionCreatorWrapped = function() {
+  return wrapAsyncActionToHandleError(fetchCurrentUserDataActionCreator());
+};
+
+//wrapping this method inside dialog - we have to control wether edition was successful or not
 export const putCurrentUserDataActionCreator = function(userPayload) {
   return async function(dispatch, getState) {
     let user = await putLoggedUserData(userPayload);
@@ -45,6 +52,12 @@ export const putCurrentUserDataActionCreator = function(userPayload) {
       }
     });
   };
+};
+
+export const putCurrentUserDataActionCreatorWrapped = function(userPayload) {
+  return wrapAsyncActionToHandleError(
+    putCurrentUserDataActionCreator(userPayload)
+  );
 };
 
 export const fetchAllUsersDataActionCreator = function() {
@@ -59,6 +72,10 @@ export const fetchAllUsersDataActionCreator = function() {
   };
 };
 
+export const fetchAllUsersDataActionCreatorWrapped = function() {
+  return wrapAsyncActionToHandleError(fetchAllUsersDataActionCreator());
+};
+
 export const fetchUserDataActionCreator = function(id) {
   return async function(dispatch, getState) {
     let user = await getUserData(id);
@@ -69,6 +86,10 @@ export const fetchUserDataActionCreator = function(id) {
       }
     });
   };
+};
+
+export const fetchUserDataActionCreatorWrapped = function(id) {
+  return wrapAsyncActionToHandleError(fetchUserDataActionCreator(id));
 };
 
 export const fetchModelsDataActionCreator = function(userId) {
@@ -84,6 +105,10 @@ export const fetchModelsDataActionCreator = function(userId) {
   };
 };
 
+export const fetchModelsDataActionCreatorWrapped = function(userId) {
+  return wrapAsyncActionToHandleError(fetchModelsDataActionCreator(userId));
+};
+
 export const fetchModelDataActionCreator = function(userId, modelId) {
   return async function(dispatch, getState) {
     let model = await getUserModelData(userId, modelId);
@@ -97,6 +122,12 @@ export const fetchModelDataActionCreator = function(userId, modelId) {
   };
 };
 
+export const fetchModelDataActionCreatorWrapped = function(userId, modelId) {
+  return wrapAsyncActionToHandleError(
+    fetchModelDataActionCreator(userId, modelId)
+  );
+};
+
 export const postUserDataActionCreator = function(userPayload) {
   return async function(dispatch, getState) {
     let user = await postUserData(userPayload);
@@ -107,6 +138,10 @@ export const postUserDataActionCreator = function(userPayload) {
       }
     });
   };
+};
+
+export const wpostUserDataActionCreatorWrapped = function(userPayload) {
+  return wrapAsyncActionToHandleError(fetchModelDataActionCreator(userPayload));
 };
 
 export const postModelDataActionCreator = function(userId, modelPayload) {
@@ -122,6 +157,15 @@ export const postModelDataActionCreator = function(userId, modelPayload) {
   };
 };
 
+export const postModelDataActionCreatorWrapped = function(
+  userId,
+  modelPayload
+) {
+  return wrapAsyncActionToHandleError(
+    postModelDataActionCreator(userId, modelPayload)
+  );
+};
+
 export const deleteUserDataActionCreator = function(userId) {
   return async function(dispatch, getState) {
     let user = await deleteUserData(userId);
@@ -132,6 +176,10 @@ export const deleteUserDataActionCreator = function(userId) {
       }
     });
   };
+};
+
+export const deleteUserDataActionCreatorWrapped = function(userId) {
+  return wrapAsyncActionToHandleError(deleteUserDataActionCreator(userId));
 };
 
 export const deleteModelDataActionCreator = function(userId, modelId) {
@@ -147,6 +195,12 @@ export const deleteModelDataActionCreator = function(userId, modelId) {
   };
 };
 
+export const deleteModelDataActionCreatorWrapped = function(userId, modelId) {
+  return wrapAsyncActionToHandleError(
+    deleteUserDataActionCreator(userId, modelId)
+  );
+};
+
 export const putUserDataActionCreator = function(userId, userPayload) {
   return async function(dispatch, getState) {
     let user = await putUserData(userId, userPayload);
@@ -157,6 +211,12 @@ export const putUserDataActionCreator = function(userId, userPayload) {
       }
     });
   };
+};
+
+export const putUserDataActionCreatorWrapped = function(userId, userPayload) {
+  return wrapAsyncActionToHandleError(
+    putUserDataActionCreator(userId, userPayload)
+  );
 };
 
 export const putModelDataActionCreator = function(
@@ -174,4 +234,14 @@ export const putModelDataActionCreator = function(
       }
     });
   };
+};
+
+export const putModelDataActionCreatorWrapped = function(
+  userId,
+  modelId,
+  modelPayload
+) {
+  return wrapAsyncActionToHandleError(
+    putModelDataActionCreator(userId, modelId, modelPayload)
+  );
 };

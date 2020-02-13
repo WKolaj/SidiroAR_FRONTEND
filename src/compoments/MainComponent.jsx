@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { existsAndIsNotEmpty, snooze } from "../utilities/utilities";
+import {} from "../utilities/utilities";
 import ToolbarComponent from "./Toolbar/ToolbarComponent";
 import BusyDialogComponent from "./BusyDialog/BusyDialogComponent";
 import LoginDialogComponent from "./LoginDialog/LoginDialogComponent";
+import EditCurrentUserDialogComponent from "./ChangePasswordDialog/ChangePasswordDialogComponent";
 import ForceUserLoginComponent from "./ForceUserLogin/ForceUserLoginComponent";
 import SnackbarNotifier from "./Snackbar/SnackbarNotifier";
 
@@ -17,6 +18,7 @@ class MainComponent extends Component {
         <SnackbarNotifier />
         <BusyDialogComponent />
         <LoginDialogComponent />
+        <EditCurrentUserDialogComponent />
         <ForceUserLoginComponent />
         <ToolbarComponent />
       </React.Fragment>

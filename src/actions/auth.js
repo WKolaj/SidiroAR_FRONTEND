@@ -13,7 +13,7 @@ export const loginUserWithJWTActionCreator = function(jwt) {
 };
 
 export const loginUserActionCreator = function(email, password) {
-  return wrapAsyncActionToHandleError(async function(dispatch, getState) {
+  return async function(dispatch, getState) {
     let currentUser = await login(email, password);
     await dispatch({
       type: LOGIN_USER,
@@ -21,7 +21,14 @@ export const loginUserActionCreator = function(email, password) {
         user: currentUser
       }
     });
-  }, "Niepoprawny email lub hasło");
+  };
+};
+
+export const loginUserActionCreatorWrapped = function(email, password) {
+  return wrapAsyncActionToHandleError(
+    loginUserActionCreator(email, password),
+    "Niepoprawny email lub hasło"
+  );
 };
 
 export const logoutUserActionCreator = function() {
