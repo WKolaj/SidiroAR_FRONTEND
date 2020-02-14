@@ -10,13 +10,15 @@ import {
   Divider,
   IconButton
 } from "@material-ui/core";
+import { Person, People } from "@material-ui/icons";
 import { ChevronLeft } from "@material-ui/icons";
 import { withStyles } from "@material-ui/styles";
-import { existsAndIsNotEmpty, exists } from "../../utilities/utilities";
+import { getBit, existsAndIsNotEmpty, exists } from "../../utilities/utilities";
 import {
   showMainMenuActionCreator,
   hideMainMenuActionCreator
 } from "../../actions/mainMenu";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   drawerPaper: {
@@ -45,10 +47,28 @@ const styles = theme => ({
     justifyContent: "flex-end",
     padding: "0 8px",
     ...theme.mixins.toolbar
-  }
+  },
+  menuList: {
+    "padding-left": 8
+  },
+  menuItemLink: {
+    textDecoration: "none",
+    color: "inherit"
+  },
+  menuItem: {}
 });
 
 class MainMenuComponent extends Component {
+  checkMenuItemDisabled = permissionsBit => {
+    let { currentUser } = this.props;
+
+    if (!existsAndIsNotEmpty(currentUser)) return false;
+
+    if (!exists(currentUser.permissions)) return false;
+
+    return !getBit(currentUser.permissions, permissionsBit);
+  };
+
   render() {
     let { mainMenu, classes, hideMainMenu } = this.props;
 
@@ -69,6 +89,40 @@ class MainMenuComponent extends Component {
           </IconButton>
         </div>
         <Divider />
+        <List className={classes.menuList}>
+          <Link
+            className={classes.menuItemLink}
+            to="/me"
+            onClick={e => {
+              return this.checkMenuItemDisabled(1) ? e.preventDefault() : e;
+            }}
+          >
+            <ListItem
+              className={classes.menuItem}
+              button
+              disabled={this.checkMenuItemDisabled(1)}
+            >
+              <ListItemIcon>
+                <Person />
+              </ListItemIcon>
+              <ListItemText primary="Moje modele" />
+            </ListItem>
+          </Link>
+          <Link
+            className={classes.menuItemLink}
+            to="/users"
+            onClick={e => {
+              return this.checkMenuItemDisabled(2) ? e.preventDefault() : e;
+            }}
+          >
+            <ListItem button disabled={this.checkMenuItemDisabled(2)}>
+              <ListItemIcon>
+                <People />
+              </ListItemIcon>
+              <ListItemText primary="Inni użytkownicy" />
+            </ListItem>
+          </Link>
+        </List>
       </Drawer>
     );
   }
@@ -76,7 +130,8 @@ class MainMenuComponent extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    mainMenu: state.mainMenu
+    mainMenu: state.mainMenu,
+    currentUser: state.auth.currentUser
   };
 };
 

@@ -8,6 +8,14 @@ import {
   hideLoginDialogActionCreator
 } from "../../actions/loginDialog";
 import { getCurrentJWT } from "../../services/authService";
+import { Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
+
+const styles = theme => ({
+  accessForbiddenTypography: {
+    margin: theme.spacing(3)
+  }
+});
 
 class ProtectedRouteComponent extends Component {
   checkIfUserLoggedIn() {
@@ -20,6 +28,17 @@ class ProtectedRouteComponent extends Component {
     if (!exists(permissionsBit)) return true;
     return getBit(currentUser.permissions, permissionsBit);
   }
+
+  renderAccessForbiddenComponent = () => {
+    return (
+      <Typography
+        className={this.props.classes.accessForbiddenTypography}
+        variant="h4"
+      >
+        Dostęp zabroniony
+      </Typography>
+    );
+  };
 
   render() {
     let {
@@ -41,7 +60,7 @@ class ProtectedRouteComponent extends Component {
 
             //Otherwise show login dialog
             if (!existsAndIsNotEmpty(jwt)) showLoginDialog();
-            return null;
+            return this.renderAccessForbiddenComponent();
           }
 
           //Checking if user is logged in
@@ -50,7 +69,7 @@ class ProtectedRouteComponent extends Component {
               message: "Dostęp zabroniony",
               options: { variant: "error" }
             });
-            return null;
+            return this.renderAccessForbiddenComponent();
           }
 
           return Component ? <Component {...props} /> : render(props);
@@ -66,8 +85,10 @@ const mapStateToProps = (state, props) => {
   };
 };
 
+const componentWithStyles = withStyles(styles)(ProtectedRouteComponent);
+
 export default connect(mapStateToProps, {
   showLoginDialog: showLoginDialogActionCreator,
   hideLoginDialog: hideLoginDialogActionCreator,
   enqueueSnackbar: enqueueSnackbar
-})(ProtectedRouteComponent);
+})(componentWithStyles);

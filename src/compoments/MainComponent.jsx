@@ -9,8 +9,9 @@ import LoginDialogComponent from "./LoginDialog/LoginDialogComponent";
 import EditCurrentUserDialogComponent from "./ChangePasswordDialog/ChangePasswordDialogComponent";
 import SnackbarNotifier from "./Snackbar/SnackbarNotifier";
 import CurrentUserOverviewComponent from "./CurrentUserOverview/CurrentUserOverviewComponent";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import ProtectedRouteComponent from "./ProtectedRoute/ProtectedRouteComponent";
+import PrivacyPolicyComponent from "./PrivacyPolicy/PrivacyPolicyComponent";
 import { existsAndIsNotEmpty } from "../utilities/utilities";
 import { getCurrentJWT } from "../services/authService";
 import {
@@ -19,6 +20,7 @@ import {
 } from "../actions/loginDialog";
 import { loginUserWithJWTActionCreatorWrapped } from "../actions/auth";
 import MainMenuComponent from "./MainMenu/MainMenuComponent";
+import EditDataComponent from "./EditDataComponent/EditDataComponent";
 
 const styles = theme => ({
   root: {
@@ -54,10 +56,18 @@ class MainComponent extends Component {
             <div className={classes.appBarSpacer} />
             <Switch>
               <ProtectedRouteComponent
-                permissionsBit={2}
+                permissionsBit={1}
                 path="/me"
                 component={CurrentUserOverviewComponent}
               ></ProtectedRouteComponent>
+              <ProtectedRouteComponent
+                permissionsBit={2}
+                path="/users"
+                component={EditDataComponent}
+              ></ProtectedRouteComponent>
+              <Route path="/politykaprywatnosci">
+                <PrivacyPolicyComponent />
+              </Route>
             </Switch>
           </main>
         </div>
