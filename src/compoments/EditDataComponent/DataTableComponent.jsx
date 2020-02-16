@@ -20,6 +20,7 @@ import {
 import { Button, Typography } from "@material-ui/core";
 import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
 import { showEditUserDialogActionCreator } from "../../actions/editUserDialog";
+import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialog";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -210,9 +211,7 @@ class DataTableComponent extends Component {
         color="secondary"
         startIcon={<Delete />}
         disabled={!this.checkPermissionsToOperateOnUser(usersPermissions)}
-        onClick={() => {
-          console.log(userId);
-        }}
+        onClick={() => this.handleDeleteUserClick(userId)}
       >
         Usuń
       </Button>
@@ -337,6 +336,10 @@ class DataTableComponent extends Component {
     this.props.showEditUserDialog(userId);
   };
 
+  handleDeleteUserClick = async userId => {
+    this.props.showRemoveUserDialog(userId);
+  };
+
   render() {
     let { classes, data } = this.props;
 
@@ -425,5 +428,6 @@ const componentWithStyles = withStyles(styles)(DataTableComponent);
 export default connect(mapStateToProps, {
   fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped,
   showAddUserDialog: showAddUserDialogActionCreator,
-  showEditUserDialog: showEditUserDialogActionCreator
+  showEditUserDialog: showEditUserDialogActionCreator,
+  showRemoveUserDialog: showRemoveUserDialogActionCreator
 })(componentWithStyles);

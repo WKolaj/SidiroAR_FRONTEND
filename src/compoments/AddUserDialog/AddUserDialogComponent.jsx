@@ -21,7 +21,7 @@ import {
   hideAddUserDialogActionCreator
 } from "../../actions/addUserDialog";
 import { postUserDataActionCreatorWrapped } from "../../actions/data";
-import { exists, existsAndIsNotEmpty, snooze } from "../../utilities/utilities";
+import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
 
