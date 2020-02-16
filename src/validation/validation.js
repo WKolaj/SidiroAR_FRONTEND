@@ -25,3 +25,19 @@ export const passwordSchema = Joi.object().keys({
     .max(4)
     .required()
 });
+
+//Schema for validating user
+export const userSchema = Joi.object().keys({
+  name: Joi.string()
+    .min(3)
+    .max(100)
+    .required(),
+  email: Joi.string()
+    .email()
+    .required(),
+  permissions: Joi.number()
+    .integer()
+    .min(0)
+    .max(255)
+    .required()
+});

@@ -10,7 +10,7 @@ import {
   FormHelperText,
   TextField
 } from "@material-ui/core";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, Form } from "redux-form";
 import { authSchema } from "../../validation/validation";
 import Joi from "joi-browser";
 import {
@@ -63,7 +63,7 @@ class LoginDialog extends Component {
     </div>
   );
 
-  handleLoginClicked = async () => {
+  handleSubmit = async e => {
     let { loginUser, formData, syncErrors, hideLoginDialog } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
@@ -80,7 +80,7 @@ class LoginDialog extends Component {
   };
 
   render() {
-    let { loginDialog, classes, formData } = this.props;
+    let { loginDialog, classes, formData, handleSubmit } = this.props;
     return (
       <div>
         <Dialog
@@ -95,39 +95,41 @@ class LoginDialog extends Component {
             }
           }}
         >
-          <DialogTitle className={classes.dialogTitle}>
-            Podaj email i hasło użytkownika
-          </DialogTitle>
-          <DialogContent className={classes.dialogContent}>
-            <Field
-              name="email"
-              type="text"
-              component={this.renderField}
-              label="Email"
-            />
-            <Field
-              name="password"
-              type="password"
-              component={this.renderField}
-              label="Hasło"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleCancelClicked} color="secondary">
-              Anuluj
-            </Button>
-            <Button
-              onClick={this.handleLoginClicked}
-              disabled={
-                !exists(formData) ||
-                (exists(formData) &&
-                  (exists(formData.syncErrors) || !formData.anyTouched))
-              }
-              color="primary"
-            >
-              Zaloguj się
-            </Button>
-          </DialogActions>
+          <Form onSubmit={handleSubmit(this.handleSubmit)}>
+            <DialogTitle className={classes.dialogTitle}>
+              Podaj email i hasło użytkownika
+            </DialogTitle>
+            <DialogContent className={classes.dialogContent}>
+              <Field
+                name="email"
+                type="text"
+                component={this.renderField}
+                label="Email"
+              />
+              <Field
+                name="password"
+                type="password"
+                component={this.renderField}
+                label="Hasło"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCancelClicked} color="secondary">
+                Anuluj
+              </Button>
+              <Button
+                type="submit"
+                disabled={
+                  !exists(formData) ||
+                  (exists(formData) &&
+                    (exists(formData.syncErrors) || !formData.anyTouched))
+                }
+                color="primary"
+              >
+                Zaloguj się
+              </Button>
+            </DialogActions>
+          </Form>
         </Dialog>
       </div>
     );

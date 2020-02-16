@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, Form } from "redux-form";
 import { passwordSchema } from "../../validation/validation";
 import Joi from "joi-browser";
 import {
@@ -73,33 +73,7 @@ class ChangePasswordDialogComponent extends Component {
     </div>
   );
 
-  //TO use later in user edit form
-  // renderPermissionsSelect = ({
-  //   input,
-  //   label,
-  //   disabled,
-  //   meta: { touched, error, warning }
-  // }) => (
-  //   <div className={this.props.classes.selectFieldDiv}>
-  //     <InputLabel className={this.props.classes.inputLabel} shrink>
-  //       {label}
-  //     </InputLabel>
-  //     <Select
-  //       className={this.props.classes.selectField}
-  //       {...input}
-  //       placeholder={label}
-  //       label={label}
-  //       disabled={disabled}
-  //       fullWidth
-  //     >
-  //       <MenuItem value={1}>Użytkownik</MenuItem>
-  //       <MenuItem value={3}>Administrator</MenuItem>
-  //       <MenuItem value={7}>SuperAdmin</MenuItem>
-  //     </Select>
-  //   </div>
-  // );
-
-  handleEditClicked = async () => {
+  handleSubmit = async e => {
     //Editing user only if formData and its values exists
     if (
       existsAndIsNotEmpty(this.props.formData) &&
@@ -118,7 +92,7 @@ class ChangePasswordDialogComponent extends Component {
   };
 
   render() {
-    let { classes, changePasswordDialog, formData } = this.props;
+    let { classes, changePasswordDialog, formData, handleSubmit } = this.props;
     return (
       <div>
         <Dialog
@@ -133,39 +107,41 @@ class ChangePasswordDialogComponent extends Component {
             }
           }}
         >
-          <DialogTitle className={classes.dialogTitle}>
-            Zmiana hasła
-          </DialogTitle>
-          <DialogContent className={classes.dialogContent}>
-            <Field
-              name="newPassword"
-              type="password"
-              component={this.renderField}
-              label="Nowe hasło"
-            />
-            <Field
-              name="oldPassword"
-              type="password"
-              component={this.renderField}
-              label="Poprzednie hasło"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleCancelClicked} color="secondary">
-              Anuluj
-            </Button>
-            <Button
-              onClick={this.handleEditClicked}
-              disabled={
-                !exists(formData) ||
-                (exists(formData) &&
-                  (exists(formData.syncErrors) || !formData.anyTouched))
-              }
-              color="primary"
-            >
-              Zmień
-            </Button>
-          </DialogActions>
+          <Form onSubmit={handleSubmit(this.handleSubmit)}>
+            <DialogTitle className={classes.dialogTitle}>
+              Zmiana hasła
+            </DialogTitle>
+            <DialogContent className={classes.dialogContent}>
+              <Field
+                name="newPassword"
+                type="password"
+                component={this.renderField}
+                label="Nowe hasło"
+              />
+              <Field
+                name="oldPassword"
+                type="password"
+                component={this.renderField}
+                label="Poprzednie hasło"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCancelClicked} color="secondary">
+                Anuluj
+              </Button>
+              <Button
+                type="submit"
+                disabled={
+                  !exists(formData) ||
+                  (exists(formData) &&
+                    (exists(formData.syncErrors) || !formData.anyTouched))
+                }
+                color="primary"
+              >
+                Zmień
+              </Button>
+            </DialogActions>
+          </Form>
         </Dialog>
       </div>
     );

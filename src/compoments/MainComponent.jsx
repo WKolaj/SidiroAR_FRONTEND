@@ -20,6 +20,7 @@ import {
 import { loginUserWithJWTActionCreatorWrapped } from "../actions/auth";
 import MainMenuComponent from "./MainMenu/MainMenuComponent";
 import EditDataComponent from "./EditDataComponent/EditDataComponent";
+import AddUserDialogComponent from "./AddUserDialog/AddUserDialogComponent";
 
 const styles = theme => ({
   root: {
@@ -48,6 +49,7 @@ class MainComponent extends Component {
         <BusyDialogComponent />
         <LoginDialogComponent />
         <EditCurrentUserDialogComponent />
+        <AddUserDialogComponent />
         <div className={classes.root}>
           <ToolbarComponent />
           <MainMenuComponent />

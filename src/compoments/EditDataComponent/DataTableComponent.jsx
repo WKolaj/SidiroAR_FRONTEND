@@ -18,6 +18,7 @@ import {
   isSuperAdmin
 } from "../../utilities/userMethods";
 import { Button, Typography } from "@material-ui/core";
+import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -224,6 +225,7 @@ class DataTableComponent extends Component {
         variant="contained"
         color="primary"
         startIcon={<PersonAdd />}
+        onClick={this.handleCreateUserClick}
       >
         Dodaj użytkownika
       </Button>
@@ -326,6 +328,10 @@ class DataTableComponent extends Component {
     );
   };
 
+  handleCreateUserClick = async () => {
+    this.props.showAddUserDialog();
+  };
+
   render() {
     let { classes, data } = this.props;
 
@@ -412,5 +418,6 @@ const mapStateToProps = (state, props) => {
 const componentWithStyles = withStyles(styles)(DataTableComponent);
 
 export default connect(mapStateToProps, {
-  fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped
+  fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped,
+  showAddUserDialog: showAddUserDialogActionCreator
 })(componentWithStyles);

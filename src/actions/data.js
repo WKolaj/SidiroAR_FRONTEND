@@ -141,7 +141,7 @@ export const postUserDataActionCreator = function(userPayload) {
 };
 
 export const postUserDataActionCreatorWrapped = function(userPayload) {
-  return wrapAsyncActionToHandleError(fetchModelDataActionCreator(userPayload));
+  return wrapAsyncActionToHandleError(postUserDataActionCreator(userPayload));
 };
 
 export const postModelDataActionCreator = function(userId, modelPayload) {

@@ -8,6 +8,7 @@ import changePasswordDialogReducer from "./changePasswordDialog";
 import loginDialogReducer from "./loginDialog";
 import userMenuReducer from "./userMenu";
 import mainMenuReducer from "./mainMenu";
+import addUserDialogReducer from "./addUserDialogReducer";
 import snackbarReducer from "./snackbarReducer";
 
 export default combineReducers({
@@ -18,6 +19,7 @@ export default combineReducers({
   busyDialog: busyDialogReducer,
   loginDialog: loginDialogReducer,
   changePasswordDialog: changePasswordDialogReducer,
+  addUserDialog: addUserDialogReducer,
   userMenu: userMenuReducer,
   mainMenu: mainMenuReducer,
   snackbar: snackbarReducer
