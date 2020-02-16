@@ -19,6 +19,7 @@ import {
 } from "../../utilities/userMethods";
 import { Button, Typography } from "@material-ui/core";
 import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
+import { showEditUserDialogActionCreator } from "../../actions/editUserDialog";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -193,7 +194,7 @@ class DataTableComponent extends Component {
         startIcon={<Edit />}
         disabled={!this.checkPermissionsToOperateOnUser(usersPermissions)}
         onClick={() => {
-          console.log(userId);
+          this.handleEditUserClick(userId);
         }}
       >
         Edytuj
@@ -332,6 +333,10 @@ class DataTableComponent extends Component {
     this.props.showAddUserDialog();
   };
 
+  handleEditUserClick = async userId => {
+    this.props.showEditUserDialog(userId);
+  };
+
   render() {
     let { classes, data } = this.props;
 
@@ -419,5 +424,6 @@ const componentWithStyles = withStyles(styles)(DataTableComponent);
 
 export default connect(mapStateToProps, {
   fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped,
-  showAddUserDialog: showAddUserDialogActionCreator
+  showAddUserDialog: showAddUserDialogActionCreator,
+  showEditUserDialog: showEditUserDialogActionCreator
 })(componentWithStyles);

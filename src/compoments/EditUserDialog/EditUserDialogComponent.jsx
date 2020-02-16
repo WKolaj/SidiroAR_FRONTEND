@@ -17,11 +17,11 @@ import { Field, reduxForm, Form } from "redux-form";
 import { userSchema } from "../../validation/validation";
 import Joi from "joi-browser";
 import {
-  showAddUserDialogActionCreator,
-  hideAddUserDialogActionCreator
-} from "../../actions/addUserDialog";
-import { postUserDataActionCreatorWrapped } from "../../actions/data";
-import { exists, existsAndIsNotEmpty, snooze } from "../../utilities/utilities";
+  showEditUserDialogActionCreator,
+  hideEditUserDialogActionCreator
+} from "../../actions/editUserDialog";
+import { putUserDataActionCreatorWrapped } from "../../actions/data";
+import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
 
@@ -47,9 +47,15 @@ const styles = theme => {
   };
 };
 
-class AddUserDialog extends Component {
+class EditUserDialog extends Component {
   //Method for rendering single Field of form
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+  renderField = ({
+    input,
+    label,
+    type,
+    disabled,
+    meta: { touched, error, warning }
+  }) => (
     <div className={this.props.classes.textFieldDiv}>
       <TextField
         className={this.props.classes.textField}
@@ -58,6 +64,7 @@ class AddUserDialog extends Component {
         placeholder={label}
         type={type}
         fullWidth
+        disabled={disabled}
       />
       {touched &&
         ((error && (
@@ -77,8 +84,9 @@ class AddUserDialog extends Component {
     let {
       formData,
       syncErrors,
-      hideAddUserDialog,
-      postUserData,
+      hideEditUserDialog,
+      editUserDialog,
+      putUserData,
       reset
     } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
@@ -86,15 +94,19 @@ class AddUserDialog extends Component {
 
     let usersPayload = _.pick(formData.values, "name", "email", "permissions");
 
-    await postUserData(usersPayload);
+    //Appending password only if it exist - as optional
+    if (existsAndIsNotEmpty(formData.values.password))
+      usersPayload.password = formData.values.password;
+
+    await putUserData(editUserDialog.userId, usersPayload);
     reset();
-    await hideAddUserDialog();
+    await hideEditUserDialog();
   };
 
   handleCancelClicked = async () => {
-    let { hideAddUserDialog, reset } = this.props;
+    let { hideEditUserDialog, reset } = this.props;
     reset();
-    await hideAddUserDialog();
+    await hideEditUserDialog();
   };
 
   checkUsersPermissions = user => {
@@ -145,10 +157,10 @@ class AddUserDialog extends Component {
   render() {
     let {
       currentUser,
-      addUserDialog,
+      editUserDialog,
       classes,
       formData,
-      hideAddUserDialog,
+      hideEditUserDialog,
       handleSubmit
     } = this.props;
 
@@ -156,7 +168,7 @@ class AddUserDialog extends Component {
 
     //In case users permissions are not valid - hide user dialog if it is visible
     if (!usersPermissionsValid) {
-      if (addUserDialog.visible) hideAddUserDialog();
+      if (editUserDialog.visible) hideEditUserDialog();
 
       return null;
     }
@@ -164,7 +176,7 @@ class AddUserDialog extends Component {
     return (
       <div>
         <Dialog
-          open={addUserDialog.visible}
+          open={editUserDialog.visible}
           className={classes.dialog}
           disableBackdropClick={true}
           disableEscapeKeyDown={true}
@@ -177,7 +189,7 @@ class AddUserDialog extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Utwórz nowego użytkownika
+              Edytuj użytkownika
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               <Field
@@ -185,6 +197,7 @@ class AddUserDialog extends Component {
                 type="text"
                 component={this.renderField}
                 label="Email"
+                disabled
               />
               <Field
                 name="name"
@@ -198,6 +211,12 @@ class AddUserDialog extends Component {
                 component={this.renderPermissionsSelect}
                 label="Uprawnienia"
               />
+              <Field
+                name="password"
+                type="password"
+                component={this.renderField}
+                label="Nowe hasło (opcja)"
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCancelClicked} color="secondary">
@@ -207,8 +226,7 @@ class AddUserDialog extends Component {
                 type="submit"
                 disabled={
                   !exists(formData) ||
-                  (exists(formData) &&
-                    (exists(formData.syncErrors) || !formData.anyTouched))
+                  (exists(formData) && exists(formData.syncErrors))
                 }
                 color="primary"
               >
@@ -226,14 +244,7 @@ const validate = (formData, props) => {
   let objectToReturn = {};
 
   let result = Joi.validate(formData, userSchema, { abortEarly: false });
-  if (!result.error) {
-    //Checking if user of given email already exists
-    let allUserEmails = Object.values(props.data).map(user => user.email);
-    if (allUserEmails.find(email => email === formData.email))
-      objectToReturn.email = "User of given email already exists...";
-
-    return objectToReturn;
-  }
+  if (!result.error) return objectToReturn;
 
   for (let detail of result.error.details) {
     objectToReturn[detail.path] = detail.message;
@@ -243,25 +254,39 @@ const validate = (formData, props) => {
 };
 
 const mapStateToProps = (state, props) => {
+  //Creating initial form values - if userId is given and user exists
+  let userId = state.editUserDialog.userId;
+
+  let initialUserPayload = {};
+
+  if (existsAndIsNotEmpty(userId)) {
+    let user = state.data.usersData[userId];
+    if (existsAndIsNotEmpty(user)) {
+      initialUserPayload.name = user.name;
+      initialUserPayload.email = user.email;
+      initialUserPayload.permissions = user.permissions;
+    }
+  }
+
   return {
     currentUser: state.auth.currentUser,
-    addUserDialog: state.addUserDialog,
-    formData: state.form.addUserDialog,
+    editUserDialog: state.editUserDialog,
+    formData: state.form.editUserDialog,
     data: state.data.usersData,
-    initialValues: { permissions: 1 }
+    initialValues: initialUserPayload
   };
 };
 
-const componentWithStyles = withStyles(styles)(AddUserDialog);
+const componentWithStyles = withStyles(styles)(EditUserDialog);
 
 const formComponentWithStyles = reduxForm({
-  form: "addUserDialog",
+  form: "editUserDialog",
   validate: validate,
   enableReinitialize: true
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
-  showAddUserDialog: showAddUserDialogActionCreator,
-  hideAddUserDialog: hideAddUserDialogActionCreator,
-  postUserData: postUserDataActionCreatorWrapped
+  showEditUserDialog: showEditUserDialogActionCreator,
+  hideEditUserDialog: hideEditUserDialogActionCreator,
+  putUserData: putUserDataActionCreatorWrapped
 })(formComponentWithStyles);

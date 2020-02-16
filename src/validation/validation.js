@@ -39,5 +39,9 @@ export const userSchema = Joi.object().keys({
     .integer()
     .min(0)
     .max(255)
-    .required()
+    .required(),
+  password: Joi.string()
+    .regex(/^\d+$/)
+    .min(4)
+    .max(4)
 });
