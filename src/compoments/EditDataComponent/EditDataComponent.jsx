@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import { fetchAllUsersDataActionCreatorWrapped } from "../../actions/data";
 import { withStyles } from "@material-ui/core/styles";
 import { existsAndIsNotEmpty } from "../../utilities/utilities";
 import { connect } from "react-redux";
+import DataTableComponent from "./DataTableComponent";
 
 const styles = theme => ({});
 
 class EditDataComponent extends Component {
-  componentDidMount = async () => {
-    await this.props.fetchAllUsersData();
-  };
+  componentDidMount = async () => {};
 
   render() {
     let { classes, data } = this.props;
 
-    return "test";
+    return <DataTableComponent></DataTableComponent>;
   }
 }
 
@@ -26,6 +24,4 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(EditDataComponent);
 
-export default connect(mapStateToProps, {
-  fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped
-})(componentWithStyles);
+export default connect(mapStateToProps, {})(componentWithStyles);

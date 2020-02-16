@@ -56,12 +56,12 @@ class MainComponent extends Component {
             <div className={classes.appBarSpacer} />
             <Switch>
               <ProtectedRouteComponent
-                permissionsBit={1}
+                permissionsBit={0}
                 path="/me"
                 component={CurrentUserOverviewComponent}
               ></ProtectedRouteComponent>
               <ProtectedRouteComponent
-                permissionsBit={2}
+                permissionsBit={1}
                 path="/users"
                 component={EditDataComponent}
               ></ProtectedRouteComponent>
