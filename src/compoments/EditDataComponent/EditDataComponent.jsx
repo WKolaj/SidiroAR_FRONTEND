@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { existsAndIsNotEmpty } from "../../utilities/utilities";
 import { connect } from "react-redux";
 import DataTableComponent from "./DataTableComponent";
 
@@ -10,9 +9,7 @@ class EditDataComponent extends Component {
   componentDidMount = async () => {};
 
   render() {
-    let { classes, data } = this.props;
-
-    return <DataTableComponent></DataTableComponent>;
+    return <DataTableComponent />;
   }
 }
 

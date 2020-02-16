@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { existsAndIsNotEmpty } from "../../utilities/utilities";
 import { fetchAllUsersDataActionCreatorWrapped } from "../../actions/data";
 import { connect } from "react-redux";
@@ -22,13 +18,6 @@ import {
   isSuperAdmin
 } from "../../utilities/userMethods";
 import { Button, Typography } from "@material-ui/core";
-import red from "@material-ui/core/colors/red";
-import green from "@material-ui/core/colors/green";
-import blue from "@material-ui/core/colors/blue";
-
-const redTheme = createMuiTheme({ palette: { primary: red } });
-const blueTheme = createMuiTheme({ palette: { primary: blue } });
-const greenTheme = createMuiTheme({ palette: { primary: green } });
 
 const styles = theme => ({
   tableRootDiv: {
@@ -54,24 +43,20 @@ const styles = theme => ({
   fileExistsIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-    margin: theme.spacing(1),
-    color: green[500]
+    margin: theme.spacing(1)
   },
   fileExistsText: {
     verticalAlign: "middle",
-    display: "inline-flex",
-    color: green[500]
+    display: "inline-flex"
   },
   fileNotExistsIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-    margin: theme.spacing(1),
-    color: red[500]
+    margin: theme.spacing(1)
   },
   fileNotExistsText: {
     verticalAlign: "middle",
-    display: "inline-flex",
-    color: red[500]
+    display: "inline-flex"
   }
 });
 
@@ -166,108 +151,96 @@ class DataTableComponent extends Component {
 
   renderEditModelButton = (userId, modelId) => {
     return (
-      <MuiThemeProvider theme={blueTheme}>
-        <Button
-          className={this.props.classes.toolDoubleButton}
-          variant="contained"
-          color="primary"
-          startIcon={<Edit />}
-          onClick={() => {
-            console.log(userId);
-            console.log(modelId);
-          }}
-        >
-          Edytuj
-        </Button>
-      </MuiThemeProvider>
+      <Button
+        className={this.props.classes.toolDoubleButton}
+        variant="contained"
+        color="primary"
+        startIcon={<Edit />}
+        onClick={() => {
+          console.log(userId);
+          console.log(modelId);
+        }}
+      >
+        Edytuj
+      </Button>
     );
   };
 
   renderDeleteModelButton = (userId, modelId) => {
     return (
-      <MuiThemeProvider theme={redTheme}>
-        <Button
-          className={this.props.classes.toolDoubleButton}
-          variant="contained"
-          color="primary"
-          startIcon={<Delete />}
-          onClick={() => {
-            console.log(userId);
-            console.log(modelId);
-          }}
-        >
-          Usuń
-        </Button>
-      </MuiThemeProvider>
+      <Button
+        className={this.props.classes.toolDoubleButton}
+        variant="contained"
+        color="secondary"
+        startIcon={<Delete />}
+        onClick={() => {
+          console.log(userId);
+          console.log(modelId);
+        }}
+      >
+        Usuń
+      </Button>
     );
   };
 
   renderEditUserButton = (userId, usersPermissions) => {
     return (
-      <MuiThemeProvider theme={blueTheme}>
-        <Button
-          className={this.props.classes.toolDoubleButton}
-          variant="contained"
-          color="primary"
-          startIcon={<Edit />}
-          disabled={!this.checkPermissionsToOperateOnUser(usersPermissions)}
-          onClick={() => {
-            console.log(userId);
-          }}
-        >
-          Edytuj
-        </Button>
-      </MuiThemeProvider>
+      <Button
+        className={this.props.classes.toolDoubleButton}
+        variant="contained"
+        color="primary"
+        startIcon={<Edit />}
+        disabled={!this.checkPermissionsToOperateOnUser(usersPermissions)}
+        onClick={() => {
+          console.log(userId);
+        }}
+      >
+        Edytuj
+      </Button>
     );
   };
 
   renderDeleteUserButton = (userId, usersPermissions) => {
     return (
-      <MuiThemeProvider theme={redTheme}>
-        <Button
-          className={this.props.classes.toolDoubleButton}
-          variant="contained"
-          color="primary"
-          startIcon={<Delete />}
-          disabled={!this.checkPermissionsToOperateOnUser(usersPermissions)}
-          onClick={() => {
-            console.log(userId);
-          }}
-        >
-          Usuń
-        </Button>
-      </MuiThemeProvider>
+      <Button
+        className={this.props.classes.toolDoubleButton}
+        variant="contained"
+        color="secondary"
+        startIcon={<Delete />}
+        disabled={!this.checkPermissionsToOperateOnUser(usersPermissions)}
+        onClick={() => {
+          console.log(userId);
+        }}
+      >
+        Usuń
+      </Button>
     );
   };
 
   renderAddNewUserButton = () => {
     return (
-      <MuiThemeProvider theme={greenTheme}>
-        <Button
-          className={this.props.classes.toolButton}
-          variant="contained"
-          color="primary"
-          startIcon={<PersonAdd />}
-        >
-          Dodaj użytkownika
-        </Button>
-      </MuiThemeProvider>
+      <Button
+        className={this.props.classes.toolButton}
+        variant="contained"
+        color="primary"
+        startIcon={<PersonAdd />}
+      >
+        Dodaj użytkownika
+      </Button>
     );
   };
 
   renderAddNewModelButton = userId => {
     return (
-      <MuiThemeProvider theme={greenTheme}>
-        <Button
-          className={this.props.classes.toolButton}
-          variant="contained"
-          color="primary"
-          startIcon={<Add />}
-          onClick={() => console.log(userId)}
-        >
-          Dodaj model
-        </Button>
-      </MuiThemeProvider>
+      <Button
+        className={this.props.classes.toolButton}
+        variant="contained"
+        color="primary"
+        startIcon={<Add />}
+        onClick={() => console.log(userId)}
+      >
+        Dodaj model
+      </Button>
     );
   };
 
@@ -286,14 +259,20 @@ class DataTableComponent extends Component {
     if (rowData.isModel) {
       if (rowData.modelsFileExists) {
         return (
-          <Typography className={this.props.classes.fileExistsTypography}>
+          <Typography
+            className={this.props.classes.fileExistsTypography}
+            color="primary"
+          >
             <CheckCircleOutline className={this.props.classes.fileExistsIcon} />
             <span className={this.props.classes.fileExistsText}>Dostępny</span>
           </Typography>
         );
       } else {
         return (
-          <Typography className={this.props.classes.fileExistsTypography}>
+          <Typography
+            className={this.props.classes.fileExistsTypography}
+            color="secondary"
+          >
             <HighlightOff className={this.props.classes.fileNotExistsIcon} />
             <span className={this.props.classes.fileNotExistsText}>
               Niedostępny
@@ -348,7 +327,7 @@ class DataTableComponent extends Component {
   };
 
   render() {
-    let { classes, currentUser, data } = this.props;
+    let { classes, data } = this.props;
 
     let dataToDisplay = this.generateDataToDisplay(data);
 

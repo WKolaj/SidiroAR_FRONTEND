@@ -60,7 +60,7 @@ class ToolbarComponent extends Component {
           mainMenu.visible && classes.appBarShift
         )}
       >
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.toolbar} color="primary">
           <IconButton
             edge="start"
             className={clsx(

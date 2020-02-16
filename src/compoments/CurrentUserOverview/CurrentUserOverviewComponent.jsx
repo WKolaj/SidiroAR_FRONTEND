@@ -6,8 +6,6 @@ import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
 import { HighlightOff, CheckCircleOutline } from "@material-ui/icons";
 import MaterialTable from "material-table";
-import red from "@material-ui/core/colors/red";
-import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -17,24 +15,20 @@ const styles = theme => ({
   fileExistsIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-    margin: theme.spacing(1),
-    color: green[500]
+    margin: theme.spacing(1)
   },
   fileExistsText: {
     verticalAlign: "middle",
-    display: "inline-flex",
-    color: green[500]
+    display: "inline-flex"
   },
   fileNotExistsIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-    margin: theme.spacing(1),
-    color: red[500]
+    margin: theme.spacing(1)
   },
   fileNotExistsText: {
     verticalAlign: "middle",
-    display: "inline-flex",
-    color: red[500]
+    display: "inline-flex"
   }
 });
 
@@ -46,14 +40,20 @@ class CurrentUserOverviewComponent extends Component {
   renderFileExistsColumn = model => {
     if (model.filesExist) {
       return (
-        <Typography className={this.props.classes.fileExistsTypography}>
+        <Typography
+          className={this.props.classes.fileExistsTypography}
+          color="primary"
+        >
           <CheckCircleOutline className={this.props.classes.fileExistsIcon} />
           <span className={this.props.classes.fileExistsText}>Dostępny</span>
         </Typography>
       );
     } else {
       return (
-        <Typography className={this.props.classes.fileExistsTypography}>
+        <Typography
+          className={this.props.classes.fileExistsTypography}
+          color="secondary"
+        >
           <HighlightOff className={this.props.classes.fileNotExistsIcon} />
           <span className={this.props.classes.fileNotExistsText}>
             Niedostępny

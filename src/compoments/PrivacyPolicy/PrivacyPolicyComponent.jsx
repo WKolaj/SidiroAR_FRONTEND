@@ -676,8 +676,6 @@ class PrivacyPolicyComponent extends Component {
     );
   };
   render() {
-    let { classes } = this.props;
-
     return this.renderPPText();
   }
 }
