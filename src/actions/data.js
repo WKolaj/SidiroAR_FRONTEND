@@ -197,7 +197,7 @@ export const deleteModelDataActionCreator = function(userId, modelId) {
 
 export const deleteModelDataActionCreatorWrapped = function(userId, modelId) {
   return wrapAsyncActionToHandleError(
-    deleteUserDataActionCreator(userId, modelId)
+    deleteModelDataActionCreator(userId, modelId)
   );
 };
 

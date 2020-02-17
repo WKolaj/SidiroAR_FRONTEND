@@ -23,6 +23,7 @@ import EditDataComponent from "./EditDataComponent/EditDataComponent";
 import AddUserDialogComponent from "./AddUserDialog/AddUserDialogComponent";
 import EditUserDialogComponent from "./EditUserDialog/EditUserDialogComponent";
 import RemoveUserDialogComponent from "./RemoveUserDialog/RemoveUserDialogComponent";
+import RemoveModelDialogComponent from "./RemoveModelDialog/RemoveModelDialogComponent";
 import AddModelDialogComponent from "./AddModelDialog/AddModelDialogComponent";
 
 const styles = theme => ({
@@ -55,6 +56,7 @@ class MainComponent extends Component {
         <AddUserDialogComponent />
         <EditUserDialogComponent />
         <RemoveUserDialogComponent />
+        <RemoveModelDialogComponent />
         <AddModelDialogComponent />
         <div className={classes.root}>
           <ToolbarComponent />

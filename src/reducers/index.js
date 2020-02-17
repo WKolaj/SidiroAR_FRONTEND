@@ -12,6 +12,7 @@ import addUserDialogReducer from "./addUserDialogReducer";
 import editUserDialogReducer from "./editUserDialogReducer";
 import removeUserDialogReducer from "./removeUserDialogReducer";
 import addModelDialogReducer from "./addModelDialogReducer";
+import removeModelDialogReducer from "./removeModelDialogReducer";
 import snackbarReducer from "./snackbarReducer";
 
 export default combineReducers({
@@ -25,6 +26,7 @@ export default combineReducers({
   addUserDialog: addUserDialogReducer,
   editUserDialog: editUserDialogReducer,
   removeUserDialog: removeUserDialogReducer,
+  removeModelDialog: removeModelDialogReducer,
   addModelDialog: addModelDialogReducer,
   userMenu: userMenuReducer,
   mainMenu: mainMenuReducer,

@@ -21,6 +21,7 @@ import { Button, Typography } from "@material-ui/core";
 import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
 import { showEditUserDialogActionCreator } from "../../actions/editUserDialog";
 import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialog";
+import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDialog";
 import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 
 const styles = theme => ({
@@ -178,8 +179,7 @@ class DataTableComponent extends Component {
         color="secondary"
         startIcon={<Delete />}
         onClick={() => {
-          console.log(userId);
-          console.log(modelId);
+          this.handleDeleteModelClick(userId, modelId);
         }}
       >
         Usuń
@@ -345,6 +345,10 @@ class DataTableComponent extends Component {
     this.props.showAddModelDialog(userId);
   };
 
+  handleDeleteModelClick = async (userId, modelId) => {
+    this.props.showRemoveModelDialog(userId, modelId);
+  };
+
   render() {
     let { classes, data } = this.props;
 
@@ -435,5 +439,6 @@ export default connect(mapStateToProps, {
   showAddUserDialog: showAddUserDialogActionCreator,
   showEditUserDialog: showEditUserDialogActionCreator,
   showRemoveUserDialog: showRemoveUserDialogActionCreator,
-  showAddModelDialog: showAddModelDialogActionCreator
+  showAddModelDialog: showAddModelDialogActionCreator,
+  showRemoveModelDialog: showRemoveModelDialogActionCreator
 })(componentWithStyles);
