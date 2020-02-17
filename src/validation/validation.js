@@ -55,3 +55,11 @@ export const createModelSchema = Joi.object().keys({
 
   file: Joi.required()
 });
+
+//Schema for validating model
+export const editModelSchema = Joi.object().keys({
+  name: Joi.string()
+    .min(3)
+    .max(100)
+    .required()
+});

@@ -10,7 +10,8 @@ import {
   Edit,
   Delete,
   Add,
-  PersonAdd
+  PersonAdd,
+  CloudUpload
 } from "@material-ui/icons";
 import {
   getUserPermissionsLabel,
@@ -23,6 +24,7 @@ import { showEditUserDialogActionCreator } from "../../actions/editUserDialog";
 import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialog";
 import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDialog";
 import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
+import { showEditModelDialogActionCreator } from "../../actions/editModelDialog";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -34,11 +36,15 @@ const styles = theme => ({
   },
   toolDoubleButton: {
     margin: theme.spacing(1),
+    width: (125 * 3) / 2 + theme.spacing(1)
+  },
+  toolTripleButton: {
+    margin: theme.spacing(1),
     width: 125
   },
   toolButton: {
     margin: theme.spacing(1),
-    width: 250 + 2 * theme.spacing(1)
+    width: 375 + 4 * theme.spacing(1)
   },
   permissionsCellContainer: {
     "text-align": "center"
@@ -154,17 +160,31 @@ class DataTableComponent extends Component {
     return operationEnabled;
   }
 
-  renderEditModelButton = (userId, modelId) => {
+  renderUploadModelFileButton = (userId, modelId) => {
     return (
       <Button
-        className={this.props.classes.toolDoubleButton}
+        className={this.props.classes.toolTripleButton}
         variant="contained"
         color="primary"
-        startIcon={<Edit />}
+        startIcon={<CloudUpload />}
         onClick={() => {
           console.log(userId);
           console.log(modelId);
         }}
+      >
+        Plik
+      </Button>
+    );
+  };
+
+  renderEditModelButton = (userId, modelId) => {
+    return (
+      <Button
+        className={this.props.classes.toolTripleButton}
+        variant="contained"
+        color="primary"
+        startIcon={<Edit />}
+        onClick={() => this.handleEditModelClick(userId, modelId)}
       >
         Edytuj
       </Button>
@@ -174,7 +194,7 @@ class DataTableComponent extends Component {
   renderDeleteModelButton = (userId, modelId) => {
     return (
       <Button
-        className={this.props.classes.toolDoubleButton}
+        className={this.props.classes.toolTripleButton}
         variant="contained"
         color="secondary"
         startIcon={<Delete />}
@@ -319,6 +339,10 @@ class DataTableComponent extends Component {
       cellContent = (
         <span className={this.props.classes.toolsButtonSpan}>
           {this.renderEditModelButton(rowData.parentsId, rowData.modelsId)}
+          {this.renderUploadModelFileButton(
+            rowData.parentsId,
+            rowData.modelsId
+          )}
           {this.renderDeleteModelButton(rowData.parentsId, rowData.modelsId)}
         </span>
       );
@@ -347,6 +371,10 @@ class DataTableComponent extends Component {
 
   handleDeleteModelClick = async (userId, modelId) => {
     this.props.showRemoveModelDialog(userId, modelId);
+  };
+
+  handleEditModelClick = async (userId, modelId) => {
+    this.props.showEditModelDialog(userId, modelId);
   };
 
   render() {
@@ -440,5 +468,6 @@ export default connect(mapStateToProps, {
   showEditUserDialog: showEditUserDialogActionCreator,
   showRemoveUserDialog: showRemoveUserDialogActionCreator,
   showAddModelDialog: showAddModelDialogActionCreator,
-  showRemoveModelDialog: showRemoveModelDialogActionCreator
+  showRemoveModelDialog: showRemoveModelDialogActionCreator,
+  showEditModelDialog: showEditModelDialogActionCreator
 })(componentWithStyles);
