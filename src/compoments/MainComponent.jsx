@@ -8,7 +8,7 @@ import LoginDialogComponent from "./LoginDialog/LoginDialogComponent";
 import EditCurrentUserDialogComponent from "./ChangePasswordDialog/ChangePasswordDialogComponent";
 import SnackbarNotifier from "./Snackbar/SnackbarNotifier";
 import CurrentUserOverviewComponent from "./CurrentUserOverview/CurrentUserOverviewComponent";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import ProtectedRouteComponent from "./ProtectedRoute/ProtectedRouteComponent";
 import PrivacyPolicyComponent from "./PrivacyPolicy/PrivacyPolicyComponent";
 import { existsAndIsNotEmpty } from "../utilities/utilities";
@@ -26,6 +26,7 @@ import RemoveUserDialogComponent from "./RemoveUserDialog/RemoveUserDialogCompon
 import RemoveModelDialogComponent from "./RemoveModelDialog/RemoveModelDialogComponent";
 import AddModelDialogComponent from "./AddModelDialog/AddModelDialogComponent";
 import EditModelDialogComponent from "./EditModelDialog/EditModelDialogComponent";
+import FileNotFoundComponent from "./FileNotFound/FileNotFoundComponent";
 
 const styles = theme => ({
   root: {
@@ -79,6 +80,11 @@ class MainComponent extends Component {
               <Route path="/politykaprywatnosci">
                 <PrivacyPolicyComponent />
               </Route>
+              <Route path="/notFound">
+                <FileNotFoundComponent />
+              </Route>
+              <Redirect exact path="/" to="/me" />
+              <Redirect path="/" to="/notFound" />
             </Switch>
           </main>
         </div>
