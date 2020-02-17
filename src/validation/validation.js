@@ -45,3 +45,13 @@ export const userSchema = Joi.object().keys({
     .min(4)
     .max(4)
 });
+
+//Schema for validating model
+export const createModelSchema = Joi.object().keys({
+  name: Joi.string()
+    .min(3)
+    .max(100)
+    .required(),
+
+  file: Joi.required()
+});

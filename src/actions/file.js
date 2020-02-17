@@ -1,10 +1,10 @@
-import { FETCH_FILE_TO_SEND, SEND_FILE } from "./types";
+import { FETCH_FILE_TO_SEND, SEND_FILE, FETCH_USER_MODEL_DATA } from "./types";
 import { uploadModelFile } from "../services/fileService";
 import { exists } from "../utilities/utilities";
 import config from "../config.json";
 import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
 
-const maxFileSize = config["maxFileSize"];
+export const maxFileSize = config["maxFileSize"];
 
 export const uploadFileActionCreator = function() {
   return async function(dispatch, getState) {
@@ -19,45 +19,29 @@ export const uploadFileActionCreator = function() {
     )
       await uploadModelFile(fileData.userId, fileData.modelId, fileData.file);
 
-    dispatch({
+    await dispatch({
       type: SEND_FILE
     });
-  };
-};
 
-export const uploadFileActionCreatorWrapped = function() {
-  return wrapAsyncActionToHandleError(loginUserWithJWTActionCreator());
-};
-
-export const fetchFileToSendActionCreator = function(userId, modelId, file) {
-  return async function(dispatch, getState) {
-    //If file is null - do not change anything, cause close was clicked
-    if (!exists(file)) return;
-
-    //Checking if max file size exceeds
-    if (file.size >= maxFileSize) {
-      console.error(
-        new Error(`Max file size of ${maxFileSize} Bytes exceeded!`)
-      );
-      return;
-    }
-
-    dispatch({
-      type: FETCH_FILE_TO_SEND,
+    //Fetching new model data - fileExists should be now set to true
+    let model =
+      currentState.data.usersData[fileData.userId].models[fileData.modelId];
+    let newModelPayload = { ...model, fileExists: true };
+    await dispatch({
+      type: FETCH_USER_MODEL_DATA,
       payload: {
-        userId,
-        modelId,
-        file
+        userId: fileData.userId,
+        model: newModelPayload
       }
     });
   };
 };
 
-export const chooseAndUploadFileActionCreator = function(
-  userId,
-  modelId,
-  file
-) {
+export const uploadFileActionCreatorWrapped = function() {
+  return wrapAsyncActionToHandleError(uploadFileActionCreator());
+};
+
+export const fetchFileToSendActionCreator = function(userId, modelId, file) {
   return async function(dispatch, getState) {
     //If file is null - do not change anything, cause close was clicked
     if (!exists(file)) return;

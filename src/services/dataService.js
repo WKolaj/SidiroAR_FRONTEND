@@ -34,7 +34,7 @@ const convertUserListsToModels = function(userPayload) {
     objectToReturn[modelId] = {
       _id: modelId,
       name: modelName,
-      filesExist: modelFileExist
+      fileExists: modelFileExist
     };
   }
 

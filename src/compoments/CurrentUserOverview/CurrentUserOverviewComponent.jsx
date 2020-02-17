@@ -38,7 +38,7 @@ class CurrentUserOverviewComponent extends Component {
   };
 
   renderFileExistsColumn = model => {
-    if (model.filesExist) {
+    if (model.fileExists) {
       return (
         <Typography
           className={this.props.classes.fileExistsTypography}
@@ -79,7 +79,7 @@ class CurrentUserOverviewComponent extends Component {
             { title: "Nazwa modelu", field: "name" },
             {
               title: "Dostępność pliku na serwerze",
-              field: "filesExist",
+              field: "fileExists",
               render: this.renderFileExistsColumn
             }
           ]}

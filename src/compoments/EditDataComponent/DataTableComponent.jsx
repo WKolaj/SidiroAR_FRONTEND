@@ -21,6 +21,7 @@ import { Button, Typography } from "@material-ui/core";
 import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
 import { showEditUserDialogActionCreator } from "../../actions/editUserDialog";
 import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialog";
+import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -107,7 +108,7 @@ class DataTableComponent extends Component {
           parentsId: user._id,
           modelsId: model._id,
           modelsName: model.name,
-          modelsFileExists: model.filesExist
+          modelsFileExists: model.fileExists
         };
 
         dataToDisplay.push(modelDataToDisplay);
@@ -239,7 +240,7 @@ class DataTableComponent extends Component {
         variant="contained"
         color="primary"
         startIcon={<Add />}
-        onClick={() => console.log(userId)}
+        onClick={() => this.handleAddNewModelClick(userId)}
       >
         Dodaj model
       </Button>
@@ -340,6 +341,10 @@ class DataTableComponent extends Component {
     this.props.showRemoveUserDialog(userId);
   };
 
+  handleAddNewModelClick = async userId => {
+    this.props.showAddModelDialog(userId);
+  };
+
   render() {
     let { classes, data } = this.props;
 
@@ -429,5 +434,6 @@ export default connect(mapStateToProps, {
   fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped,
   showAddUserDialog: showAddUserDialogActionCreator,
   showEditUserDialog: showEditUserDialogActionCreator,
-  showRemoveUserDialog: showRemoveUserDialogActionCreator
+  showRemoveUserDialog: showRemoveUserDialogActionCreator,
+  showAddModelDialog: showAddModelDialogActionCreator
 })(componentWithStyles);

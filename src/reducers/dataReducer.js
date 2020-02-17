@@ -43,7 +43,6 @@ export default function(
     case FETCH_USER_MODEL_DATA: {
       let userId = action.payload.userId;
       let modelData = action.payload.model;
-
       return {
         ...state,
         usersData: {
