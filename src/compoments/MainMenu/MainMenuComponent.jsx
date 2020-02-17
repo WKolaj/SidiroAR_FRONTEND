@@ -92,7 +92,7 @@ class MainMenuComponent extends Component {
         <List className={classes.menuList}>
           <Link
             className={classes.menuItemLink}
-            to="/me"
+            to="/sidiroar/me"
             onClick={e => {
               return this.checkMenuItemDisabled(0) ? e.preventDefault() : e;
             }}
@@ -110,7 +110,7 @@ class MainMenuComponent extends Component {
           </Link>
           <Link
             className={classes.menuItemLink}
-            to="/users"
+            to="/sidiroar/users"
             onClick={e => {
               return this.checkMenuItemDisabled(1) ? e.preventDefault() : e;
             }}

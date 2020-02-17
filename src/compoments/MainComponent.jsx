@@ -69,22 +69,22 @@ class MainComponent extends Component {
             <Switch>
               <ProtectedRouteComponent
                 permissionsBit={0}
-                path="/me"
+                path="/sidiroar/me"
                 component={CurrentUserOverviewComponent}
               ></ProtectedRouteComponent>
               <ProtectedRouteComponent
                 permissionsBit={1}
-                path="/users"
+                path="/sidiroar/users"
                 component={EditDataComponent}
               ></ProtectedRouteComponent>
-              <Route path="/politykaprywatnosci">
+              <Route path="/sidiroar/politykaprywatnosci">
                 <PrivacyPolicyComponent />
               </Route>
-              <Route path="/notFound">
+              <Route path="/sidiroar/notFound">
                 <FileNotFoundComponent />
               </Route>
-              <Redirect exact path="/" to="/me" />
-              <Redirect path="/" to="/notFound" />
+              <Redirect exact path="/sidiroar/" to="/sidiroar/me" />
+              <Redirect path="/sidiroar/" to="/sidiroar/notFound" />
             </Switch>
           </main>
         </div>

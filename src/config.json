@@ -1,8 +1,8 @@
 {
   "authTokenName": "x-auth-token",
-  "authRoute": "sidiroar/api/auth",
-  "userRoute": "sidiroar/api/user",
-  "modelRoute": "sidiroar/api/model",
-  "fileRoute": "sidiroar/api/file",
+  "authRoute": "api/auth",
+  "userRoute": "api/user",
+  "modelRoute": "api/model",
+  "fileRoute": "api/file",
   "maxFileSize": 200000000
 }
