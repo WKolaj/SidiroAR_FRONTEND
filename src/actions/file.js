@@ -27,6 +27,7 @@ export const uploadFileActionCreator = function() {
     let model =
       currentState.data.usersData[fileData.userId].models[fileData.modelId];
     let newModelPayload = { ...model, fileExists: true };
+
     await dispatch({
       type: FETCH_USER_MODEL_DATA,
       payload: {
@@ -63,4 +64,41 @@ export const fetchFileToSendActionCreator = function(userId, modelId, file) {
       }
     });
   };
+};
+
+export const fetchAndUploadFileActionCreator = function(userId, modelId, file) {
+  return async function(dispatch, getState) {
+    //If file is null - do not change anything, cause close was clicked
+    if (!exists(file)) return;
+
+    //Checking if max file size exceeds
+    if (file.size >= maxFileSize) {
+      throw new Error(
+        `Max file size of ${(maxFileSize / 1024 / 1024).toFixed(
+          2
+        )} MB exceeded!`
+      );
+    }
+
+    await dispatch({
+      type: FETCH_FILE_TO_SEND,
+      payload: {
+        userId,
+        modelId,
+        file
+      }
+    });
+
+    await dispatch(uploadFileActionCreator());
+  };
+};
+
+export const fetchAndUploadFileActionCreatorWrapped = function(
+  userId,
+  modelId,
+  file
+) {
+  return wrapAsyncActionToHandleError(
+    fetchAndUploadFileActionCreator(userId, modelId, file)
+  );
 };

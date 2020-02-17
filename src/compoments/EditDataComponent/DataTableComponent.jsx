@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { existsAndIsNotEmpty } from "../../utilities/utilities";
+import { existsAndIsNotEmpty, exists } from "../../utilities/utilities";
 import { fetchAllUsersDataActionCreatorWrapped } from "../../actions/data";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
@@ -25,6 +25,7 @@ import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialo
 import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDialog";
 import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 import { showEditModelDialogActionCreator } from "../../actions/editModelDialog";
+import { fetchAndUploadFileActionCreatorWrapped } from "../../actions/file";
 
 const styles = theme => ({
   tableRootDiv: {
@@ -72,6 +73,13 @@ const styles = theme => ({
 });
 
 class DataTableComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    //Object for storing references to upload buttons
+    this.uploadButtonsFormsRef = {};
+  }
+
   componentDidMount = async () => {
     await this.props.fetchAllUsersData();
   };
@@ -160,20 +168,38 @@ class DataTableComponent extends Component {
     return operationEnabled;
   }
 
+  createUploadModelFileButtonRefIfNotExists = (userId, modelId) => {
+    if (!exists(this.uploadButtonsFormsRef[userId]))
+      this.uploadButtonsFormsRef[userId] = {};
+
+    if (!exists(this.uploadButtonsFormsRef[userId][modelId]))
+      this.uploadButtonsFormsRef[userId][modelId] = React.createRef();
+  };
+
   renderUploadModelFileButton = (userId, modelId) => {
+    this.createUploadModelFileButtonRefIfNotExists(userId, modelId);
+
     return (
-      <Button
-        className={this.props.classes.toolTripleButton}
-        variant="contained"
-        color="primary"
-        startIcon={<CloudUpload />}
-        onClick={() => {
-          console.log(userId);
-          console.log(modelId);
-        }}
-      >
-        Plik
-      </Button>
+      <React.Fragment>
+        <input
+          ref={this.uploadButtonsFormsRef[userId][modelId]}
+          style={{ display: "none" }}
+          type="file"
+          accept=".smdl"
+          onChange={e =>
+            this.handleUploadModelFileFormChanged(e, userId, modelId)
+          }
+        />
+        <Button
+          className={this.props.classes.toolTripleButton}
+          variant="contained"
+          color="primary"
+          startIcon={<CloudUpload />}
+          onClick={() => this.handleUploadModelFileButtonClick(userId, modelId)}
+        >
+          Plik
+        </Button>
+      </React.Fragment>
     );
   };
 
@@ -189,6 +215,20 @@ class DataTableComponent extends Component {
         Edytuj
       </Button>
     );
+  };
+
+  handleUploadModelFileFormChanged = async (e, userId, modelId) => {
+    await this.props.fetchAndUploadFile(userId, modelId, e.target.files[0]);
+  };
+
+  handleUploadModelFileButtonClick = (userId, modelId) => {
+    let formRef = this.uploadButtonsFormsRef[userId][modelId];
+    formRef.current.click();
+  };
+
+  handleUploadModelFileButtonClick = (userId, modelId) => {
+    let formRef = this.uploadButtonsFormsRef[userId][modelId];
+    formRef.current.click();
   };
 
   renderDeleteModelButton = (userId, modelId) => {
@@ -469,5 +509,6 @@ export default connect(mapStateToProps, {
   showRemoveUserDialog: showRemoveUserDialogActionCreator,
   showAddModelDialog: showAddModelDialogActionCreator,
   showRemoveModelDialog: showRemoveModelDialogActionCreator,
-  showEditModelDialog: showEditModelDialogActionCreator
+  showEditModelDialog: showEditModelDialogActionCreator,
+  fetchAndUploadFile: fetchAndUploadFileActionCreatorWrapped
 })(componentWithStyles);

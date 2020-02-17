@@ -67,20 +67,18 @@ class FieldFileInput extends Component {
   render() {
     return (
       <div>
-        <div>
-          {this.renderInputLabel()}
-          <input
-            ref={this.fileInputRef}
-            style={{ display: "none" }}
-            type="file"
-            accept=".smdl"
-            onChange={this.handleFileSelectionChange}
-          />
-          <span>
-            {this.renderLoadFileButton()}
-            {this.renderFileNameLabel()}
-          </span>
-        </div>
+        {this.renderInputLabel()}
+        <input
+          ref={this.fileInputRef}
+          style={{ display: "none" }}
+          type="file"
+          accept=".smdl"
+          onChange={this.handleFileSelectionChange}
+        />
+        <span>
+          {this.renderLoadFileButton()}
+          {this.renderFileNameLabel()}
+        </span>
       </div>
     );
   }
