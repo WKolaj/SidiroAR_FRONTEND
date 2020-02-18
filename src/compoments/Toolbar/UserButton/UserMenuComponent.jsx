@@ -8,18 +8,14 @@ import {
 import { logoutUserActionCreatorWrapped } from "../../../actions/auth";
 import { showChangePasswordDialogActionCreator } from "../../../actions/changePasswordDialog";
 import { ExitToApp, Lock } from "@material-ui/icons";
-import {
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Divider
-} from "@material-ui/core";
+import { Menu, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const styles = theme => ({
-  root: {},
+  menuRoot: {},
   menuDiv: {
-    minWidth: 200
+    minWidth: 200,
+    background: blueGrey[800]
   }
 });
 
@@ -43,11 +39,16 @@ class UserMenuComponent extends Component {
     return (
       <Menu
         id="user-menu"
-        className={classes.root}
+        className={classes.menuRoot}
         anchorEl={userMenu.visible ? referenceEl.current : null}
         keepMounted
         open={userMenu.visible}
         onClose={this.handleMenuClose}
+        PaperProps={{
+          style: {
+            backgroundColor: blueGrey[800]
+          }
+        }}
       >
         <div className={classes.menuDiv}>
           <MenuItem onClick={this.handleChangePasswordClick}>
@@ -56,7 +57,6 @@ class UserMenuComponent extends Component {
             </ListItemIcon>
             <ListItemText primary="Zmień hasło" />
           </MenuItem>
-          <Divider />
           <MenuItem onClick={this.handleLogoutClick}>
             <ListItemIcon>
               <ExitToApp />

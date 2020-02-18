@@ -36,7 +36,7 @@ class UserButtonComponent extends Component {
           className={classes.button}
           variant="contained"
           startIcon={<Person className={classes.buttonIcon} />}
-          color="secondary"
+          color="primary"
           onClick={this.handleButtonClicked}
           ref={this.ownRef}
         >

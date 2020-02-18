@@ -23,6 +23,8 @@ import { maxFileSize } from "../../actions/file";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import red from "@material-ui/core/colors/red";
 
 const styles = theme => {
   return {
@@ -34,17 +36,21 @@ const styles = theme => {
       display: "block"
     },
     inputFile: {},
-    textField: {},
+    textField: {
+      background: blueGrey[900]
+    },
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
+      background: blueGrey[900]
     },
     errorLabel: {
-      color: "red",
+      color: red.A400,
       display: "block"
     },
     selectField: {},
     selectFieldDiv: {
+      background: blueGrey[800],
       "margin-bottom": theme.spacing(1),
       display: "block"
     }
@@ -62,6 +68,7 @@ class AddModelDialog extends Component {
         placeholder={label}
         type={type}
         fullWidth
+        autoComplete="off"
       />
       {touched &&
         ((error && (
@@ -168,7 +175,9 @@ class AddModelDialog extends Component {
           PaperProps={{
             style: {
               width: "fit-content",
-              height: "fit-content"
+              height: "fit-content",
+              minWidth: 500,
+              background: blueGrey[900]
             }
           }}
         >
@@ -190,7 +199,12 @@ class AddModelDialog extends Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancelClicked} color="secondary">
+              <Button
+                onClick={this.handleCancelClicked}
+                color="secondary"
+                variant="contained"
+                style={{ minWidth: 125 }}
+              >
                 Anuluj
               </Button>
               <Button
@@ -201,6 +215,8 @@ class AddModelDialog extends Component {
                     (exists(formData.syncErrors) || !formData.anyTouched))
                 }
                 color="primary"
+                variant="contained"
+                style={{ minWidth: 125 }}
               >
                 Utwórz
               </Button>

@@ -9,6 +9,7 @@ import {
   showMainMenuActionCreator,
   hideMainMenuActionCreator
 } from "../../actions/mainMenu";
+import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const styles = theme => ({
   appBar: {
@@ -26,7 +27,9 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
-  toolbar: {},
+  toolbar: {
+    background: blueGrey[900]
+  },
   menuButton: {
     marginRight: 36
   },
@@ -42,7 +45,7 @@ const styles = theme => ({
 class ToolbarComponent extends Component {
   renderPageTitle = url => {
     //To do later - return page title based on url
-    return "Aplikacja SidiroAR";
+    return "Hosting modeli aplikacji SidiroAR";
   };
 
   handleMenuButtonClicked = async () => {
@@ -60,7 +63,7 @@ class ToolbarComponent extends Component {
           mainMenu.visible && classes.appBarShift
         )}
       >
-        <Toolbar className={classes.toolbar} color="primary">
+        <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
             className={clsx(

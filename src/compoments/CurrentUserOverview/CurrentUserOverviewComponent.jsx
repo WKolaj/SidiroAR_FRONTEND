@@ -7,6 +7,8 @@ import { Typography } from "@material-ui/core";
 import { HighlightOff, CheckCircleOutline } from "@material-ui/icons";
 import MaterialTable from "material-table";
 
+import blueGrey from "@material-ui/core/colors/blueGrey";
+
 const styles = theme => ({
   tableRootDiv: {
     margin: theme.spacing(2)
@@ -42,7 +44,7 @@ class CurrentUserOverviewComponent extends Component {
       return (
         <Typography
           className={this.props.classes.fileExistsTypography}
-          color="primary"
+          color="inherit"
         >
           <CheckCircleOutline className={this.props.classes.fileExistsIcon} />
           <span className={this.props.classes.fileExistsText}>Dostępny</span>
@@ -75,6 +77,9 @@ class CurrentUserOverviewComponent extends Component {
     return (
       <div className={classes.tableRootDiv}>
         <MaterialTable
+          style={{
+            background: blueGrey[900]
+          }}
           columns={[
             { title: "Nazwa modelu", field: "name" },
             {
@@ -87,8 +92,16 @@ class CurrentUserOverviewComponent extends Component {
           title="Dostępne modele"
           options={{
             headerStyle: {
-              fontWeight: "bold"
-            }
+              fontWeight: "bold",
+              textAlign: "left",
+              background: blueGrey[900],
+              fontSize: 16
+            },
+            padding: "dense",
+            sorting: false,
+            draggable: false,
+            pageSize: 10,
+            pageSizeOptions: [10, 20, 30]
           }}
           localization={{
             pagination: {

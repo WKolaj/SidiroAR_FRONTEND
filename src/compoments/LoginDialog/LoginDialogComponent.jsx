@@ -19,19 +19,25 @@ import {
 } from "../../actions/loginDialog";
 import { loginUserActionCreatorWrapped } from "../../actions/auth";
 import { exists } from "../../utilities/utilities";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import red from "@material-ui/core/colors/red";
 
 const styles = theme => {
   return {
+    rootDiv: {},
     dialog: {},
     dialogTitle: {},
     dialogContent: {},
-    textField: {},
+    textField: {
+      background: blueGrey[900]
+    },
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
+      background: blueGrey[900]
     },
     errorLabel: {
-      color: "red",
+      color: red.A400,
       display: "block"
     }
   };
@@ -48,6 +54,7 @@ class LoginDialog extends Component {
         placeholder={label}
         type={type}
         fullWidth
+        autoComplete="off"
       />
       {touched &&
         ((error && (
@@ -82,7 +89,7 @@ class LoginDialog extends Component {
   render() {
     let { loginDialog, classes, formData, handleSubmit } = this.props;
     return (
-      <div>
+      <div className={classes.rootDiv}>
         <Dialog
           open={loginDialog.visible}
           className={classes.dialog}
@@ -91,7 +98,9 @@ class LoginDialog extends Component {
           PaperProps={{
             style: {
               width: "fit-content",
-              height: "fit-content"
+              height: "fit-content",
+              minWidth: 500,
+              background: blueGrey[900]
             }
           }}
         >
@@ -114,7 +123,12 @@ class LoginDialog extends Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancelClicked} color="secondary">
+              <Button
+                onClick={this.handleCancelClicked}
+                color="secondary"
+                variant="contained"
+                style={{ minWidth: 125 }}
+              >
                 Anuluj
               </Button>
               <Button
@@ -125,6 +139,8 @@ class LoginDialog extends Component {
                     (exists(formData.syncErrors) || !formData.anyTouched))
                 }
                 color="primary"
+                variant="contained"
+                style={{ minWidth: 125 }}
               >
                 Zaloguj się
               </Button>

@@ -19,12 +19,14 @@ import {
   hideMainMenuActionCreator
 } from "../../actions/mainMenu";
 import { Link } from "react-router-dom";
+import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const styles = theme => ({
   drawerPaper: {
     position: "relative",
     whiteSpace: "nowrap",
     width: 240,
+    background: blueGrey[900],
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen

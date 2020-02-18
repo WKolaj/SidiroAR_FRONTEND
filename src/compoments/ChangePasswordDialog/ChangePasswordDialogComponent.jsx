@@ -18,15 +18,20 @@ import {
   Button
 } from "@material-ui/core";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import red from "@material-ui/core/colors/red";
 
 const styles = theme => ({
   dialog: {},
   dialogTitle: {},
   dialogContent: {},
-  textField: {},
+  textField: {
+    background: blueGrey[900]
+  },
   textFieldDiv: {
     "margin-bottom": theme.spacing(1),
-    display: "block"
+    display: "block",
+    background: blueGrey[900]
   },
   selectField: {},
   selectFieldDiv: {
@@ -34,7 +39,7 @@ const styles = theme => ({
     display: "block"
   },
   errorLabel: {
-    color: "red",
+    color: red.A400,
     display: "block"
   },
   inputLabel: {}
@@ -103,7 +108,9 @@ class ChangePasswordDialogComponent extends Component {
           PaperProps={{
             style: {
               width: "fit-content",
-              height: "fit-content"
+              height: "fit-content",
+              minWidth: 500,
+              background: blueGrey[900]
             }
           }}
         >
@@ -126,7 +133,12 @@ class ChangePasswordDialogComponent extends Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancelClicked} color="secondary">
+              <Button
+                onClick={this.handleCancelClicked}
+                color="secondary"
+                variant="contained"
+                style={{ minWidth: 125 }}
+              >
                 Anuluj
               </Button>
               <Button
@@ -137,6 +149,8 @@ class ChangePasswordDialogComponent extends Component {
                     (exists(formData.syncErrors) || !formData.anyTouched))
                 }
                 color="primary"
+                variant="contained"
+                style={{ minWidth: 125 }}
               >
                 Zmień
               </Button>

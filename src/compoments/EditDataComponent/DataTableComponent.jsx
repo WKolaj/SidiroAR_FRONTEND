@@ -26,6 +26,14 @@ import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDia
 import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 import { showEditModelDialogActionCreator } from "../../actions/editModelDialog";
 import { fetchAndUploadFileActionCreatorWrapped } from "../../actions/file";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+
+const styleOfUserCell = {
+  background: blueGrey[900]
+};
+const styleOfModelCell = {
+  background: blueGrey[800]
+};
 
 const styles = theme => ({
   tableRootDiv: {
@@ -82,6 +90,18 @@ class DataTableComponent extends Component {
 
   componentDidMount = async () => {
     await this.props.fetchAllUsersData();
+  };
+
+  getCellStyle = (text, rowData) => {
+    if (rowData.isActionsForModels) return styleOfModelCell;
+
+    if (rowData.isActionsForUsers) return styleOfUserCell;
+
+    if (rowData.isUser) return styleOfUserCell;
+
+    if (rowData.isModel) return styleOfModelCell;
+
+    return styleOfUserCell;
   };
 
   /**
@@ -324,7 +344,7 @@ class DataTableComponent extends Component {
         return (
           <Typography
             className={this.props.classes.fileExistsTypography}
-            color="primary"
+            color="inherit"
           >
             <CheckCircleOutline className={this.props.classes.fileExistsIcon} />
             <span className={this.props.classes.fileExistsText}>Dostępny</span>
@@ -425,24 +445,34 @@ class DataTableComponent extends Component {
     return (
       <div className={classes.tableRootDiv}>
         <MaterialTable
+          style={{
+            background: blueGrey[900]
+          }}
           columns={[
-            { title: "Email", field: "usersEmail" },
             {
-              title: "Nazwa użytkownika",
-              field: "usersName"
+              title: "Email",
+              field: "usersEmail",
+              cellStyle: {
+                fontWeight: "bold"
+              }
             },
             {
-              title: "Uprawnienia",
-              render: this.renderPermissionsColumn
+              title: "Nazwa modelu",
+              field: "modelsName",
+              cellStyle: this.getCellStyle
             },
-            { title: "Nazwa modelu", field: "modelsName" },
             {
               title: "Plik na serwerze",
-              render: this.renderFileExistsColumn
+              render: this.renderFileExistsColumn,
+              cellStyle: this.getCellStyle
             },
             {
               title: "Narzędzia",
-              render: this.renderToolsColumn
+              render: this.renderToolsColumn,
+              cellStyle: this.getCellStyle,
+              headerStyle: {
+                textAlign: "center"
+              }
             }
           ]}
           data={dataToDisplay}
@@ -450,11 +480,15 @@ class DataTableComponent extends Component {
           options={{
             headerStyle: {
               fontWeight: "bold",
-              textAlign: "center"
+              textAlign: "left",
+              background: blueGrey[900],
+              fontSize: 16
             },
             padding: "dense",
             sorting: false,
-            draggable: false
+            draggable: false,
+            pageSize: 10,
+            pageSizeOptions: [10, 20, 30]
           }}
           parentChildData={(row, rows) => {
             //Checking if data row is a model or row for models actions - only model and models actions a can have parents

@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { Dialog, CircularProgress } from "@material-ui/core";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+
 const styles = theme => {
   return {
     dialog: {},
     circularProgress: {
       overflow: "visible",
-      color: "#055f87"
+      color: blueGrey[600]
     }
   };
 };

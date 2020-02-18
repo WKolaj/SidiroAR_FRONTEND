@@ -21,6 +21,8 @@ import { putModelDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import red from "@material-ui/core/colors/red";
 
 const styles = theme => {
   return {
@@ -33,7 +35,7 @@ const styles = theme => {
       display: "block"
     },
     errorLabel: {
-      color: "red",
+      color: red.A400,
       display: "block"
     },
     selectField: {},
@@ -62,6 +64,7 @@ class EditModelDialog extends Component {
         type={type}
         fullWidth
         disabled={disabled}
+        autoComplete="off"
       />
       {touched &&
         ((error && (
@@ -142,7 +145,9 @@ class EditModelDialog extends Component {
           PaperProps={{
             style: {
               width: "fit-content",
-              height: "fit-content"
+              height: "fit-content",
+              minWidth: 500,
+              background: blueGrey[900]
             }
           }}
         >
@@ -159,7 +164,12 @@ class EditModelDialog extends Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancelClicked} color="secondary">
+              <Button
+                onClick={this.handleCancelClicked}
+                color="secondary"
+                variant="contained"
+                style={{ minWidth: 125 }}
+              >
                 Anuluj
               </Button>
               <Button
@@ -169,6 +179,8 @@ class EditModelDialog extends Component {
                   (exists(formData) && exists(formData.syncErrors))
                 }
                 color="primary"
+                variant="contained"
+                style={{ minWidth: 125 }}
               >
                 Edytuj
               </Button>

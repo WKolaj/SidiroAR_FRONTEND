@@ -16,6 +16,9 @@ import {
 import { deleteModelDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin } from "../../utilities/userMethods";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import red from "@material-ui/core/colors/red";
+
 const styles = theme => {
   return {
     dialog: {},
@@ -27,7 +30,7 @@ const styles = theme => {
       display: "block"
     },
     errorLabel: {
-      color: "red",
+      color: red.A400,
       display: "block"
     },
     selectField: {},
@@ -97,7 +100,9 @@ class RemoveModelDialogComponent extends Component {
           PaperProps={{
             style: {
               width: "fit-content",
-              height: "fit-content"
+              height: "fit-content",
+              minWidth: 500,
+              background: blueGrey[900]
             }
           }}
         >
@@ -110,10 +115,20 @@ class RemoveModelDialogComponent extends Component {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCancelClicked} color="primary">
+            <Button
+              onClick={this.handleCancelClicked}
+              color="primary"
+              variant="contained"
+              style={{ minWidth: 125 }}
+            >
               Nie
             </Button>
-            <Button onClick={this.handleDeleteClicked} color="secondary">
+            <Button
+              onClick={this.handleDeleteClicked}
+              color="secondary"
+              variant="contained"
+              style={{ minWidth: 125 }}
+            >
               Tak
             </Button>
           </DialogActions>
