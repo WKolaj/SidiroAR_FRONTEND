@@ -37,7 +37,7 @@ const styles = theme => {
       background: blueGrey[900]
     },
     errorLabel: {
-      color: red.A400,
+      color: red[900],
       display: "block"
     }
   };
@@ -123,14 +123,7 @@ class LoginDialog extends Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button
-                onClick={this.handleCancelClicked}
-                color="secondary"
-                variant="contained"
-                style={{ minWidth: 125 }}
-              >
-                Anuluj
-              </Button>
+              {" "}
               <Button
                 type="submit"
                 disabled={
@@ -138,11 +131,19 @@ class LoginDialog extends Component {
                   (exists(formData) &&
                     (exists(formData.syncErrors) || !formData.anyTouched))
                 }
-                color="primary"
+                color="secondary"
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
                 Zaloguj się
+              </Button>
+              <Button
+                onClick={this.handleCancelClicked}
+                color="primary"
+                variant="contained"
+                style={{ minWidth: 125 }}
+              >
+                Anuluj
               </Button>
             </DialogActions>
           </Form>

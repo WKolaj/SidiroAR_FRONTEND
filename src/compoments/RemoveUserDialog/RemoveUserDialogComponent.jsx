@@ -30,7 +30,7 @@ const styles = theme => {
       display: "block"
     },
     errorLabel: {
-      color: red.A400,
+      color: red[900],
       display: "block"
     },
     selectField: {},
@@ -130,20 +130,20 @@ class RemoveUserDialogComponent extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={this.handleCancelClicked}
-              color="primary"
-              variant="contained"
-              style={{ minWidth: 125 }}
-            >
-              Nie
-            </Button>
-            <Button
               onClick={this.handleDeleteClicked}
               color="secondary"
               variant="contained"
               style={{ minWidth: 125 }}
             >
               Tak
+            </Button>
+            <Button
+              onClick={this.handleCancelClicked}
+              color="primary"
+              variant="contained"
+              style={{ minWidth: 125 }}
+            >
+              Nie
             </Button>
           </DialogActions>
         </Dialog>

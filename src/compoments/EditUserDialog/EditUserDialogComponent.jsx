@@ -38,7 +38,7 @@ const styles = theme => {
       display: "block"
     },
     errorLabel: {
-      color: red.A400,
+      color: red[900],
       display: "block"
     },
     selectField: {},
@@ -225,24 +225,24 @@ class EditUserDialog extends Component {
             </DialogContent>
             <DialogActions>
               <Button
-                onClick={this.handleCancelClicked}
-                color="secondary"
-                variant="contained"
-                style={{ minWidth: 125 }}
-              >
-                Anuluj
-              </Button>
-              <Button
                 type="submit"
                 disabled={
                   !exists(formData) ||
                   (exists(formData) && exists(formData.syncErrors))
                 }
-                color="primary"
+                color="secondary"
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
                 Edytuj
+              </Button>
+              <Button
+                onClick={this.handleCancelClicked}
+                color="primary"
+                variant="contained"
+                style={{ minWidth: 125 }}
+              >
+                Anuluj
               </Button>
             </DialogActions>
           </Form>
