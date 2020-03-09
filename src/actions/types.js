@@ -14,6 +14,9 @@ export const DELETE_MODEL_DATA = "DELETE_MODEL_DATA";
 export const FETCH_FILE_TO_SEND = "FETCH_FILE_TO_SEND";
 export const SEND_FILE = "SEND_FILE";
 
+export const FETCH_IOS_FILE_TO_SEND = "FETCH_IOS_FILE_TO_SEND";
+export const SEND_IOS_FILE = "SEND_IOS_FILE";
+
 export const BUSY_DIALOG_SHOW = "BUSY_DIALOG_SHOW";
 export const BUSY_DIALOG_HIDE = "BUSY_DIALOG_HIDE";
 

@@ -17,7 +17,7 @@ import Joi from "joi-browser";
 import {
   showAddModelDialogActionCreator,
   hideAddModelDialogActionCreator,
-  createModelAndUploadFileWrapped
+  createModelAndUploadFilesWrapped
 } from "../../actions/addModelDialog";
 import { maxFileSize } from "../../actions/file";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
@@ -114,12 +114,42 @@ class AddModelDialog extends Component {
     );
   };
 
+  //Method for rendering single File Field of form
+  renderIOSFileField = ({ input, label, meta: { error, warning } }) => {
+    //Detecting touched as file
+    let values = this.props.formData.values;
+    let fileSelected = exists(values) && exists(values.iosFile);
+
+    return (
+      <div className={this.props.classes.inputFileDiv}>
+        <FieldFileInput
+          className={this.props.classes.inputFile}
+          {...input}
+          type="file"
+          label={label}
+          fullWidth
+        />
+        {fileSelected &&
+          ((error && (
+            <FormHelperText className={this.props.classes.errorLabel}>
+              {error}
+            </FormHelperText>
+          )) ||
+            (warning && (
+              <FormHelperText className={this.props.classes.errorLabel}>
+                {warning}
+              </FormHelperText>
+            )))}
+      </div>
+    );
+  };
+
   handleSubmit = async e => {
     let {
       formData,
       syncErrors,
       addModelDialog,
-      createModelAndUploadFile,
+      createModelAndUploadFiles,
       hideAddModelDialog,
       reset
     } = this.props;
@@ -128,7 +158,14 @@ class AddModelDialog extends Component {
 
     let modelPayload = _.pick(formData.values, "name");
     let { userId } = addModelDialog;
-    await createModelAndUploadFile(userId, modelPayload, formData.values.file);
+
+    await createModelAndUploadFiles(
+      userId,
+      modelPayload,
+      formData.values.file,
+      formData.values.iosFile
+    );
+
     reset();
     await hideAddModelDialog();
   };
@@ -155,7 +192,6 @@ class AddModelDialog extends Component {
       formData,
       handleSubmit
     } = this.props;
-
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
 
     //In case users permissions are not valid - hide user dialog if it is visible
@@ -195,7 +231,12 @@ class AddModelDialog extends Component {
               <Field
                 name="file"
                 component={this.renderFileField}
-                label="Plik"
+                label="Plik Android"
+              />
+              <Field
+                name="iosFile"
+                component={this.renderIOSFileField}
+                label="Plik IOS"
               />
             </DialogContent>
             <DialogActions>
@@ -273,5 +314,5 @@ const formComponentWithStyles = reduxForm({
 export default connect(mapStateToProps, {
   showAddModelDialog: showAddModelDialogActionCreator,
   hideAddModelDialog: hideAddModelDialogActionCreator,
-  createModelAndUploadFile: createModelAndUploadFileWrapped
+  createModelAndUploadFiles: createModelAndUploadFilesWrapped
 })(formComponentWithStyles);

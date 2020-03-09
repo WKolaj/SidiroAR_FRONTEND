@@ -26,6 +26,7 @@ import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDia
 import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 import { showEditModelDialogActionCreator } from "../../actions/editModelDialog";
 import { fetchAndUploadFileActionCreatorWrapped } from "../../actions/file";
+import { fetchAndUploadIOSFileActionCreatorWrapped } from "../../actions/iosFile";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const styleOfUserCell = {
@@ -40,20 +41,20 @@ const styles = theme => ({
     margin: theme.spacing(2)
   },
   toolsCellContainer: {
-    minWidth: 450,
+    minWidth: 600,
     "text-align": "center"
   },
   toolDoubleButton: {
     margin: theme.spacing(1),
-    width: (125 * 3) / 2 + theme.spacing(1)
+    width: 110 * 2 + 2 * theme.spacing(1)
   },
-  toolTripleButton: {
+  toolFourButtons: {
     margin: theme.spacing(1),
-    width: 125
+    width: 110
   },
   toolButton: {
     margin: theme.spacing(1),
-    width: 375 + 4 * theme.spacing(1)
+    width: 110 * 4 + 6 * theme.spacing(1)
   },
   permissionsCellContainer: {
     "text-align": "center"
@@ -86,6 +87,9 @@ class DataTableComponent extends Component {
 
     //Object for storing references to upload buttons
     this.uploadButtonsFormsRef = {};
+
+    //Object for storing references to upload buttons
+    this.uploadIOSButtonsFormsRef = {};
   }
 
   componentDidMount = async () => {
@@ -143,7 +147,8 @@ class DataTableComponent extends Component {
           parentsId: user._id,
           modelsId: model._id,
           modelsName: model.name,
-          modelsFileExists: model.fileExists
+          modelsFileExists: model.fileExists,
+          modelsIOSFileExists: model.iosFileExists
         };
 
         dataToDisplay.push(modelDataToDisplay);
@@ -196,6 +201,14 @@ class DataTableComponent extends Component {
       this.uploadButtonsFormsRef[userId][modelId] = React.createRef();
   };
 
+  createUploadModelIOSFileButtonRefIfNotExists = (userId, modelId) => {
+    if (!exists(this.uploadIOSButtonsFormsRef[userId]))
+      this.uploadIOSButtonsFormsRef[userId] = {};
+
+    if (!exists(this.uploadIOSButtonsFormsRef[userId][modelId]))
+      this.uploadIOSButtonsFormsRef[userId][modelId] = React.createRef();
+  };
+
   renderUploadModelFileButton = (userId, modelId) => {
     this.createUploadModelFileButtonRefIfNotExists(userId, modelId);
 
@@ -211,13 +224,42 @@ class DataTableComponent extends Component {
           }
         />
         <Button
-          className={this.props.classes.toolTripleButton}
+          className={this.props.classes.toolFourButtons}
           variant="contained"
           color="primary"
           startIcon={<CloudUpload />}
           onClick={() => this.handleUploadModelFileButtonClick(userId, modelId)}
         >
-          Plik
+          Android
+        </Button>
+      </React.Fragment>
+    );
+  };
+
+  renderUploadModelFileIOSButton = (userId, modelId) => {
+    this.createUploadModelIOSFileButtonRefIfNotExists(userId, modelId);
+
+    return (
+      <React.Fragment>
+        <input
+          ref={this.uploadIOSButtonsFormsRef[userId][modelId]}
+          style={{ display: "none" }}
+          type="file"
+          accept=".smdl"
+          onChange={e =>
+            this.handleUploadModelIOSFileFormChanged(e, userId, modelId)
+          }
+        />
+        <Button
+          className={this.props.classes.toolFourButtons}
+          variant="contained"
+          color="primary"
+          startIcon={<CloudUpload />}
+          onClick={() =>
+            this.handleUploadModelIOSFileButtonClick(userId, modelId)
+          }
+        >
+          IOS
         </Button>
       </React.Fragment>
     );
@@ -226,7 +268,7 @@ class DataTableComponent extends Component {
   renderEditModelButton = (userId, modelId) => {
     return (
       <Button
-        className={this.props.classes.toolTripleButton}
+        className={this.props.classes.toolFourButtons}
         variant="contained"
         color="primary"
         startIcon={<Edit />}
@@ -246,15 +288,19 @@ class DataTableComponent extends Component {
     formRef.current.click();
   };
 
-  handleUploadModelFileButtonClick = (userId, modelId) => {
-    let formRef = this.uploadButtonsFormsRef[userId][modelId];
+  handleUploadModelIOSFileFormChanged = async (e, userId, modelId) => {
+    await this.props.fetchAndUploadIOSFile(userId, modelId, e.target.files[0]);
+  };
+
+  handleUploadModelIOSFileButtonClick = (userId, modelId) => {
+    let formRef = this.uploadIOSButtonsFormsRef[userId][modelId];
     formRef.current.click();
   };
 
   renderDeleteModelButton = (userId, modelId) => {
     return (
       <Button
-        className={this.props.classes.toolTripleButton}
+        className={this.props.classes.toolFourButtons}
         variant="contained"
         color="secondary"
         startIcon={<Delete />}
@@ -368,6 +414,36 @@ class DataTableComponent extends Component {
     }
   };
 
+  renderIOSFileExistsColumn = rowData => {
+    if (rowData.isModel) {
+      if (rowData.modelsIOSFileExists) {
+        return (
+          <Typography
+            className={this.props.classes.fileExistsTypography}
+            color="inherit"
+          >
+            <CheckCircleOutline className={this.props.classes.fileExistsIcon} />
+            <span className={this.props.classes.fileExistsText}>Dostępny</span>
+          </Typography>
+        );
+      } else {
+        return (
+          <Typography
+            className={this.props.classes.fileExistsTypography}
+            color="secondary"
+          >
+            <HighlightOff className={this.props.classes.fileNotExistsIcon} />
+            <span className={this.props.classes.fileNotExistsText}>
+              Niedostępny
+            </span>
+          </Typography>
+        );
+      }
+    } else {
+      return null;
+    }
+  };
+
   renderToolsColumn = rowData => {
     let cellContent = null;
 
@@ -400,6 +476,10 @@ class DataTableComponent extends Component {
         <span className={this.props.classes.toolsButtonSpan}>
           {this.renderEditModelButton(rowData.parentsId, rowData.modelsId)}
           {this.renderUploadModelFileButton(
+            rowData.parentsId,
+            rowData.modelsId
+          )}
+          {this.renderUploadModelFileIOSButton(
             rowData.parentsId,
             rowData.modelsId
           )}
@@ -462,8 +542,13 @@ class DataTableComponent extends Component {
               cellStyle: this.getCellStyle
             },
             {
-              title: "Plik na serwerze",
+              title: "Android - Plik na serwerze",
               render: this.renderFileExistsColumn,
+              cellStyle: this.getCellStyle
+            },
+            {
+              title: "IOS - Plik na serwerze",
+              render: this.renderIOSFileExistsColumn,
               cellStyle: this.getCellStyle
             },
             {
@@ -544,5 +629,6 @@ export default connect(mapStateToProps, {
   showAddModelDialog: showAddModelDialogActionCreator,
   showRemoveModelDialog: showRemoveModelDialogActionCreator,
   showEditModelDialog: showEditModelDialogActionCreator,
-  fetchAndUploadFile: fetchAndUploadFileActionCreatorWrapped
+  fetchAndUploadFile: fetchAndUploadFileActionCreatorWrapped,
+  fetchAndUploadIOSFile: fetchAndUploadIOSFileActionCreatorWrapped
 })(componentWithStyles);

@@ -65,6 +65,32 @@ class CurrentUserOverviewComponent extends Component {
     }
   };
 
+  renderIOSFileExistsColumn = model => {
+    if (model.iosFileExists) {
+      return (
+        <Typography
+          className={this.props.classes.fileExistsTypography}
+          color="inherit"
+        >
+          <CheckCircleOutline className={this.props.classes.fileExistsIcon} />
+          <span className={this.props.classes.fileExistsText}>Dostępny</span>
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography
+          className={this.props.classes.fileExistsTypography}
+          color="secondary"
+        >
+          <HighlightOff className={this.props.classes.fileNotExistsIcon} />
+          <span className={this.props.classes.fileNotExistsText}>
+            Niedostępny
+          </span>
+        </Typography>
+      );
+    }
+  };
+
   render() {
     let { classes, currentUserData } = this.props;
 
@@ -83,9 +109,14 @@ class CurrentUserOverviewComponent extends Component {
           columns={[
             { title: "Nazwa modelu", field: "name" },
             {
-              title: "Dostępność pliku na serwerze",
+              title: "Android - plik na serwerze",
               field: "fileExists",
               render: this.renderFileExistsColumn
+            },
+            {
+              title: "IOS - plik na serwerze",
+              field: "fileExists",
+              render: this.renderIOSFileExistsColumn
             }
           ]}
           data={data}

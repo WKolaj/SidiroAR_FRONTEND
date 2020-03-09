@@ -13,13 +13,19 @@ const convertUserListsToModels = function(userPayload) {
   if (!existsAndIsNotEmpty(userPayload.modelIds)) return {};
   if (!existsAndIsNotEmpty(userPayload.modelNames)) return {};
   if (!existsAndIsNotEmpty(userPayload.filesExist)) return {};
+  if (!existsAndIsNotEmpty(userPayload.iosFilesExist)) return {};
 
   //Checking and returing empty object if length of arrays is not valid
   let modelIdsCount = userPayload.modelIds.length;
   let modelNamesCount = userPayload.modelNames.length;
   let filesExistCount = userPayload.filesExist.length;
+  let iosFilesExistCount = userPayload.iosFilesExist.length;
 
-  if (modelIdsCount !== modelNamesCount || modelIdsCount !== filesExistCount)
+  if (
+    modelIdsCount !== modelNamesCount ||
+    modelIdsCount !== filesExistCount ||
+    modelIdsCount !== iosFilesExistCount
+  )
     return {};
 
   //Converting lists from user payload to collection of models object
@@ -30,11 +36,13 @@ const convertUserListsToModels = function(userPayload) {
     let modelId = userPayload.modelIds[i];
     let modelName = userPayload.modelNames[i];
     let modelFileExist = userPayload.filesExist[i];
+    let modelIOSFileExist = userPayload.iosFilesExist[i];
 
     objectToReturn[modelId] = {
       _id: modelId,
       name: modelName,
-      fileExists: modelFileExist
+      fileExists: modelFileExist,
+      iosFileExists: modelIOSFileExist
     };
   }
 

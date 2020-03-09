@@ -3,6 +3,7 @@ import { reducer } from "redux-form";
 import authReducer from "./authReducer";
 import dataReducer from "./dataReducer";
 import fileReducer from "./fileReducer";
+import iosFileReducer from "./iosFileReducer";
 import busyDialogReducer from "./busyDialog";
 import changePasswordDialogReducer from "./changePasswordDialog";
 import loginDialogReducer from "./loginDialog";
@@ -21,6 +22,7 @@ export default combineReducers({
   auth: authReducer,
   data: dataReducer,
   file: fileReducer,
+  iosFile: iosFileReducer,
   busyDialog: busyDialogReducer,
   loginDialog: loginDialogReducer,
   changePasswordDialog: changePasswordDialogReducer,

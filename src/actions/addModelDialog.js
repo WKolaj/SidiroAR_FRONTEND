@@ -5,7 +5,12 @@ import {
 } from "./types";
 import { postModelData } from "../services/dataService";
 import { uploadFileActionCreator, fetchFileToSendActionCreator } from "./file";
+import {
+  uploadIOSFileActionCreator,
+  fetchIOSFileToSendActionCreator
+} from "./iosFile";
 import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
+import { exists } from "../utilities/utilities";
 
 export const showAddModelDialogActionCreator = function(userId) {
   return {
@@ -22,7 +27,12 @@ export const hideAddModelDialogActionCreator = function() {
   };
 };
 
-export const createModelAndUploadFile = function(userId, modelPayload, file) {
+export const createModelAndUploadFiles = function(
+  userId,
+  modelPayload,
+  androidFile,
+  iosFile
+) {
   return async function(dispatch, getState) {
     //Invoking method manually - in order to get created models id
     let model = await postModelData(userId, modelPayload);
@@ -36,17 +46,29 @@ export const createModelAndUploadFile = function(userId, modelPayload, file) {
 
     let modelId = model._id;
 
-    await dispatch(fetchFileToSendActionCreator(userId, modelId, file));
-    await dispatch(uploadFileActionCreator());
+    //Uploading android file only if exists
+    if (exists(androidFile)) {
+      await dispatch(
+        fetchFileToSendActionCreator(userId, modelId, androidFile)
+      );
+      await dispatch(uploadFileActionCreator());
+    }
+
+    //Uploading ios file only if exists
+    if (exists(iosFile)) {
+      await dispatch(fetchIOSFileToSendActionCreator(userId, modelId, iosFile));
+      await dispatch(uploadIOSFileActionCreator());
+    }
   };
 };
 
-export const createModelAndUploadFileWrapped = function(
+export const createModelAndUploadFilesWrapped = function(
   userId,
   modelPayload,
-  file
+  file,
+  iosFile
 ) {
   return wrapAsyncActionToHandleError(
-    createModelAndUploadFile(userId, modelPayload, file)
+    createModelAndUploadFiles(userId, modelPayload, file, iosFile)
   );
 };
