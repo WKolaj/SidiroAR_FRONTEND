@@ -11,12 +11,12 @@ import {
   Delete,
   Add,
   PersonAdd,
-  CloudUpload
+  CloudUpload,
 } from "@material-ui/icons";
 import {
   getUserPermissionsLabel,
   isAdmin,
-  isSuperAdmin
+  isSuperAdmin,
 } from "../../utilities/userMethods";
 import { Button, Typography } from "@material-ui/core";
 import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
@@ -30,55 +30,55 @@ import { fetchAndUploadIOSFileActionCreatorWrapped } from "../../actions/iosFile
 import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const styleOfUserCell = {
-  background: blueGrey[900]
+  background: blueGrey[900],
 };
 const styleOfModelCell = {
-  background: blueGrey[800]
+  background: blueGrey[800],
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   tableRootDiv: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
   toolsCellContainer: {
     minWidth: 600,
-    "text-align": "center"
+    "text-align": "center",
   },
   toolDoubleButton: {
     margin: theme.spacing(1),
-    width: 110 * 2 + 2 * theme.spacing(1)
+    width: 110 * 2 + 2 * theme.spacing(1),
   },
   toolFourButtons: {
     margin: theme.spacing(1),
-    width: 110
+    width: 110,
   },
   toolButton: {
     margin: theme.spacing(1),
-    width: 110 * 4 + 6 * theme.spacing(1)
+    width: 110 * 4 + 6 * theme.spacing(1),
   },
   permissionsCellContainer: {
-    "text-align": "center"
+    "text-align": "center",
   },
   toolsButtonSpan: {},
   fileExistsTypography: {},
   fileExistsIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   fileExistsText: {
     verticalAlign: "middle",
-    display: "inline-flex"
+    display: "inline-flex",
   },
   fileNotExistsIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   fileNotExistsText: {
     verticalAlign: "middle",
-    display: "inline-flex"
-  }
+    display: "inline-flex",
+  },
 });
 
 class DataTableComponent extends Component {
@@ -112,7 +112,7 @@ class DataTableComponent extends Component {
    * @description method for generating data to be displayed - combing all - users and models to the same array
    * @param {Array} data data to be displayed
    */
-  generateDataToDisplay = data => {
+  generateDataToDisplay = (data) => {
     let dataToDisplay = [];
 
     if (!existsAndIsNotEmpty(data)) return dataToDisplay;
@@ -129,7 +129,7 @@ class DataTableComponent extends Component {
         usersId: user._id,
         usersEmail: user.email,
         usersName: user.name,
-        usersPermissions: user.permissions
+        usersPermissions: user.permissions,
       };
 
       dataToDisplay.push(userDataToDisplay);
@@ -148,7 +148,7 @@ class DataTableComponent extends Component {
           modelsId: model._id,
           modelsName: model.name,
           modelsFileExists: model.fileExists,
-          modelsIOSFileExists: model.iosFileExists
+          modelsIOSFileExists: model.iosFileExists,
         };
 
         dataToDisplay.push(modelDataToDisplay);
@@ -160,7 +160,7 @@ class DataTableComponent extends Component {
         isModel: false,
         isActionsForModels: true,
         isActionsForUsers: false,
-        parentsId: user._id
+        parentsId: user._id,
       };
 
       dataToDisplay.push(actionsDataToDisplay);
@@ -171,7 +171,7 @@ class DataTableComponent extends Component {
       isUser: false,
       isModel: false,
       isActionsForModels: false,
-      isActionsForUsers: true
+      isActionsForUsers: true,
     };
 
     dataToDisplay.push(actionsDataToDisplay);
@@ -219,7 +219,7 @@ class DataTableComponent extends Component {
           style={{ display: "none" }}
           type="file"
           accept=".smdl"
-          onChange={e =>
+          onChange={(e) =>
             this.handleUploadModelFileFormChanged(e, userId, modelId)
           }
         />
@@ -245,8 +245,8 @@ class DataTableComponent extends Component {
           ref={this.uploadIOSButtonsFormsRef[userId][modelId]}
           style={{ display: "none" }}
           type="file"
-          accept=".smdl"
-          onChange={e =>
+          accept=".ismdl"
+          onChange={(e) =>
             this.handleUploadModelIOSFileFormChanged(e, userId, modelId)
           }
         />
@@ -359,7 +359,7 @@ class DataTableComponent extends Component {
     );
   };
 
-  renderAddNewModelButton = userId => {
+  renderAddNewModelButton = (userId) => {
     return (
       <Button
         className={this.props.classes.toolButton}
@@ -373,7 +373,7 @@ class DataTableComponent extends Component {
     );
   };
 
-  renderPermissionsColumn = rowData => {
+  renderPermissionsColumn = (rowData) => {
     let cellContent = null;
     if (rowData.isUser)
       cellContent = getUserPermissionsLabel(rowData.usersPermissions);
@@ -384,7 +384,7 @@ class DataTableComponent extends Component {
     );
   };
 
-  renderFileExistsColumn = rowData => {
+  renderFileExistsColumn = (rowData) => {
     if (rowData.isModel) {
       if (rowData.modelsFileExists) {
         return (
@@ -414,7 +414,7 @@ class DataTableComponent extends Component {
     }
   };
 
-  renderIOSFileExistsColumn = rowData => {
+  renderIOSFileExistsColumn = (rowData) => {
     if (rowData.isModel) {
       if (rowData.modelsIOSFileExists) {
         return (
@@ -444,7 +444,7 @@ class DataTableComponent extends Component {
     }
   };
 
-  renderToolsColumn = rowData => {
+  renderToolsColumn = (rowData) => {
     let cellContent = null;
 
     if (rowData.isActionsForModels) {
@@ -497,15 +497,15 @@ class DataTableComponent extends Component {
     this.props.showAddUserDialog();
   };
 
-  handleEditUserClick = async userId => {
+  handleEditUserClick = async (userId) => {
     this.props.showEditUserDialog(userId);
   };
 
-  handleDeleteUserClick = async userId => {
+  handleDeleteUserClick = async (userId) => {
     this.props.showRemoveUserDialog(userId);
   };
 
-  handleAddNewModelClick = async userId => {
+  handleAddNewModelClick = async (userId) => {
     this.props.showAddModelDialog(userId);
   };
 
@@ -526,39 +526,39 @@ class DataTableComponent extends Component {
       <div className={classes.tableRootDiv}>
         <MaterialTable
           style={{
-            background: blueGrey[900]
+            background: blueGrey[900],
           }}
           columns={[
             {
               title: "Email",
               field: "usersEmail",
               cellStyle: {
-                fontWeight: "bold"
-              }
+                fontWeight: "bold",
+              },
             },
             {
               title: "Nazwa modelu",
               field: "modelsName",
-              cellStyle: this.getCellStyle
+              cellStyle: this.getCellStyle,
             },
             {
               title: "Android - Plik na serwerze",
               render: this.renderFileExistsColumn,
-              cellStyle: this.getCellStyle
+              cellStyle: this.getCellStyle,
             },
             {
               title: "IOS - Plik na serwerze",
               render: this.renderIOSFileExistsColumn,
-              cellStyle: this.getCellStyle
+              cellStyle: this.getCellStyle,
             },
             {
               title: "Narzędzia",
               render: this.renderToolsColumn,
               cellStyle: this.getCellStyle,
               headerStyle: {
-                textAlign: "center"
-              }
-            }
+                textAlign: "center",
+              },
+            },
           ]}
           data={dataToDisplay}
           title="Użytkownicy oraz modele"
@@ -567,20 +567,20 @@ class DataTableComponent extends Component {
               fontWeight: "bold",
               textAlign: "left",
               background: blueGrey[900],
-              fontSize: 16
+              fontSize: 16,
             },
             padding: "dense",
             sorting: false,
             draggable: false,
             pageSize: 10,
-            pageSizeOptions: [10, 20, 30]
+            pageSizeOptions: [10, 20, 30],
           }}
           parentChildData={(row, rows) => {
             //Checking if data row is a model or row for models actions - only model and models actions a can have parents
             if (!row.isModel && !row.isActionsForModels) return null;
 
             let parent = rows.find(
-              element => element.usersId === row.parentsId
+              (element) => element.usersId === row.parentsId
             );
             return parent;
           }}
@@ -593,18 +593,18 @@ class DataTableComponent extends Component {
               nextAriaLabel: "Następna strona",
               nextTooltip: "Następna strona",
               firstTooltip: "Pierwsza strona",
-              lastTooltip: "Ostatnia strona"
+              lastTooltip: "Ostatnia strona",
             },
             toolbar: {
               exportTitle: "Eksport",
               exportAriaLabel: "Eksport",
               exportName: "Eksportuj do CSV",
               searchTooltip: "Szukaj",
-              searchPlaceholder: "Szukaj"
+              searchPlaceholder: "Szukaj",
             },
             body: {
-              emptyDataSourceMessage: "Brak dostępnych danych"
-            }
+              emptyDataSourceMessage: "Brak dostępnych danych",
+            },
           }}
         />
       </div>
@@ -615,7 +615,7 @@ class DataTableComponent extends Component {
 const mapStateToProps = (state, props) => {
   return {
     data: state.data ? (state.data.usersData ? state.data.usersData : []) : [],
-    currentUser: state.auth.currentUser
+    currentUser: state.auth.currentUser,
   };
 };
 
@@ -630,5 +630,5 @@ export default connect(mapStateToProps, {
   showRemoveModelDialog: showRemoveModelDialogActionCreator,
   showEditModelDialog: showEditModelDialogActionCreator,
   fetchAndUploadFile: fetchAndUploadFileActionCreatorWrapped,
-  fetchAndUploadIOSFile: fetchAndUploadIOSFileActionCreatorWrapped
+  fetchAndUploadIOSFile: fetchAndUploadIOSFileActionCreatorWrapped,
 })(componentWithStyles);

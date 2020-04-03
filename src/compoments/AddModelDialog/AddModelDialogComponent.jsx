@@ -8,16 +8,17 @@ import {
   DialogActions,
   Button,
   FormHelperText,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { Field, reduxForm, Form } from "redux-form";
 import FieldFileInput from "../FieldFileInput/FieldFileInput";
+import IOSFieldFileInput from "../FieldFileInput/IOSFieldFileInput";
 import { createModelSchema } from "../../validation/validation";
 import Joi from "joi-browser";
 import {
   showAddModelDialogActionCreator,
   hideAddModelDialogActionCreator,
-  createModelAndUploadFilesWrapped
+  createModelAndUploadFilesWrapped,
 } from "../../actions/addModelDialog";
 import { maxFileSize } from "../../actions/file";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
@@ -26,34 +27,34 @@ import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     dialog: {},
     dialogTitle: {},
     dialogContent: {},
     inputFileDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
     },
     inputFile: {},
     textField: {
-      background: blueGrey[900]
+      background: blueGrey[900],
     },
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
       display: "block",
-      background: blueGrey[900]
+      background: blueGrey[900],
     },
     errorLabel: {
       color: red[900],
-      display: "block"
+      display: "block",
     },
     selectField: {},
     selectFieldDiv: {
       background: blueGrey[800],
       "margin-bottom": theme.spacing(1),
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
@@ -122,7 +123,7 @@ class AddModelDialog extends Component {
 
     return (
       <div className={this.props.classes.inputFileDiv}>
-        <FieldFileInput
+        <IOSFieldFileInput
           className={this.props.classes.inputFile}
           {...input}
           type="file"
@@ -144,14 +145,14 @@ class AddModelDialog extends Component {
     );
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     let {
       formData,
       syncErrors,
       addModelDialog,
       createModelAndUploadFiles,
       hideAddModelDialog,
-      reset
+      reset,
     } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
@@ -176,7 +177,7 @@ class AddModelDialog extends Component {
     await hideAddModelDialog();
   };
 
-  checkUsersPermissions = user => {
+  checkUsersPermissions = (user) => {
     if (!existsAndIsNotEmpty(user)) return false;
     if (!exists(user.permissions)) return false;
 
@@ -190,7 +191,7 @@ class AddModelDialog extends Component {
       classes,
       hideAddModelDialog,
       formData,
-      handleSubmit
+      handleSubmit,
     } = this.props;
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
 
@@ -213,8 +214,8 @@ class AddModelDialog extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -299,7 +300,7 @@ const mapStateToProps = (state, props) => {
     currentUser: state.auth.currentUser,
     addModelDialog: state.addModelDialog,
     formData: state.form.addModelDialog,
-    initialValues: {}
+    initialValues: {},
   };
 };
 
@@ -308,11 +309,11 @@ const componentWithStyles = withStyles(styles)(AddModelDialog);
 const formComponentWithStyles = reduxForm({
   form: "addModelDialog",
   validate: validate,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
   showAddModelDialog: showAddModelDialogActionCreator,
   hideAddModelDialog: hideAddModelDialogActionCreator,
-  createModelAndUploadFiles: createModelAndUploadFilesWrapped
+  createModelAndUploadFiles: createModelAndUploadFilesWrapped,
 })(formComponentWithStyles);
