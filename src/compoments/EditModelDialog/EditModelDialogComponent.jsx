@@ -8,14 +8,13 @@ import {
   DialogActions,
   Button,
   FormHelperText,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { Field, reduxForm, Form } from "redux-form";
 import { editModelSchema } from "../../validation/validation";
-import Joi from "joi-browser";
 import {
   showEditModelDialogActionCreator,
-  hideEditModelDialogActionCreator
+  hideEditModelDialogActionCreator,
 } from "../../actions/editModelDialog";
 import { putModelDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
@@ -24,7 +23,7 @@ import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     dialog: {},
     dialogTitle: {},
@@ -32,17 +31,17 @@ const styles = theme => {
     textField: {},
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
     },
     errorLabel: {
       color: red[900],
-      display: "block"
+      display: "block",
     },
     selectField: {},
     selectFieldDiv: {
       "margin-bottom": theme.spacing(1),
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
@@ -53,7 +52,7 @@ class EditModelDialog extends Component {
     label,
     type,
     disabled,
-    meta: { touched, error, warning }
+    meta: { touched, error, warning },
   }) => (
     <div className={this.props.classes.textFieldDiv}>
       <TextField
@@ -80,14 +79,14 @@ class EditModelDialog extends Component {
     </div>
   );
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     let {
       formData,
       syncErrors,
       hideEditModelDialog,
       editModelDialog,
       putModelDataAction,
-      reset
+      reset,
     } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
@@ -109,7 +108,7 @@ class EditModelDialog extends Component {
     await hideEditModelDialog();
   };
 
-  checkUsersPermissions = user => {
+  checkUsersPermissions = (user) => {
     if (!existsAndIsNotEmpty(user)) return false;
     if (!exists(user.permissions)) return false;
 
@@ -123,7 +122,7 @@ class EditModelDialog extends Component {
       classes,
       formData,
       hideEditModelDialog,
-      handleSubmit
+      handleSubmit,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -147,8 +146,8 @@ class EditModelDialog extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -195,7 +194,7 @@ class EditModelDialog extends Component {
 const validate = (formData, props) => {
   let objectToReturn = {};
 
-  let result = Joi.validate(formData, editModelSchema, { abortEarly: false });
+  let result = editModelSchema.validate(formData, { abortEarly: false });
   if (!result.error) return objectToReturn;
 
   for (let detail of result.error.details) {
@@ -227,7 +226,7 @@ const mapStateToProps = (state, props) => {
     editModelDialog: state.editModelDialog,
     formData: state.form.editModelDialog,
     data: state.data.usersData,
-    initialValues: initialUserPayload
+    initialValues: initialUserPayload,
   };
 };
 
@@ -236,11 +235,11 @@ const componentWithStyles = withStyles(styles)(EditModelDialog);
 const formComponentWithStyles = reduxForm({
   form: "editModelDialog",
   validate: validate,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
   showEditModelDialog: showEditModelDialogActionCreator,
   hideEditModelDialog: hideEditModelDialogActionCreator,
-  putModelDataAction: putModelDataActionCreatorWrapped
+  putModelDataAction: putModelDataActionCreatorWrapped,
 })(formComponentWithStyles);

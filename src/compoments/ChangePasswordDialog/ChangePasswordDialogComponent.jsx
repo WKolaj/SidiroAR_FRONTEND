@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { Field, reduxForm, Form } from "redux-form";
 import { passwordSchema } from "../../validation/validation";
-import Joi from "joi-browser";
 import {
   hideChangePasswordDialogActionCreator,
-  changePasswordActionCreator
+  changePasswordActionCreator,
 } from "../../actions/changePasswordDialog";
 import {
   Dialog,
@@ -15,34 +14,34 @@ import {
   DialogContent,
   TextField,
   FormHelperText,
-  Button
+  Button,
 } from "@material-ui/core";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialog: {},
   dialogTitle: {},
   dialogContent: {},
   textField: {
-    background: blueGrey[900]
+    background: blueGrey[900],
   },
   textFieldDiv: {
     "margin-bottom": theme.spacing(1),
     display: "block",
-    background: blueGrey[900]
+    background: blueGrey[900],
   },
   selectField: {},
   selectFieldDiv: {
     "margin-bottom": theme.spacing(1),
-    display: "block"
+    display: "block",
   },
   errorLabel: {
     color: red[900],
-    display: "block"
+    display: "block",
   },
-  inputLabel: {}
+  inputLabel: {},
 });
 
 class ChangePasswordDialogComponent extends Component {
@@ -52,7 +51,7 @@ class ChangePasswordDialogComponent extends Component {
     label,
     disabled,
     type,
-    meta: { touched, error, warning }
+    meta: { touched, error, warning },
   }) => (
     <div className={this.props.classes.textFieldDiv}>
       <TextField
@@ -78,7 +77,7 @@ class ChangePasswordDialogComponent extends Component {
     </div>
   );
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     //Editing user only if formData and its values exists
     if (
       existsAndIsNotEmpty(this.props.formData) &&
@@ -110,8 +109,8 @@ class ChangePasswordDialogComponent extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -162,8 +161,8 @@ class ChangePasswordDialogComponent extends Component {
   }
 }
 
-const validate = formData => {
-  let result = Joi.validate(formData, passwordSchema, { abortEarly: false });
+const validate = (formData) => {
+  let result = passwordSchema.validate(formData, { abortEarly: false });
   if (!result.error) return {};
 
   let objectToReturn = {};
@@ -179,7 +178,7 @@ const mapStateToProps = (state, props) => {
   return {
     changePasswordDialog: state.changePasswordDialog,
     formData: state.form.changePasswordDialog,
-    currentUserData: state.data.currentUserData
+    currentUserData: state.data.currentUserData,
   };
 };
 
@@ -187,10 +186,10 @@ const componentWithStyles = withStyles(styles)(ChangePasswordDialogComponent);
 
 const formComponentWithStyles = reduxForm({
   form: "changePasswordDialog",
-  validate: validate
+  validate: validate,
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
   hideChangePasswordDialog: hideChangePasswordDialogActionCreator,
-  changePassword: changePasswordActionCreator
+  changePassword: changePasswordActionCreator,
 })(formComponentWithStyles);

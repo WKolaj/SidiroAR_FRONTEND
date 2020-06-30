@@ -8,7 +8,7 @@ const userRoute = config["userRoute"];
 const modelRoute = config["modelRoute"];
 
 //Method for converting lists of models from user payload to object with models collection
-const convertUserListsToModels = function(userPayload) {
+const convertUserListsToModels = function (userPayload) {
   if (!exists(userPayload)) return {};
   if (!existsAndIsNotEmpty(userPayload.modelIds)) return {};
   if (!existsAndIsNotEmpty(userPayload.modelNames)) return {};
@@ -42,7 +42,7 @@ const convertUserListsToModels = function(userPayload) {
       _id: modelId,
       name: modelName,
       fileExists: modelFileExist,
-      iosFileExists: modelIOSFileExist
+      iosFileExists: modelIOSFileExist,
     };
   }
 
@@ -50,9 +50,16 @@ const convertUserListsToModels = function(userPayload) {
 };
 
 //Method for converting user payload from server response to user data
-const getUserDataFromPayload = function(userPayload) {
+const getUserDataFromPayload = function (userPayload) {
   //Retrieving all neccessary info from data
-  let dataToReturn = _.pick(userPayload, "_id", "email", "name", "permissions");
+  let dataToReturn = _.pick(
+    userPayload,
+    "_id",
+    "email",
+    "name",
+    "permissions",
+    "defaultLang"
+  );
 
   //Converting lists of model names, ids and fileExists to object containt models
   dataToReturn.models = convertUserListsToModels(userPayload);
@@ -61,7 +68,7 @@ const getUserDataFromPayload = function(userPayload) {
 };
 
 //Method for converting users list from server response to object with users
-const getUsersDataFromPayload = function(usersPayload) {
+const getUsersDataFromPayload = function (usersPayload) {
   let objectToReturn = {};
 
   for (let userPayload of usersPayload) {
@@ -72,15 +79,21 @@ const getUsersDataFromPayload = function(usersPayload) {
 };
 
 //Method for getting model data based on its payload from server response
-const getModelDataFromPayload = function(modelPayload) {
+const getModelDataFromPayload = function (modelPayload) {
   //Retrieving all neccessary info from data
-  let dataToReturn = _.pick(modelPayload, "_id", "name", "fileExists");
+  let dataToReturn = _.pick(
+    modelPayload,
+    "_id",
+    "name",
+    "fileExists",
+    "iosFileExists"
+  );
 
   return dataToReturn;
 };
 
 //Method for converting lists of models to object contain models
-const getModelsDataFromPayload = function(modelsPayload) {
+const getModelsDataFromPayload = function (modelsPayload) {
   let objectToReturn = {};
 
   for (let modelPayload of modelsPayload) {

@@ -11,14 +11,13 @@ import {
   TextField,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
 } from "@material-ui/core";
 import { Field, reduxForm, Form } from "redux-form";
 import { userSchema } from "../../validation/validation";
-import Joi from "joi-browser";
 import {
   showAddUserDialogActionCreator,
-  hideAddUserDialogActionCreator
+  hideAddUserDialogActionCreator,
 } from "../../actions/addUserDialog";
 import { postUserDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
@@ -27,7 +26,7 @@ import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     dialog: {},
     dialogTitle: {},
@@ -35,17 +34,17 @@ const styles = theme => {
     textField: {},
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
     },
     errorLabel: {
       color: red[900],
-      display: "block"
+      display: "block",
     },
     selectField: {},
     selectFieldDiv: {
       "margin-bottom": theme.spacing(1),
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
@@ -76,18 +75,24 @@ class AddUserDialog extends Component {
     </div>
   );
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     let {
       formData,
       syncErrors,
       hideAddUserDialog,
       postUserData,
-      reset
+      reset,
     } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
 
-    let usersPayload = _.pick(formData.values, "name", "email", "permissions");
+    let usersPayload = _.pick(
+      formData.values,
+      "name",
+      "email",
+      "permissions",
+      "defaultLang"
+    );
 
     await postUserData(usersPayload);
     reset();
@@ -100,7 +105,7 @@ class AddUserDialog extends Component {
     await hideAddUserDialog();
   };
 
-  checkUsersPermissions = user => {
+  checkUsersPermissions = (user) => {
     if (!existsAndIsNotEmpty(user)) return false;
     if (!exists(user.permissions)) return false;
 
@@ -111,7 +116,7 @@ class AddUserDialog extends Component {
     input,
     label,
     disabled,
-    meta: { touched, error, warning }
+    meta: { touched, error, warning },
   }) => {
     let { currentUser } = this.props;
 
@@ -145,6 +150,32 @@ class AddUserDialog extends Component {
     );
   };
 
+  renderDefaultLangSelect = ({
+    input,
+    label,
+    disabled,
+    meta: { touched, error, warning },
+  }) => {
+    return (
+      <div className={this.props.classes.selectFieldDiv}>
+        <InputLabel className={this.props.classes.inputLabel} shrink>
+          {label}
+        </InputLabel>
+        <Select
+          className={this.props.classes.selectField}
+          {...input}
+          placeholder={label}
+          label={label}
+          disabled={disabled}
+          fullWidth
+        >
+          <MenuItem value={"pl"}>polski</MenuItem>
+          <MenuItem value={"en"}>angielski</MenuItem>
+        </Select>
+      </div>
+    );
+  };
+
   render() {
     let {
       currentUser,
@@ -152,7 +183,7 @@ class AddUserDialog extends Component {
       classes,
       formData,
       hideAddUserDialog,
-      handleSubmit
+      handleSubmit,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -176,8 +207,8 @@ class AddUserDialog extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -196,6 +227,12 @@ class AddUserDialog extends Component {
                 type="text"
                 component={this.renderField}
                 label="Nazwa"
+              />
+              <Field
+                name="defaultLang"
+                type="text"
+                component={this.renderDefaultLangSelect}
+                label="Domyślny język"
               />
               <Field
                 name="permissions"
@@ -238,11 +275,11 @@ class AddUserDialog extends Component {
 const validate = (formData, props) => {
   let objectToReturn = {};
 
-  let result = Joi.validate(formData, userSchema, { abortEarly: false });
+  let result = userSchema.validate(formData, { abortEarly: false });
   if (!result.error) {
     //Checking if user of given email already exists
-    let allUserEmails = Object.values(props.data).map(user => user.email);
-    if (allUserEmails.find(email => email === formData.email))
+    let allUserEmails = Object.values(props.data).map((user) => user.email);
+    if (allUserEmails.find((email) => email === formData.email))
       objectToReturn.email = "User of given email already exists...";
 
     return objectToReturn;
@@ -261,7 +298,7 @@ const mapStateToProps = (state, props) => {
     addUserDialog: state.addUserDialog,
     formData: state.form.addUserDialog,
     data: state.data.usersData,
-    initialValues: { permissions: 1 }
+    initialValues: { permissions: 1, defaultLang: "pl" },
   };
 };
 
@@ -270,11 +307,11 @@ const componentWithStyles = withStyles(styles)(AddUserDialog);
 const formComponentWithStyles = reduxForm({
   form: "addUserDialog",
   validate: validate,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
   showAddUserDialog: showAddUserDialogActionCreator,
   hideAddUserDialog: hideAddUserDialogActionCreator,
-  postUserData: postUserDataActionCreatorWrapped
+  postUserData: postUserDataActionCreatorWrapped,
 })(formComponentWithStyles);

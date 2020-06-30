@@ -5,10 +5,10 @@ import {
   FETCH_USER_MODELS_DATA,
   FETCH_USER_MODEL_DATA,
   DELETE_MODEL_DATA,
-  DELETE_USER_DATA
+  DELETE_USER_DATA,
 } from "../actions/types";
 
-export default function(
+export default function (
   state = { usersData: {}, currentUserData: null },
   action
 ) {
@@ -24,8 +24,8 @@ export default function(
         ...state,
         usersData: {
           ...state.usersData,
-          [action.payload.user._id]: action.payload.user
-        }
+          [action.payload.user._id]: action.payload.user,
+        },
       };
     }
     case FETCH_USER_MODELS_DATA: {
@@ -36,14 +36,15 @@ export default function(
         ...state,
         usersData: {
           ...state.usersData,
-          [userId]: { ...state.usersData[userId], models: modelsData }
-        }
+          [userId]: { ...state.usersData[userId], models: modelsData },
+        },
       };
     }
     case FETCH_USER_MODEL_DATA: {
       let userId = action.payload.userId;
       let modelData = action.payload.model;
-      return {
+
+      let newState = {
         ...state,
         usersData: {
           ...state.usersData,
@@ -51,11 +52,22 @@ export default function(
             ...state.usersData[userId],
             models: {
               ...state.usersData[userId].models,
-              [modelData._id]: modelData
-            }
-          }
-        }
+              [modelData._id]: modelData,
+            },
+          },
+        },
       };
+
+      //updating also other users with given model
+      let usersWithGivenModel = Object.values(state.usersData).filter(
+        (user) => modelData._id in user.models && user._id !== userId
+      );
+
+      for (let userData of usersWithGivenModel) {
+        newState.usersData[userData._id].models[modelData._id] = modelData;
+      }
+
+      return newState;
     }
     case DELETE_USER_DATA: {
       let newUserData = { ...state.usersData };
@@ -63,14 +75,14 @@ export default function(
 
       return {
         ...state,
-        usersData: newUserData
+        usersData: newUserData,
       };
     }
     case DELETE_MODEL_DATA: {
       let userId = action.payload.userId;
       let modelData = action.payload.model;
       let newModels = {
-        ...state.usersData[userId].models
+        ...state.usersData[userId].models,
       };
       delete newModels[modelData._id];
 
@@ -80,9 +92,9 @@ export default function(
           ...state.usersData,
           [userId]: {
             ...state.usersData[userId],
-            models: newModels
-          }
-        }
+            models: newModels,
+          },
+        },
       };
     }
     default: {

@@ -11,14 +11,13 @@ import {
   TextField,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
 } from "@material-ui/core";
 import { Field, reduxForm, Form } from "redux-form";
 import { userSchema } from "../../validation/validation";
-import Joi from "joi-browser";
 import {
   showEditUserDialogActionCreator,
-  hideEditUserDialogActionCreator
+  hideEditUserDialogActionCreator,
 } from "../../actions/editUserDialog";
 import { putUserDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
@@ -27,7 +26,7 @@ import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     dialog: {},
     dialogTitle: {},
@@ -35,17 +34,17 @@ const styles = theme => {
     textField: {},
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
     },
     errorLabel: {
       color: red[900],
-      display: "block"
+      display: "block",
     },
     selectField: {},
     selectFieldDiv: {
       "margin-bottom": theme.spacing(1),
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
@@ -56,7 +55,7 @@ class EditUserDialog extends Component {
     label,
     type,
     disabled,
-    meta: { touched, error, warning }
+    meta: { touched, error, warning },
   }) => (
     <div className={this.props.classes.textFieldDiv}>
       <TextField
@@ -83,14 +82,14 @@ class EditUserDialog extends Component {
     </div>
   );
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     let {
       formData,
       syncErrors,
       hideEditUserDialog,
       editUserDialog,
       putUserData,
-      reset
+      reset,
     } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
@@ -112,18 +111,44 @@ class EditUserDialog extends Component {
     await hideEditUserDialog();
   };
 
-  checkUsersPermissions = user => {
+  checkUsersPermissions = (user) => {
     if (!existsAndIsNotEmpty(user)) return false;
     if (!exists(user.permissions)) return false;
 
     return isAdmin(user.permissions);
   };
 
+  renderDefaultLangSelect = ({
+    input,
+    label,
+    disabled,
+    meta: { touched, error, warning },
+  }) => {
+    return (
+      <div className={this.props.classes.selectFieldDiv}>
+        <InputLabel className={this.props.classes.inputLabel} shrink>
+          {label}
+        </InputLabel>
+        <Select
+          className={this.props.classes.selectField}
+          {...input}
+          placeholder={label}
+          label={label}
+          disabled={disabled}
+          fullWidth
+        >
+          <MenuItem value={"pl"}>polski</MenuItem>
+          <MenuItem value={"en"}>angielski</MenuItem>
+        </Select>
+      </div>
+    );
+  };
+
   renderPermissionsSelect = ({
     input,
     label,
     disabled,
-    meta: { touched, error, warning }
+    meta: { touched, error, warning },
   }) => {
     let { currentUser } = this.props;
 
@@ -164,7 +189,7 @@ class EditUserDialog extends Component {
       classes,
       formData,
       hideEditUserDialog,
-      handleSubmit
+      handleSubmit,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -188,8 +213,8 @@ class EditUserDialog extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -209,6 +234,12 @@ class EditUserDialog extends Component {
                 type="text"
                 component={this.renderField}
                 label="Nazwa"
+              />
+              <Field
+                name="defaultLang"
+                type="text"
+                component={this.renderDefaultLangSelect}
+                label="Domyślny język"
               />
               <Field
                 name="permissions"
@@ -255,7 +286,7 @@ class EditUserDialog extends Component {
 const validate = (formData, props) => {
   let objectToReturn = {};
 
-  let result = Joi.validate(formData, userSchema, { abortEarly: false });
+  let result = userSchema.validate(formData, { abortEarly: false });
   if (!result.error) return objectToReturn;
 
   for (let detail of result.error.details) {
@@ -277,6 +308,7 @@ const mapStateToProps = (state, props) => {
       initialUserPayload.name = user.name;
       initialUserPayload.email = user.email;
       initialUserPayload.permissions = user.permissions;
+      initialUserPayload.defaultLang = user.defaultLang;
     }
   }
 
@@ -285,7 +317,7 @@ const mapStateToProps = (state, props) => {
     editUserDialog: state.editUserDialog,
     formData: state.form.editUserDialog,
     data: state.data.usersData,
-    initialValues: initialUserPayload
+    initialValues: initialUserPayload,
   };
 };
 
@@ -294,11 +326,11 @@ const componentWithStyles = withStyles(styles)(EditUserDialog);
 const formComponentWithStyles = reduxForm({
   form: "editUserDialog",
   validate: validate,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
   showEditUserDialog: showEditUserDialogActionCreator,
   hideEditUserDialog: hideEditUserDialogActionCreator,
-  putUserData: putUserDataActionCreatorWrapped
+  putUserData: putUserDataActionCreatorWrapped,
 })(formComponentWithStyles);

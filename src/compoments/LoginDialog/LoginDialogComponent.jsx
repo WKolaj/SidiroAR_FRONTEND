@@ -8,38 +8,37 @@ import {
   DialogActions,
   Button,
   FormHelperText,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { Field, reduxForm, Form } from "redux-form";
 import { authSchema } from "../../validation/validation";
-import Joi from "joi-browser";
 import {
   showLoginDialogActionCreator,
-  hideLoginDialogActionCreator
+  hideLoginDialogActionCreator,
 } from "../../actions/loginDialog";
 import { loginUserActionCreatorWrapped } from "../../actions/auth";
 import { exists } from "../../utilities/utilities";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     rootDiv: {},
     dialog: {},
     dialogTitle: {},
     dialogContent: {},
     textField: {
-      background: blueGrey[900]
+      background: blueGrey[900],
     },
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
       display: "block",
-      background: blueGrey[900]
+      background: blueGrey[900],
     },
     errorLabel: {
       color: red[900],
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
@@ -70,7 +69,7 @@ class LoginDialog extends Component {
     </div>
   );
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     let { loginUser, formData, syncErrors, hideLoginDialog } = this.props;
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
@@ -100,8 +99,8 @@ class LoginDialog extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -153,8 +152,8 @@ class LoginDialog extends Component {
   }
 }
 
-const validate = formData => {
-  let result = Joi.validate(formData, authSchema, { abortEarly: false });
+const validate = (formData) => {
+  let result = authSchema.validate(formData, { abortEarly: false });
   if (!result.error) return {};
 
   let objectToReturn = {};
@@ -169,7 +168,7 @@ const validate = formData => {
 const mapStateToProps = (state, props) => {
   return {
     loginDialog: state.loginDialog,
-    formData: state.form.loginDialog
+    formData: state.form.loginDialog,
   };
 };
 
@@ -177,11 +176,11 @@ const componentWithStyles = withStyles(styles)(LoginDialog);
 
 const formComponentWithStyles = reduxForm({
   form: "loginDialog",
-  validate: validate
+  validate: validate,
 })(componentWithStyles);
 
 export default connect(mapStateToProps, {
   loginUser: loginUserActionCreatorWrapped,
   showLoginDialog: showLoginDialogActionCreator,
-  hideLoginDialog: hideLoginDialogActionCreator
+  hideLoginDialog: hideLoginDialogActionCreator,
 })(formComponentWithStyles);
