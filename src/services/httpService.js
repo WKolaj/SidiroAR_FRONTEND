@@ -5,10 +5,10 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 //Setting base mechanism for catching all expected errors
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response;
   },
-  function(error) {
+  function (error) {
     //Logging inside console all unexpected errors
     let expectedResult =
       error.response &&
@@ -28,5 +28,5 @@ export default {
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
-  assignJWT: assignJWT
+  assignJWT: assignJWT,
 };
