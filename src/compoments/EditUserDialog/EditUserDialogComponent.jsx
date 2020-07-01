@@ -25,6 +25,7 @@ import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => {
   return {
@@ -124,6 +125,8 @@ class EditUserDialog extends Component {
     disabled,
     meta: { touched, error, warning },
   }) => {
+    let { t } = this.props;
+
     return (
       <div className={this.props.classes.selectFieldDiv}>
         <InputLabel className={this.props.classes.inputLabel} shrink>
@@ -137,8 +140,8 @@ class EditUserDialog extends Component {
           disabled={disabled}
           fullWidth
         >
-          <MenuItem value={"pl"}>polski</MenuItem>
-          <MenuItem value={"en"}>angielski</MenuItem>
+          <MenuItem value={"pl"}>{t("editUserDialog.langMenu.pl")}</MenuItem>
+          <MenuItem value={"en"}>{t("editUserDialog.langMenu.en")}</MenuItem>
         </Select>
       </div>
     );
@@ -150,7 +153,7 @@ class EditUserDialog extends Component {
     disabled,
     meta: { touched, error, warning },
   }) => {
-    let { currentUser } = this.props;
+    let { currentUser, t } = this.props;
 
     let isUserSuperAdmin =
       currentUser &&
@@ -170,12 +173,14 @@ class EditUserDialog extends Component {
           disabled={disabled}
           fullWidth
         >
-          <MenuItem value={1}>Użytkownik</MenuItem>
+          <MenuItem value={1}>
+            {t("editUserDialog.permissionsMenu.user")}
+          </MenuItem>
           <MenuItem value={3} disabled={!isUserSuperAdmin}>
-            Administrator
+            {t("editUserDialog.permissionsMenu.admin")}
           </MenuItem>
           <MenuItem value={7} disabled={!isUserSuperAdmin}>
-            SuperAdmin
+            {t("editUserDialog.permissionsMenu.superAdmin")}
           </MenuItem>
         </Select>
       </div>
@@ -190,6 +195,7 @@ class EditUserDialog extends Component {
       formData,
       hideEditUserDialog,
       handleSubmit,
+      t,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -219,39 +225,39 @@ class EditUserDialog extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Edytuj użytkownika
+              {t("editUserDialog.dialogTitle")}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               <Field
                 name="email"
                 type="text"
                 component={this.renderField}
-                label="Email"
+                label={t("editUserDialog.emailFieldLabel")}
                 disabled
               />
               <Field
                 name="name"
                 type="text"
                 component={this.renderField}
-                label="Nazwa"
+                label={t("editUserDialog.nameFieldLabel")}
               />
               <Field
                 name="defaultLang"
                 type="text"
                 component={this.renderDefaultLangSelect}
-                label="Domyślny język"
+                label={t("editUserDialog.defaultLangFieldLabel")}
               />
               <Field
                 name="permissions"
                 type="number"
                 component={this.renderPermissionsSelect}
-                label="Uprawnienia"
+                label={t("editUserDialog.permissionsFieldLabel")}
               />
               <Field
                 name="password"
                 type="password"
                 component={this.renderField}
-                label="Nowe hasło (opcja)"
+                label={t("editUserDialog.newPasswordFieldLabel")}
               />
             </DialogContent>
             <DialogActions>
@@ -265,7 +271,7 @@ class EditUserDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Edytuj
+                {t("editUserDialog.editButtonText")}
               </Button>
               <Button
                 onClick={this.handleCancelClicked}
@@ -273,7 +279,7 @@ class EditUserDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Anuluj
+                {t("editUserDialog.cancelButtonText")}
               </Button>
             </DialogActions>
           </Form>
@@ -323,11 +329,13 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(EditUserDialog);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 const formComponentWithStyles = reduxForm({
   form: "editUserDialog",
   validate: validate,
   enableReinitialize: true,
-})(componentWithStyles);
+})(componentWithTrans);
 
 export default connect(mapStateToProps, {
   showEditUserDialog: showEditUserDialogActionCreator,

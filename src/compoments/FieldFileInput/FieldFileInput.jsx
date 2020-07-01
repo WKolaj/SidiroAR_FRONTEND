@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import { Button, Typography, InputLabel } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { exists } from "../../utilities/utilities";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => ({
+const styles = (theme) => ({
   fileLoadButton: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   fileLabel: {
     margin: theme.spacing(1),
-    display: "inline"
+    display: "inline",
   },
-  titleLabel: {}
+  titleLabel: {},
 });
 
 class FieldFileInput extends Component {
@@ -23,12 +24,12 @@ class FieldFileInput extends Component {
   }
 
   //Method invoked when select button is clicked - simulating uncontrolled component, by invoking its click method
-  handleSelectButtonClicked = e => {
+  handleSelectButtonClicked = (e) => {
     this.fileInputRef.current.click();
   };
 
   //Method invoked when input of type file ends file selection
-  handleFileSelectionChange = e => {
+  handleFileSelectionChange = (e) => {
     const { onChange } = this.props;
     onChange(e.target.files[0]);
   };
@@ -43,6 +44,7 @@ class FieldFileInput extends Component {
   };
 
   renderLoadFileButton = () => {
+    let { t } = this.props;
     return (
       <Button
         className={this.props.classes.fileLoadButton}
@@ -50,16 +52,16 @@ class FieldFileInput extends Component {
         color="primary"
         onClick={this.handleSelectButtonClicked}
       >
-        Wczytaj
+        {t("fileField.buttonText")}
       </Button>
     );
   };
 
   renderFileNameLabel = () => {
-    const { value, classes } = this.props;
+    const { value, classes, t } = this.props;
     return (
       <Typography className={classes.fileLabel}>
-        {exists(value.name) ? value.name : "Brak pliku"}
+        {exists(value.name) ? value.name : t("fileField.emptyFieldLabel")}
       </Typography>
     );
   };
@@ -86,4 +88,6 @@ class FieldFileInput extends Component {
 
 const componentWithStyles = withStyles(styles)(FieldFileInput);
 
-export default componentWithStyles;
+const componentWithTrans = withTranslation()(componentWithStyles);
+
+export default componentWithTrans;

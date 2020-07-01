@@ -20,6 +20,7 @@ import { loginUserActionCreatorWrapped } from "../../actions/auth";
 import { exists } from "../../utilities/utilities";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => {
   return {
@@ -86,7 +87,7 @@ class LoginDialog extends Component {
   };
 
   render() {
-    let { loginDialog, classes, formData, handleSubmit } = this.props;
+    let { loginDialog, classes, formData, handleSubmit, t } = this.props;
     return (
       <div className={classes.rootDiv}>
         <Dialog
@@ -105,24 +106,23 @@ class LoginDialog extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Podaj email i hasło użytkownika
+              {t("loginDialog.dialogTitle")}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               <Field
                 name="email"
                 type="text"
                 component={this.renderField}
-                label="Email"
+                label={t("loginDialog.emailFieldLabel")}
               />
               <Field
                 name="password"
                 type="password"
                 component={this.renderField}
-                label="Hasło"
+                label={t("loginDialog.passwordFieldLabel")}
               />
             </DialogContent>
             <DialogActions>
-              {" "}
               <Button
                 type="submit"
                 disabled={
@@ -134,7 +134,7 @@ class LoginDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Zaloguj się
+                {t("loginDialog.logInButtonText")}
               </Button>
               <Button
                 onClick={this.handleCancelClicked}
@@ -142,7 +142,7 @@ class LoginDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Anuluj
+                {t("loginDialog.cancelButtonText")}
               </Button>
             </DialogActions>
           </Form>
@@ -174,10 +174,12 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(LoginDialog);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 const formComponentWithStyles = reduxForm({
   form: "loginDialog",
   validate: validate,
-})(componentWithStyles);
+})(componentWithTrans);
 
 export default connect(mapStateToProps, {
   loginUser: loginUserActionCreatorWrapped,

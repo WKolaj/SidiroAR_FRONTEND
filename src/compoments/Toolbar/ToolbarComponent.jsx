@@ -7,45 +7,46 @@ import { Menu as MenuIcon } from "@material-ui/icons";
 import UserButtonComponent from "./UserButton/UserButtonComponent";
 import {
   showMainMenuActionCreator,
-  hideMainMenuActionCreator
+  hideMainMenuActionCreator,
 } from "../../actions/mainMenu";
 import blueGrey from "@material-ui/core/colors/blueGrey";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => ({
+const styles = (theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: 240,
     width: `calc(100% - ${240}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   toolbar: {
-    background: blueGrey[900]
+    background: blueGrey[900],
   },
   menuButton: {
-    marginRight: 36
+    marginRight: 24,
   },
   menuButtonHidden: {
-    display: "none"
+    display: "none",
   },
   menuIcon: {},
   pageTitle: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 
 class ToolbarComponent extends Component {
-  renderPageTitle = url => {
-    //To do later - return page title based on url
-    return "Hosting modeli aplikacji SidiroAR";
+  renderPageTitle = (url) => {
+    let { t } = this.props;
+    return t("toolbar.title");
   };
 
   handleMenuButtonClicked = async () => {
@@ -94,13 +95,15 @@ class ToolbarComponent extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    mainMenu: state.mainMenu
+    mainMenu: state.mainMenu,
   };
 };
 
 const componentWithStyles = withStyles(styles)(ToolbarComponent);
 
+const componentWithTranslation = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showMainMenu: showMainMenuActionCreator,
-  hideMainMenu: hideMainMenuActionCreator
-})(componentWithStyles);
+  hideMainMenu: hideMainMenuActionCreator,
+})(componentWithTranslation);

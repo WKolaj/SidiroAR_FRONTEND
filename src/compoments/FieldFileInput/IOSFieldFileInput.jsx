@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Typography, InputLabel } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { exists } from "../../utilities/utilities";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => ({
   fileLoadButton: {
@@ -43,6 +44,7 @@ class IOSFieldFileInput extends Component {
   };
 
   renderLoadFileButton = () => {
+    let { t } = this.props;
     return (
       <Button
         className={this.props.classes.fileLoadButton}
@@ -50,16 +52,16 @@ class IOSFieldFileInput extends Component {
         color="primary"
         onClick={this.handleSelectButtonClicked}
       >
-        Wczytaj
+        {t("fileField.buttonText")}
       </Button>
     );
   };
 
   renderFileNameLabel = () => {
-    const { value, classes } = this.props;
+    const { value, classes, t } = this.props;
     return (
       <Typography className={classes.fileLabel}>
-        {exists(value.name) ? value.name : "Brak pliku"}
+        {exists(value.name) ? value.name : t("fileField.emptyFieldLabel")}
       </Typography>
     );
   };
@@ -86,4 +88,6 @@ class IOSFieldFileInput extends Component {
 
 const componentWithStyles = withStyles(styles)(IOSFieldFileInput);
 
-export default componentWithStyles;
+const componentWithTrans = withTranslation()(componentWithStyles);
+
+export default componentWithTrans;

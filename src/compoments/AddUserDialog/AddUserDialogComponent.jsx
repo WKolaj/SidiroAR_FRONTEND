@@ -25,6 +25,7 @@ import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => {
   return {
@@ -118,7 +119,7 @@ class AddUserDialog extends Component {
     disabled,
     meta: { touched, error, warning },
   }) => {
-    let { currentUser } = this.props;
+    let { currentUser, t } = this.props;
 
     let isUserSuperAdmin =
       currentUser &&
@@ -138,12 +139,14 @@ class AddUserDialog extends Component {
           disabled={disabled}
           fullWidth
         >
-          <MenuItem value={1}>Użytkownik</MenuItem>
+          <MenuItem value={1}>
+            {t("addUserDialog.permissionsMenu.user")}
+          </MenuItem>
           <MenuItem value={3} disabled={!isUserSuperAdmin}>
-            Administrator
+            {t("addUserDialog.permissionsMenu.admin")}
           </MenuItem>
           <MenuItem value={7} disabled={!isUserSuperAdmin}>
-            SuperAdmin
+            {t("addUserDialog.permissionsMenu.superAdmin")}
           </MenuItem>
         </Select>
       </div>
@@ -156,6 +159,7 @@ class AddUserDialog extends Component {
     disabled,
     meta: { touched, error, warning },
   }) => {
+    let { t } = this.props;
     return (
       <div className={this.props.classes.selectFieldDiv}>
         <InputLabel className={this.props.classes.inputLabel} shrink>
@@ -169,8 +173,8 @@ class AddUserDialog extends Component {
           disabled={disabled}
           fullWidth
         >
-          <MenuItem value={"pl"}>polski</MenuItem>
-          <MenuItem value={"en"}>angielski</MenuItem>
+          <MenuItem value={"pl"}>{t("addUserDialog.langMenu.pl")}</MenuItem>
+          <MenuItem value={"en"}>{t("addUserDialog.langMenu.en")}</MenuItem>
         </Select>
       </div>
     );
@@ -184,6 +188,7 @@ class AddUserDialog extends Component {
       formData,
       hideAddUserDialog,
       handleSubmit,
+      t,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -213,36 +218,35 @@ class AddUserDialog extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Utwórz nowego użytkownika
+              {t("addUserDialog.dialogTitle")}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               <Field
                 name="email"
                 type="text"
                 component={this.renderField}
-                label="Email"
+                label={t("addUserDialog.emailFieldLabel")}
               />
               <Field
                 name="name"
                 type="text"
                 component={this.renderField}
-                label="Nazwa"
+                label={t("addUserDialog.nameFieldLabel")}
               />
               <Field
                 name="defaultLang"
                 type="text"
                 component={this.renderDefaultLangSelect}
-                label="Domyślny język"
+                label={t("addUserDialog.defaultLangFieldLabel")}
               />
               <Field
                 name="permissions"
                 type="number"
                 component={this.renderPermissionsSelect}
-                label="Uprawnienia"
+                label={t("addUserDialog.permissionsFieldLabel")}
               />
             </DialogContent>
             <DialogActions>
-              {" "}
               <Button
                 type="submit"
                 disabled={
@@ -254,7 +258,7 @@ class AddUserDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Utwórz
+                {t("addUserDialog.createButtonText")}
               </Button>
               <Button
                 onClick={this.handleCancelClicked}
@@ -262,7 +266,7 @@ class AddUserDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Anuluj
+                {t("addUserDialog.cancelButtonText")}
               </Button>
             </DialogActions>
           </Form>
@@ -304,11 +308,13 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(AddUserDialog);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 const formComponentWithStyles = reduxForm({
   form: "addUserDialog",
   validate: validate,
   enableReinitialize: true,
-})(componentWithStyles);
+})(componentWithTrans);
 
 export default connect(mapStateToProps, {
   showAddUserDialog: showAddUserDialogActionCreator,

@@ -7,10 +7,11 @@ import { showLoginDialogActionCreator } from "../../../actions/loginDialog";
 import { existsAndIsNotEmpty } from "../../../utilities/utilities";
 import { Person } from "@material-ui/icons";
 import UserMenuComponent from "./UserMenuComponent";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => ({
+const styles = (theme) => ({
   button: {},
-  buttonIcon: {}
+  buttonIcon: {},
 });
 
 class UserButtonComponent extends Component {
@@ -29,7 +30,7 @@ class UserButtonComponent extends Component {
   };
 
   render() {
-    let { classes, currentUser } = this.props;
+    let { classes, currentUser, t } = this.props;
     return (
       <React.Fragment>
         <Button
@@ -40,7 +41,9 @@ class UserButtonComponent extends Component {
           onClick={this.handleButtonClicked}
           ref={this.ownRef}
         >
-          {existsAndIsNotEmpty(currentUser) ? currentUser.name : "Zaloguj się"}
+          {existsAndIsNotEmpty(currentUser)
+            ? currentUser.name
+            : t("userButton.text")}
         </Button>
         <UserMenuComponent referenceEl={this.ownRef} />
       </React.Fragment>
@@ -50,13 +53,15 @@ class UserButtonComponent extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    currentUser: state.auth.currentUser
+    currentUser: state.auth.currentUser,
   };
 };
 
 const componentWithStyles = withStyles(styles)(UserButtonComponent);
 
+const componentWithTranslation = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showUserMenu: showUserMenuActionCreator,
-  showLoginDialog: showLoginDialogActionCreator
-})(componentWithStyles);
+  showLoginDialog: showLoginDialogActionCreator,
+})(componentWithTranslation);

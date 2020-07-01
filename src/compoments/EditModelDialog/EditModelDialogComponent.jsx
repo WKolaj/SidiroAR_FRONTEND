@@ -22,6 +22,7 @@ import { isAdmin } from "../../utilities/userMethods";
 import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => {
   return {
@@ -123,6 +124,7 @@ class EditModelDialog extends Component {
       formData,
       hideEditModelDialog,
       handleSubmit,
+      t,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -152,14 +154,14 @@ class EditModelDialog extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Edytuj model
+              {t("editModelDialog.dialogTitle")}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               <Field
                 name="name"
                 type="text"
                 component={this.renderField}
-                label="Nazwa"
+                label={t("editModelDialog.newModelNameFieldLabel")}
               />
             </DialogContent>
             <DialogActions>
@@ -173,7 +175,7 @@ class EditModelDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Edytuj
+                {t("editModelDialog.editButtonText")}
               </Button>
               <Button
                 onClick={this.handleCancelClicked}
@@ -181,7 +183,7 @@ class EditModelDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Anuluj
+                {t("editModelDialog.cancelButtonText")}
               </Button>
             </DialogActions>
           </Form>
@@ -232,11 +234,13 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(EditModelDialog);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 const formComponentWithStyles = reduxForm({
   form: "editModelDialog",
   validate: validate,
   enableReinitialize: true,
-})(componentWithStyles);
+})(componentWithTrans);
 
 export default connect(mapStateToProps, {
   showEditModelDialog: showEditModelDialogActionCreator,

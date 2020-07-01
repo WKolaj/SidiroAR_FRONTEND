@@ -19,6 +19,7 @@ import {
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => ({
   dialog: {},
@@ -96,7 +97,13 @@ class ChangePasswordDialogComponent extends Component {
   };
 
   render() {
-    let { classes, changePasswordDialog, formData, handleSubmit } = this.props;
+    let {
+      classes,
+      changePasswordDialog,
+      formData,
+      handleSubmit,
+      t,
+    } = this.props;
     return (
       <div>
         <Dialog
@@ -115,20 +122,20 @@ class ChangePasswordDialogComponent extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Zmiana hasła
+              {t("changePasswordDialog.dialogTitle")}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               <Field
                 name="newPassword"
                 type="password"
                 component={this.renderField}
-                label="Nowe hasło"
+                label={t("changePasswordDialog.newPasswordFieldLabel")}
               />
               <Field
                 name="oldPassword"
                 type="password"
                 component={this.renderField}
-                label="Poprzednie hasło"
+                label={t("changePasswordDialog.oldPasswordFieldLabel")}
               />
             </DialogContent>
             <DialogActions>
@@ -143,7 +150,7 @@ class ChangePasswordDialogComponent extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Zmień
+                {t("changePasswordDialog.changePasswordButtonText")}
               </Button>
               <Button
                 onClick={this.handleCancelClicked}
@@ -151,7 +158,7 @@ class ChangePasswordDialogComponent extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Anuluj
+                {t("changePasswordDialog.cancelButtonText")}
               </Button>
             </DialogActions>
           </Form>
@@ -184,10 +191,12 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(ChangePasswordDialogComponent);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 const formComponentWithStyles = reduxForm({
   form: "changePasswordDialog",
   validate: validate,
-})(componentWithStyles);
+})(componentWithTrans);
 
 export default connect(mapStateToProps, {
   hideChangePasswordDialog: hideChangePasswordDialogActionCreator,

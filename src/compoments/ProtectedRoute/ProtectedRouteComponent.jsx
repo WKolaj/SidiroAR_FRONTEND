@@ -5,16 +5,17 @@ import { getBit, existsAndIsNotEmpty, exists } from "../../utilities/utilities";
 import { Route } from "react-router-dom";
 import {
   showLoginDialogActionCreator,
-  hideLoginDialogActionCreator
+  hideLoginDialogActionCreator,
 } from "../../actions/loginDialog";
 import { getCurrentJWT } from "../../services/authService";
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => ({
+const styles = (theme) => ({
   accessForbiddenTypography: {
-    margin: theme.spacing(3)
-  }
+    margin: theme.spacing(3),
+  },
 });
 
 class ProtectedRouteComponent extends Component {
@@ -30,12 +31,13 @@ class ProtectedRouteComponent extends Component {
   }
 
   renderAccessForbiddenComponent = () => {
+    let { t } = this.props;
     return (
       <Typography
         className={this.props.classes.accessForbiddenTypography}
         variant="h4"
       >
-        Dostęp zabroniony
+        {t("accessForbiddenContent.mainText")}
       </Typography>
     );
   };
@@ -46,13 +48,13 @@ class ProtectedRouteComponent extends Component {
       component: Component,
       render,
       showLoginDialog,
-      enqueueSnackbar
+      enqueueSnackbar,
     } = this.props;
 
     return (
       <Route
         path={path}
-        render={props => {
+        render={(props) => {
           //Checking if user is logged in and loginDialog
           if (!this.checkIfUserLoggedIn()) {
             //If JWT exists but user does not exist - initial logging in progress so there is no point to show login dialog
@@ -66,8 +68,8 @@ class ProtectedRouteComponent extends Component {
           //Checking if user is logged in
           if (!this.checkUsersPermissons()) {
             enqueueSnackbar({
-              message: "Dostęp zabroniony",
-              options: { variant: "error" }
+              message: props.t("accessForbiddenContent.errorMessage"),
+              options: { variant: "error" },
             });
             return this.renderAccessForbiddenComponent();
           }
@@ -81,14 +83,16 @@ class ProtectedRouteComponent extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    currentUser: state.auth.currentUser
+    currentUser: state.auth.currentUser,
   };
 };
 
 const componentWithStyles = withStyles(styles)(ProtectedRouteComponent);
 
+const componentWithTranslation = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showLoginDialog: showLoginDialogActionCreator,
   hideLoginDialog: hideLoginDialogActionCreator,
-  enqueueSnackbar: enqueueSnackbar
-})(componentWithStyles);
+  enqueueSnackbar: enqueueSnackbar,
+})(componentWithTranslation);

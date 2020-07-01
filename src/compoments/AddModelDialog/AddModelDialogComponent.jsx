@@ -37,6 +37,7 @@ import _ from "lodash";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
 import { cloneModelActionCreatorWrapped } from "../../actions/data";
+import { withTranslation } from "react-i18next";
 
 const styles = (theme) => {
   return {
@@ -146,7 +147,7 @@ class AddModelDialog extends Component {
   };
 
   renderSwitchToCloneRadioGroup = () => {
-    let { addModelDialog } = this.props;
+    let { addModelDialog, t } = this.props;
     return (
       <RadioGroup
         value={addModelDialog.newModel ? "newModel" : "cloneModel"}
@@ -155,55 +156,58 @@ class AddModelDialog extends Component {
         <FormControlLabel
           value="newModel"
           control={<Radio />}
-          label="Stwórz nowy model"
+          label={t("addModelDialog.createNewModelRadioLabel")}
         />
         <FormControlLabel
           value="cloneModel"
           control={<Radio />}
-          label="Kopiuj istniejący model"
+          label={t("addModelDialog.copyModelRadioLabel")}
         />
       </RadioGroup>
     );
   };
 
   renderNewModelFields = () => {
+    let { t } = this.props;
+
     return (
       <React.Fragment>
         <Field
           name="name"
           type="text"
           component={this.renderField}
-          label="Nazwa"
+          label={t("addModelDialog.newModelNameFieldLabel")}
         />
         <Field
           name="file"
           component={this.renderFileField}
-          label="Plik Android"
+          label={t("addModelDialog.newModelNameAndroidFileLabel")}
         />
         <Field
           name="iosFile"
           component={this.renderIOSFileField}
-          label="Plik IOS"
+          label={t("addModelDialog.newModelNameIOSFileLabel")}
         />
       </React.Fragment>
     );
   };
 
   renderCloneModelFields = () => {
+    let { t } = this.props;
     return (
       <React.Fragment>
         <Field
           name="userToClone"
           type="text"
           component={this.renderUserSelect}
-          label="Użytkownik"
+          label={t("addModelDialog.cloneModelUserFieldLabel")}
         />
         <Field
           name="modelToClone"
           type="text"
           component={this.renderModelSelect}
           userToClone={this.props.formData.values.userToClone}
-          label="Model"
+          label={t("addModelDialog.cloneModelModelFieldLabel")}
         />
       </React.Fragment>
     );
@@ -372,6 +376,7 @@ class AddModelDialog extends Component {
       classes,
       hideAddModelDialog,
       handleSubmit,
+      t,
     } = this.props;
 
     let usersPermissionsValid = this.checkUsersPermissions(currentUser);
@@ -401,7 +406,7 @@ class AddModelDialog extends Component {
         >
           <Form onSubmit={handleSubmit(this.handleSubmit)}>
             <DialogTitle className={classes.dialogTitle}>
-              Utwórz nowy model
+              {t("addModelDialog.dialogTitle")}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
               {this.renderSwitchToCloneRadioGroup()}
@@ -417,7 +422,7 @@ class AddModelDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Utwórz
+                {t("addModelDialog.createButtonText")}
               </Button>
               <Button
                 onClick={this.handleCancelClicked}
@@ -425,7 +430,7 @@ class AddModelDialog extends Component {
                 variant="contained"
                 style={{ minWidth: 125 }}
               >
-                Anuluj
+                {t("addModelDialog.cancelButtonText")}
               </Button>
             </DialogActions>
           </Form>
@@ -486,11 +491,13 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(AddModelDialog);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 const formComponentWithStyles = reduxForm({
   form: "addModelDialog",
   validate: validate,
   enableReinitialize: true,
-})(componentWithStyles);
+})(componentWithTrans);
 
 export default connect(mapStateToProps, {
   showAddModelDialog: showAddModelDialogActionCreator,

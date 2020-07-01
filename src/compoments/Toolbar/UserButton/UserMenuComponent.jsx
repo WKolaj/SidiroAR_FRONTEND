@@ -3,20 +3,21 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import {
   showUserMenuActionCreator,
-  hideUserMenuActionCreator
+  hideUserMenuActionCreator,
 } from "../../../actions/userMenu";
 import { logoutUserActionCreatorWrapped } from "../../../actions/auth";
 import { showChangePasswordDialogActionCreator } from "../../../actions/changePasswordDialog";
 import { ExitToApp, Lock } from "@material-ui/icons";
 import { Menu, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import blueGrey from "@material-ui/core/colors/blueGrey";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => ({
+const styles = (theme) => ({
   menuRoot: {},
   menuDiv: {
     minWidth: 200,
-    background: blueGrey[800]
-  }
+    background: blueGrey[800],
+  },
 });
 
 class UserMenuComponent extends Component {
@@ -35,7 +36,7 @@ class UserMenuComponent extends Component {
   };
 
   render() {
-    let { userMenu, classes, referenceEl } = this.props;
+    let { userMenu, classes, referenceEl, t } = this.props;
     return (
       <Menu
         id="user-menu"
@@ -46,8 +47,8 @@ class UserMenuComponent extends Component {
         onClose={this.handleMenuClose}
         PaperProps={{
           style: {
-            backgroundColor: blueGrey[800]
-          }
+            backgroundColor: blueGrey[800],
+          },
         }}
       >
         <div className={classes.menuDiv}>
@@ -55,13 +56,13 @@ class UserMenuComponent extends Component {
             <ListItemIcon>
               <Lock />
             </ListItemIcon>
-            <ListItemText primary="Zmień hasło" />
+            <ListItemText primary={t("userButtonMenu.changePasswordText")} />
           </MenuItem>
           <MenuItem onClick={this.handleLogoutClick}>
             <ListItemIcon>
               <ExitToApp />
             </ListItemIcon>
-            <ListItemText primary="Wyloguj się" />
+            <ListItemText primary={t("userButtonMenu.logOutText")} />
           </MenuItem>
         </div>
       </Menu>
@@ -71,15 +72,17 @@ class UserMenuComponent extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    userMenu: state.userMenu
+    userMenu: state.userMenu,
   };
 };
 
 const componentWithStyles = withStyles(styles)(UserMenuComponent);
 
+const componentWithTranslations = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showUserMenu: showUserMenuActionCreator,
   hideUserMenu: hideUserMenuActionCreator,
   logoutUser: logoutUserActionCreatorWrapped,
-  showChangePasswordDialog: showChangePasswordDialogActionCreator
-})(componentWithStyles);
+  showChangePasswordDialog: showChangePasswordDialogActionCreator,
+})(componentWithTranslations);

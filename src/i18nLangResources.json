@@ -8,6 +8,98 @@
           "pl": "Polski",
           "en": "Angielski"
         }
+      },
+      "mainMenu": {
+        "myModelsText": "Moje modele",
+        "usersText": "Użytkownicy",
+        "languageText": "Język"
+      },
+      "toolbar": {
+        "title": "Hosting modeli aplikacji SidiroAR"
+      },
+      "userButton": {
+        "text": "Zaloguj się"
+      },
+      "userButtonMenu": {
+        "changePasswordText": "Zmień hasło",
+        "logOutText": "Wyloguj się"
+      },
+      "accessForbiddenContent": {
+        "mainText": "Dostęp zabroniony",
+        "errorMessage": "Dostęp zabroniony"
+      },
+      "changePasswordDialog": {
+        "dialogTitle": "Zmiana hasła",
+        "newPasswordFieldLabel": "Nowe hasło",
+        "oldPasswordFieldLabel": "Poprzednie hasło",
+        "changePasswordButtonText": "Zmień",
+        "cancelButtonText": "Anuluj"
+      },
+      "loginDialog": {
+        "dialogTitle": "Podaj email i hasło użytkownika",
+        "emailFieldLabel": "Email",
+        "passwordFieldLabel": "Hasło",
+        "logInButtonText": "Zaloguj się",
+        "cancelButtonText": "Anuluj"
+      },
+      "addModelDialog": {
+        "dialogTitle": "Utwórz nowy model",
+        "createNewModelRadioLabel": "Nowy model",
+        "copyModelRadioLabel": "Klonuj model",
+        "newModelNameFieldLabel": "Nazwa",
+        "newModelNameAndroidFileLabel": "Plik Android",
+        "newModelNameIOSFileLabel": "Plik IOS",
+        "cloneModelUserFieldLabel": "Użytkownik",
+        "cloneModelModelFieldLabel": "Model",
+        "createButtonText": "Utwórz",
+        "cancelButtonText": "Anuluj"
+      },
+      "fileField": {
+        "buttonText": "Wczytaj",
+        "emptyFieldLabel": "Brak pliku"
+      },
+      "addUserDialog": {
+        "dialogTitle": "Utwórz użytkownika",
+        "emailFieldLabel": "Email",
+        "nameFieldLabel": "Nazwa",
+        "defaultLangFieldLabel": "Domyślny język",
+        "permissionsFieldLabel": "Uprawnienia",
+        "createButtonText": "Utwórz",
+        "cancelButtonText": "Anuluj",
+        "langMenu": {
+          "pl": "polski",
+          "en": "angielski"
+        },
+        "permissionsMenu": {
+          "user": "Użytkownik",
+          "admin": "Administrator",
+          "superAdmin": "SuperAdmin"
+        }
+      },
+      "editModelDialog": {
+        "dialogTitle": "Edytuj model",
+        "newModelNameFieldLabel": "Nazwa",
+        "editButtonText": "Edytuj",
+        "cancelButtonText": "Anuluj"
+      },
+      "editUserDialog": {
+        "dialogTitle": "Edytuj użytkownika",
+        "emailFieldLabel": "Email",
+        "nameFieldLabel": "Nazwa",
+        "defaultLangFieldLabel": "Domyślny język",
+        "permissionsFieldLabel": "Uprawnienia",
+        "newPasswordFieldLabel": "Nowe hasło (opcja)",
+        "editButtonText": "Edytuj",
+        "cancelButtonText": "Anuluj",
+        "langMenu": {
+          "pl": "polski",
+          "en": "angielski"
+        },
+        "permissionsMenu": {
+          "user": "Użytkownik",
+          "admin": "Administrator",
+          "superAdmin": "SuperAdmin"
+        }
       }
     }
   },
@@ -19,6 +111,99 @@
         "buttons": {
           "pl": "Polish",
           "en": "English"
+        }
+      },
+      "mainMenu": {
+        "myModelsText": "My models",
+        "usersText": "Users",
+        "languageText": "Language"
+      },
+      "toolbar": {
+        "title": "Hosting platform for SidiroAR application's models"
+      },
+      "userButton": {
+        "text": "Log in"
+      },
+      "userButtonMenu": {
+        "changePasswordText": "Change password",
+        "logOutText": "Log out"
+      },
+      "accessForbiddenContent": {
+        "mainText": "Access forbidden",
+        "errorMessage": "Access forbidden"
+      },
+      "changePasswordDialog": {
+        "dialogTitle": "Change password",
+        "newPasswordFieldLabel": "New password",
+        "oldPasswordFieldLabel": "Old password",
+        "changePasswordButtonText": "Change",
+        "cancelButtonText": "Cancel"
+      },
+      "loginDialog": {
+        "dialogTitle": "Please fill in your email and password",
+        "emailFieldLabel": "Email",
+        "passwordFieldLabel": "Password",
+        "logInButtonText": "Log in",
+        "cancelButtonText": "Cancel"
+      },
+      "addModelDialog": {
+        "dialogTitle": "Create new model",
+        "createNewModelRadioLabel": "New model",
+        "copyModelRadioLabel": "Clone model",
+        "newModelNameFieldLabel": "Name",
+        "newModelNameAndroidFileLabel": "Andriod file",
+        "newModelNameIOSFileLabel": "IOS file",
+        "cloneModelUserFieldLabel": "User",
+        "cloneModelModelFieldLabel": "Model",
+        "createButtonText": "Create",
+        "cancelButtonText": "Cancel",
+        "fileButtonText": "Load"
+      },
+      "fileField": {
+        "buttonText": "Load",
+        "emptyFieldLabel": "No file"
+      },
+      "addUserDialog": {
+        "dialogTitle": "Create user",
+        "emailFieldLabel": "Email",
+        "nameFieldLabel": "Name",
+        "defaultLangFieldLabel": "Default language",
+        "permissionsFieldLabel": "Permissions",
+        "createButtonText": "Create",
+        "cancelButtonText": "Cancel",
+        "langMenu": {
+          "pl": "polish",
+          "en": "english"
+        },
+        "permissionsMenu": {
+          "user": "User",
+          "admin": "Admin",
+          "superAdmin": "SuperAdmin"
+        }
+      },
+      "editModelDialog": {
+        "dialogTitle": "Edit model",
+        "newModelNameFieldLabel": "Name",
+        "editButtonText": "Edit",
+        "cancelButtonText": "Cancel"
+      },
+      "editUserDialog": {
+        "dialogTitle": "Edit user",
+        "emailFieldLabel": "Email",
+        "nameFieldLabel": "Name",
+        "defaultLangFieldLabel": "Default language",
+        "permissionsFieldLabel": "Permissions",
+        "newPasswordFieldLabel": "New password (optional)",
+        "editButtonText": "Edit",
+        "cancelButtonText": "Cancel",
+        "langMenu": {
+          "pl": "polish",
+          "en": "english"
+        },
+        "permissionsMenu": {
+          "user": "User",
+          "admin": "Admin",
+          "superAdmin": "SuperAdmin"
         }
       }
     }

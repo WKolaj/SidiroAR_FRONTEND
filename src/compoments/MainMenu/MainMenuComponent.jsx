@@ -21,6 +21,8 @@ import {
 import { showChangeLanguageDialogActionCreator } from "../../actions/changeLanguageDialog";
 import { Link } from "react-router-dom";
 import blueGrey from "@material-ui/core/colors/blueGrey";
+import { withTranslation } from "react-i18next";
+import logo from "../../images/siemens_logo_white.png";
 
 const styles = (theme) => ({
   drawerPaper: {
@@ -47,7 +49,7 @@ const styles = (theme) => ({
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     padding: "0 8px",
     ...theme.mixins.toolbar,
   },
@@ -59,6 +61,11 @@ const styles = (theme) => ({
     color: "inherit",
   },
   menuItem: {},
+  logo: {
+    height: 50,
+    "margin-left": 10,
+    "margin-right": 10,
+  },
 });
 
 class MainMenuComponent extends Component {
@@ -73,7 +80,7 @@ class MainMenuComponent extends Component {
   };
 
   render() {
-    let { mainMenu, classes, hideMainMenu, showLanguageDialog } = this.props;
+    let { mainMenu, classes, hideMainMenu, showLanguageDialog, t } = this.props;
 
     return (
       <Drawer
@@ -87,6 +94,7 @@ class MainMenuComponent extends Component {
         }}
       >
         <div className={classes.toolbarIcon}>
+          <img className={classes.logo} src={logo} alt="Siemens" />
           <IconButton onClick={hideMainMenu}>
             <ChevronLeft />
           </IconButton>
@@ -108,7 +116,7 @@ class MainMenuComponent extends Component {
               <ListItemIcon>
                 <Person />
               </ListItemIcon>
-              <ListItemText primary="Moje modele" />
+              <ListItemText primary={t("mainMenu.myModelsText")} />
             </ListItem>
           </Link>
           <Link
@@ -122,14 +130,14 @@ class MainMenuComponent extends Component {
               <ListItemIcon>
                 <People />
               </ListItemIcon>
-              <ListItemText primary="Inni użytkownicy" />
+              <ListItemText primary={t("mainMenu.usersText")} />
             </ListItem>
           </Link>
           <ListItem button onClick={showLanguageDialog}>
             <ListItemIcon>
               <Language />
             </ListItemIcon>
-            <ListItemText primary="Język" />
+            <ListItemText primary={t("mainMenu.languageText")} />
           </ListItem>
         </List>
       </Drawer>
@@ -146,8 +154,10 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(MainMenuComponent);
 
+const componentWithTranslations = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showMainMenu: showMainMenuActionCreator,
   hideMainMenu: hideMainMenuActionCreator,
   showLanguageDialog: showChangeLanguageDialogActionCreator,
-})(componentWithStyles);
+})(componentWithTranslations);
