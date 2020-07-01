@@ -7,19 +7,20 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import {
   showRemoveUserDialogActionCreator,
-  hideRemoveUserDialogActionCreator
+  hideRemoveUserDialogActionCreator,
 } from "../../actions/removeUserDialog";
 import { deleteUserDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     dialog: {},
     dialogTitle: {},
@@ -27,22 +28,22 @@ const styles = theme => {
     textField: {},
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
     },
     errorLabel: {
       color: red[900],
-      display: "block"
+      display: "block",
     },
     selectField: {},
     selectFieldDiv: {
       "margin-bottom": theme.spacing(1),
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
 class RemoveUserDialogComponent extends Component {
-  handleDeleteClicked = async e => {
+  handleDeleteClicked = async (e) => {
     let { hideRemoveUserDialog, removeUserDialog, deleteUser } = this.props;
 
     await deleteUser(removeUserDialog.userId);
@@ -85,7 +86,8 @@ class RemoveUserDialogComponent extends Component {
       removeUserDialog,
       classes,
       hideRemoveUserDialog,
-      userToRemove
+      userToRemove,
+      t,
     } = this.props;
 
     //Not showing element until userToRemove is not available
@@ -115,17 +117,17 @@ class RemoveUserDialogComponent extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <DialogTitle className={classes.dialogTitle}>
-            Usuwanie użytkownika
+            {t("removeUserDialog.dialogTitle")}
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
             <Typography>
-              Czy na pewno chcesz usunąć użytkownika <b>{userToRemove.email}</b>
-              ?
+              {`${t("removeUserDialog.dialogContentText")} `}
+              <b>{userToRemove.email}</b>?
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -135,7 +137,7 @@ class RemoveUserDialogComponent extends Component {
               variant="contained"
               style={{ minWidth: 125 }}
             >
-              Tak
+              {t("removeUserDialog.yesButtonText")}
             </Button>
             <Button
               onClick={this.handleCancelClicked}
@@ -143,7 +145,7 @@ class RemoveUserDialogComponent extends Component {
               variant="contained"
               style={{ minWidth: 125 }}
             >
-              Nie
+              {t("removeUserDialog.noButtonText")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -164,14 +166,16 @@ const mapStateToProps = (state, props) => {
     currentUser: state.auth.currentUser,
     userToRemove: userToRemove,
     removeUserDialog: state.removeUserDialog,
-    data: state.data.usersData
+    data: state.data.usersData,
   };
 };
 
 const componentWithStyles = withStyles(styles)(RemoveUserDialogComponent);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showRemoveUserDialog: showRemoveUserDialogActionCreator,
   hideRemoveUserDialog: hideRemoveUserDialogActionCreator,
-  deleteUser: deleteUserDataActionCreatorWrapped
-})(componentWithStyles);
+  deleteUser: deleteUserDataActionCreatorWrapped,
+})(componentWithTrans);

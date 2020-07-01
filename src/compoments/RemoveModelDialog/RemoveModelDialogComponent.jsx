@@ -7,19 +7,20 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import {
   showRemoveModelDialogActionCreator,
-  hideRemoveModelDialogActionCreator
+  hideRemoveModelDialogActionCreator,
 } from "../../actions/removeModelDialog";
 import { deleteModelDataActionCreatorWrapped } from "../../actions/data";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import { isAdmin } from "../../utilities/userMethods";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
+import { withTranslation } from "react-i18next";
 
-const styles = theme => {
+const styles = (theme) => {
   return {
     dialog: {},
     dialogTitle: {},
@@ -27,26 +28,26 @@ const styles = theme => {
     textField: {},
     textFieldDiv: {
       "margin-bottom": theme.spacing(2),
-      display: "block"
+      display: "block",
     },
     errorLabel: {
       color: red[900],
-      display: "block"
+      display: "block",
     },
     selectField: {},
     selectFieldDiv: {
       "margin-bottom": theme.spacing(1),
-      display: "block"
-    }
+      display: "block",
+    },
   };
 };
 
 class RemoveModelDialogComponent extends Component {
-  handleDeleteClicked = async e => {
+  handleDeleteClicked = async (e) => {
     let {
       hideRemoveModelDialog,
       removeModelDialog,
-      deleteModelData
+      deleteModelData,
     } = this.props;
 
     await deleteModelData(removeModelDialog.userId, removeModelDialog.modelId);
@@ -58,7 +59,7 @@ class RemoveModelDialogComponent extends Component {
     await hideRemoveModelDialog();
   };
 
-  checkUsersPermissions = loggedUser => {
+  checkUsersPermissions = (loggedUser) => {
     if (!existsAndIsNotEmpty(loggedUser)) return false;
     if (!exists(loggedUser.permissions)) return false;
 
@@ -75,7 +76,8 @@ class RemoveModelDialogComponent extends Component {
       removeModelDialog,
       classes,
       hideRemoveModelDialog,
-      modelToRemove
+      modelToRemove,
+      t,
     } = this.props;
 
     //Not showing element until userToRemove is not available
@@ -102,16 +104,17 @@ class RemoveModelDialogComponent extends Component {
               width: "fit-content",
               height: "fit-content",
               minWidth: 500,
-              background: blueGrey[900]
-            }
+              background: blueGrey[900],
+            },
           }}
         >
           <DialogTitle className={classes.dialogTitle}>
-            Usuwanie modelu
+            {t("removeModelDialog.dialogTitle")}
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
             <Typography>
-              Czy na pewno chcesz usunąć model <b>{modelToRemove.name}</b>?
+              {`${t("removeModelDialog.dialogContentText")} `}
+              <b>{modelToRemove.name}</b>?
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -121,7 +124,7 @@ class RemoveModelDialogComponent extends Component {
               variant="contained"
               style={{ minWidth: 125 }}
             >
-              Tak
+              {t("removeModelDialog.yesButtonText")}
             </Button>
             <Button
               onClick={this.handleCancelClicked}
@@ -129,7 +132,7 @@ class RemoveModelDialogComponent extends Component {
               variant="contained"
               style={{ minWidth: 125 }}
             >
-              Nie
+              {t("removeModelDialog.noButtonText")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -156,14 +159,16 @@ const mapStateToProps = (state, props) => {
     currentUser: state.auth.currentUser,
     modelToRemove: modelToRemove,
     removeModelDialog: state.removeModelDialog,
-    data: state.data.usersData
+    data: state.data.usersData,
   };
 };
 
 const componentWithStyles = withStyles(styles)(RemoveModelDialogComponent);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showRemoveModelDialog: showRemoveModelDialogActionCreator,
   hideRemoveModelDialog: hideRemoveModelDialogActionCreator,
-  deleteModelData: deleteModelDataActionCreatorWrapped
-})(componentWithStyles);
+  deleteModelData: deleteModelDataActionCreatorWrapped,
+})(componentWithTrans);

@@ -100,6 +100,52 @@
           "admin": "Administrator",
           "superAdmin": "SuperAdmin"
         }
+      },
+      "removeModelDialog": {
+        "dialogTitle": "Usuń model",
+        "dialogContentText": "Czy na pewno chcesz usunąć model",
+        "yesButtonText": "Tak",
+        "noButtonText": "Nie"
+      },
+      "removeUserDialog": {
+        "dialogTitle": "Usuń użytkownika",
+        "dialogContentText": "Czy na pewno chcesz usunąć użytkownika",
+        "yesButtonText": "Tak",
+        "noButtonText": "Nie"
+      },
+      "currentUserOverview": {
+        "mainTable": {
+          "tableTitle": "Twoje modele",
+          "modelNameColumnName": "Nazwa modelu",
+          "androidFileColumnName": "Android - plik na serwerze",
+          "iosFileColumname": "IOS - plik na serwerze",
+          "localization": {
+            "pagination": {
+              "labelDisplayedRows": "{from}-{to} z {count}",
+              "labelRowsSelect": "wierszy",
+              "previousAriaLabel": "Poprzednia strona",
+              "previousTooltip": "Poprzednia strona",
+              "nextAriaLabel": "Następna strona",
+              "nextTooltip": "Następna strona",
+              "firstTooltip": "Pierwsza strona",
+              "lastTooltip": "Ostatnia strona"
+            },
+            "toolbar": {
+              "exportTitle": "Eksport",
+              "exportAriaLabel": "Eksport",
+              "exportName": "Eksportuj do CSV",
+              "searchTooltip": "Szukaj",
+              "searchPlaceholder": "Szukaj"
+            },
+            "body": {
+              "emptyDataSourceMessage": "Brak dostępnych danych"
+            }
+          }
+        },
+        "fileCellLabel": {
+          "fileAvailable": "Dostępny",
+          "fileUnavailable": "Niedostępny"
+        }
       }
     }
   },
@@ -204,6 +250,52 @@
           "user": "User",
           "admin": "Admin",
           "superAdmin": "SuperAdmin"
+        }
+      },
+      "removeModelDialog": {
+        "dialogTitle": "Delete model",
+        "dialogContentText": "Do you really want to delete model",
+        "yesButtonText": "Yes",
+        "noButtonText": "No"
+      },
+      "removeUserDialog": {
+        "dialogTitle": "Delete user",
+        "dialogContentText": "Do you really want to delete user",
+        "yesButtonText": "Yes",
+        "noButtonText": "No"
+      },
+      "currentUserOverview": {
+        "mainTable": {
+          "tableTitle": "Your models",
+          "modelNameColumnName": "Model name",
+          "androidFileColumnName": "Android - file on server",
+          "iosFileColumname": "IOS - file on server",
+          "localization": {
+            "pagination": {
+              "labelDisplayedRows": "{from}-{to} of {count}",
+              "labelRowsSelect": "rows",
+              "previousAriaLabel": "Previous Page",
+              "previousTooltip": "Previous Page",
+              "nextAriaLabel": "Next Page",
+              "nextTooltip": "Next Page",
+              "firstTooltip": "First Page",
+              "lastTooltip": "Last Page"
+            },
+            "toolbar": {
+              "exportTitle": "Export",
+              "exportAriaLabel": "Export",
+              "exportName": "Export as CSV",
+              "searchTooltip": "Search",
+              "searchPlaceholder": "Search"
+            },
+            "body": {
+              "emptyDataSourceMessage": "No models to display"
+            }
+          }
+        },
+        "fileCellLabel": {
+          "fileAvailable": "Available",
+          "fileUnavailable": "Not available"
         }
       }
     }
