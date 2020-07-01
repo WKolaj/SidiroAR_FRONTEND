@@ -15,7 +15,7 @@ import { existsAndIsNotEmpty } from "../utilities/utilities";
 import { getCurrentJWT } from "../services/authService";
 import {
   showLoginDialogActionCreator,
-  hideLoginDialogActionCreator
+  hideLoginDialogActionCreator,
 } from "../actions/loginDialog";
 import { loginUserWithJWTActionCreatorWrapped } from "../actions/auth";
 import MainMenuComponent from "./MainMenu/MainMenuComponent";
@@ -26,18 +26,19 @@ import RemoveUserDialogComponent from "./RemoveUserDialog/RemoveUserDialogCompon
 import RemoveModelDialogComponent from "./RemoveModelDialog/RemoveModelDialogComponent";
 import AddModelDialogComponent from "./AddModelDialog/AddModelDialogComponent";
 import EditModelDialogComponent from "./EditModelDialog/EditModelDialogComponent";
+import ChangeLanguageDialogCompoment from "./ChangeLanguageDialog/ChangeLanguageDialogCompoment";
 import FileNotFoundComponent from "./FileNotFound/FileNotFoundComponent";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
-  }
+    overflow: "auto",
+  },
 });
 
 class MainComponent extends Component {
@@ -54,6 +55,7 @@ class MainComponent extends Component {
         <SnackbarNotifier />
         <BusyDialogComponent />
         <LoginDialogComponent />
+        <ChangeLanguageDialogCompoment />
         <EditCurrentUserDialogComponent />
         <AddUserDialogComponent />
         <EditUserDialogComponent />
@@ -95,7 +97,7 @@ class MainComponent extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    currentUser: state.auth.currentUser
+    currentUser: state.auth.currentUser,
   };
 };
 
@@ -104,5 +106,5 @@ const componentWithStyles = withStyles(styles)(MainComponent);
 export default connect(mapStateToProps, {
   showLoginDialog: showLoginDialogActionCreator,
   hideLoginDialog: hideLoginDialogActionCreator,
-  loginUserWithJWT: loginUserWithJWTActionCreatorWrapped
+  loginUserWithJWT: loginUserWithJWTActionCreatorWrapped,
 })(componentWithStyles);

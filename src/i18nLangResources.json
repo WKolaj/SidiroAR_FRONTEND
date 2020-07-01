@@ -1,0 +1,26 @@
+{
+  "pl": {
+    "translation": {
+      "changeLanguageDialog": {
+        "title": "Wybór języka",
+        "content": "Wybierz język aplikacji klikając poniższy przycisk",
+        "buttons": {
+          "pl": "Polski",
+          "en": "Angielski"
+        }
+      }
+    }
+  },
+  "en": {
+    "translation": {
+      "changeLanguageDialog": {
+        "title": "Language selection",
+        "content": "Change language of application by clicking button below",
+        "buttons": {
+          "pl": "Polish",
+          "en": "English"
+        }
+      }
+    }
+  }
+}

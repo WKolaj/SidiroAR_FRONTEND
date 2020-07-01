@@ -15,13 +15,13 @@ const theme = createMuiTheme({
     primary: blueGrey,
     secondary: {
       main: red[900],
-      light: red[600]
+      light: red[600],
     },
     type: "dark",
     background: {
-      default: blueGrey[800]
-    }
-  }
+      default: blueGrey[800],
+    },
+  },
 });
 
 class App extends Component {
