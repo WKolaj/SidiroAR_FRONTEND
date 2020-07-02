@@ -1,7 +1,6 @@
 import {
   EDIT_DATA_COMPONENT_SELECT_USER,
   EDIT_DATA_COMPONENT_CHANGE_FILTER,
-  EDIT_DATA_COMPONENT_FETCH_DATA_TO_DISPLAY,
   EDIT_DATA_COMPONENT_RESET,
 } from "./types";
 import { existsAndIsNotEmpty, exists } from "../utilities/utilities";
@@ -16,14 +15,14 @@ const convertUserDataToRowsToDisplay = (user) => {
       userId: user._id,
       userEmail: user.email,
       modelId: model._id,
-      modelsName: model.name,
-      modelsFileExists: model.fileExists,
-      modelsIOSFileExists: model.iosFileExists,
+      modelName: model.name,
+      modelFileExists: model.fileExists,
+      modelIOSFileExists: model.iosFileExists,
     };
   });
 };
 
-const convertUsersDataToDataToDisplay = (selectedUserId, usersData) => {
+export const convertUsersDataToDataToDisplay = (selectedUserId, usersData) => {
   //Returning empty array if usersData is empty
   if (!existsAndIsNotEmpty(usersData)) return [];
 
@@ -76,26 +75,6 @@ export const selectUserActionCreator = function (userId) {
       payload: { selectedUser: userId },
       type: EDIT_DATA_COMPONENT_SELECT_USER,
     });
-
-    await dispatch(fetchDataToDisplayActionCreator());
-  };
-};
-
-export const fetchDataToDisplayActionCreator = function () {
-  return async function (dispatch, getState) {
-    let state = await getState();
-
-    //Selectin user if usersData has been fetched
-    if (existsAndIsNotEmpty(state.data.usersData)) {
-      let dataToDisplay = convertUsersDataToDataToDisplay(
-        state.editDataComponent.selectedUser,
-        state.data.usersData
-      );
-      await dispatch({
-        payload: { dataToDisplay: dataToDisplay },
-        type: EDIT_DATA_COMPONENT_FETCH_DATA_TO_DISPLAY,
-      });
-    }
   };
 };
 

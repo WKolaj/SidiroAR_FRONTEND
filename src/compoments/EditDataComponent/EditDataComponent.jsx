@@ -5,7 +5,6 @@ import ModelTableComponent from "./ModelTableComponent";
 import {
   changeFilterActionCreator,
   selectUserActionCreator,
-  fetchDataToDisplayActionCreator,
   resetActionCreator,
   doesUsersEmailFitsFilter,
 } from "../../actions/editDataComponent";
@@ -19,19 +18,12 @@ import {
   Grid,
   Button,
 } from "@material-ui/core";
-import {
-  HighlightOff,
-  CheckCircleOutline,
-  Edit,
-  Delete,
-  Add,
-  PersonAdd,
-  CloudUpload,
-} from "@material-ui/icons";
+import { Edit, Delete, Add, PersonAdd } from "@material-ui/icons";
 import { fetchAllUsersDataActionCreatorWrapped } from "../../actions/data";
 import { showAddUserDialogActionCreator } from "../../actions/addUserDialog";
 import { showEditUserDialogActionCreator } from "../../actions/editUserDialog";
 import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialog";
+import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 
@@ -49,11 +41,12 @@ const styles = (theme) => ({
   },
   selectUserGrid: {
     "padding-right": 10,
-    "padding-top": 20,
+    "padding-top": 10,
   },
+  addModelButton: { "margin-top": 20, "margin-right": 20 },
   filterUserGrid: {
     "padding-right": 10,
-    "padding-top": 20,
+    "padding-top": 10,
   },
   selectUserInputLabel: {},
   selectUserInput: {},
@@ -98,19 +91,34 @@ class EditDataComponent extends Component {
     this.props.showRemoveUserDialog(userId);
   };
 
+  handleAddNewModelClick = async () => {
+    this.props.showAddModelDialog(this.props.editDataComponent.selectedUser);
+  };
+
   getPossibleUsersToSelect = () => {
     let { data, editDataComponent } = this.props;
 
     if (!existsAndIsNotEmpty(data)) return [];
     if (!existsAndIsNotEmpty(data.usersData)) return [];
 
-    return Object.values(data.usersData).filter((userData) =>
-      doesUsersEmailFitsFilter(userData.email, editDataComponent.filter)
-    );
+    //Sorting object before returning
+    return Object.values(data.usersData)
+      .sort((a, b) => {
+        if (a.email < b.email) {
+          return -1;
+        }
+        if (a.email > b.email) {
+          return 1;
+        }
+        return 0;
+      })
+      .filter((userData) =>
+        doesUsersEmailFitsFilter(userData.email, editDataComponent.filter)
+      );
   };
 
   renderUserSelection = () => {
-    let { editDataComponent, classes, data } = this.props;
+    let { editDataComponent, classes } = this.props;
 
     return (
       <Grid
@@ -205,6 +213,21 @@ class EditDataComponent extends Component {
               Usuń
             </Button>
           </Grid>
+          <Grid item className={classes.userButtonGridItem}>
+            <Button
+              className={this.props.classes.addModelButton}
+              variant="contained"
+              color="primary"
+              startIcon={<Add />}
+              disabled={
+                !exists(editDataComponent.selectedUser) ||
+                editDataComponent.selectedUser === ""
+              }
+              onClick={() => this.handleAddNewModelClick()}
+            >
+              Dodaj model
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -214,20 +237,18 @@ class EditDataComponent extends Component {
     let { editDataComponent, classes, data } = this.props;
 
     return (
-      <React.Fragment>
-        <Paper className={classes.mainPaper}>
-          <Typography variant="h6" className={classes.mainTitle}>
-            {exists(editDataComponent.selectedUser) &&
-            editDataComponent.selectedUser !== ""
-              ? `Użytkownik: ${
-                  data.usersData[editDataComponent.selectedUser].name
-                }`
-              : "Użytkownicy"}
-          </Typography>
-          {this.renderUserSelection()}
-        </Paper>
-        <ModelTableComponent></ModelTableComponent>
-      </React.Fragment>
+      <Paper className={classes.mainPaper}>
+        <Typography variant="h6" className={classes.mainTitle}>
+          {exists(editDataComponent.selectedUser) &&
+          editDataComponent.selectedUser !== ""
+            ? `Użytkownik: ${
+                data.usersData[editDataComponent.selectedUser].name
+              }`
+            : "Użytkownicy"}
+        </Typography>
+        {this.renderUserSelection()}
+        <ModelTableComponent />
+      </Paper>
     );
   }
 }
@@ -244,10 +265,10 @@ const componentWithStyles = withStyles(styles)(EditDataComponent);
 export default connect(mapStateToProps, {
   fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped,
   selectUser: selectUserActionCreator,
-  fetchDataToDisplay: fetchDataToDisplayActionCreator,
   changeFilter: changeFilterActionCreator,
   resetFilterAndSelectedUser: resetActionCreator,
   showAddUserDialog: showAddUserDialogActionCreator,
   showEditUserDialog: showEditUserDialogActionCreator,
   showRemoveUserDialog: showRemoveUserDialogActionCreator,
+  showAddModelDialog: showAddModelDialogActionCreator,
 })(componentWithStyles);

@@ -8,7 +8,7 @@ const authRoute = config["authRoute"];
 export async function login(email, password) {
   let result = await http.post(authRoute, {
     email: email,
-    password: password
+    password: password,
   });
   let jwt = result.headers[authTokenName];
 
