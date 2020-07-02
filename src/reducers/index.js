@@ -16,6 +16,7 @@ import addModelDialogReducer from "./addModelDialogReducer";
 import removeModelDialogReducer from "./removeModelDialogReducer";
 import editModelDialogReducer from "./editModelDialogReducer";
 import changeLanguageDialogReducer from "./changeLanguageDialogReducer";
+import editDataComponentReducer from "./editDataComponentReducer";
 import snackbarReducer from "./snackbarReducer";
 
 export default combineReducers({
@@ -36,5 +37,6 @@ export default combineReducers({
   changeLanguageDialog: changeLanguageDialogReducer,
   userMenu: userMenuReducer,
   mainMenu: mainMenuReducer,
+  editDataComponent: editDataComponentReducer,
   snackbar: snackbarReducer,
 });

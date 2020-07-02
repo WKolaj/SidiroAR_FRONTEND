@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { existsAndIsNotEmpty, exists } from "../../utilities/utilities";
-import { fetchAllUsersDataActionCreatorWrapped } from "../../actions/data";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import {
@@ -91,10 +90,6 @@ class DataTableComponent extends Component {
     //Object for storing references to upload buttons
     this.uploadIOSButtonsFormsRef = {};
   }
-
-  componentDidMount = async () => {
-    await this.props.fetchAllUsersData();
-  };
 
   getCellStyle = (text, rowData) => {
     if (rowData.isActionsForModels) return styleOfModelCell;
@@ -622,7 +617,6 @@ const mapStateToProps = (state, props) => {
 const componentWithStyles = withStyles(styles)(DataTableComponent);
 
 export default connect(mapStateToProps, {
-  fetchAllUsersData: fetchAllUsersDataActionCreatorWrapped,
   showAddUserDialog: showAddUserDialogActionCreator,
   showEditUserDialog: showEditUserDialogActionCreator,
   showRemoveUserDialog: showRemoveUserDialogActionCreator,
