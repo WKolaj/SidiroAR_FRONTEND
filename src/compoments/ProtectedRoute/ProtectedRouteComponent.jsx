@@ -49,6 +49,7 @@ class ProtectedRouteComponent extends Component {
       render,
       showLoginDialog,
       enqueueSnackbar,
+      t,
     } = this.props;
 
     return (
@@ -68,7 +69,7 @@ class ProtectedRouteComponent extends Component {
           //Checking if user is logged in
           if (!this.checkUsersPermissons()) {
             enqueueSnackbar({
-              message: props.t("accessForbiddenContent.errorMessage"),
+              message: t("accessForbiddenContent.errorMessage"),
               options: { variant: "error" },
             });
             return this.renderAccessForbiddenComponent();

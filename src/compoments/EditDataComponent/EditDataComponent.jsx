@@ -26,6 +26,7 @@ import { showRemoveUserDialogActionCreator } from "../../actions/removeUserDialo
 import { showAddModelDialogActionCreator } from "../../actions/addModelDialog";
 import { exists, existsAndIsNotEmpty } from "../../utilities/utilities";
 import blueGrey from "@material-ui/core/colors/blueGrey";
+import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 
 const styles = (theme) => ({
   mainPaper: {
@@ -117,6 +118,25 @@ class EditDataComponent extends Component {
       );
   };
 
+  canUserBeEditedOrRemoved = (userId) => {
+    if (!exists(userId) || userId === "") return false;
+
+    if (!exists(this.props.data) || !exists(this.props.data.currentUserData))
+      return false;
+
+    let currentUser = this.props.data.currentUserData;
+    if (isSuperAdmin(currentUser.permissions)) return true;
+
+    let user = this.props.data.usersData[userId];
+
+    if (!exists(this.props.data.usersData[userId])) return false;
+
+    if (isAdmin(user.permissions) || isSuperAdmin(user.permissions))
+      return false;
+
+    return true;
+  };
+
   renderUserSelection = () => {
     let { editDataComponent, classes } = this.props;
 
@@ -186,6 +206,9 @@ class EditDataComponent extends Component {
               color="primary"
               startIcon={<Edit />}
               disabled={
+                !this.canUserBeEditedOrRemoved(
+                  editDataComponent.selectedUser
+                ) ||
                 !exists(editDataComponent.selectedUser) ||
                 editDataComponent.selectedUser === ""
               }
@@ -203,6 +226,9 @@ class EditDataComponent extends Component {
               color="secondary"
               startIcon={<Delete />}
               disabled={
+                !this.canUserBeEditedOrRemoved(
+                  editDataComponent.selectedUser
+                ) ||
                 !exists(editDataComponent.selectedUser) ||
                 editDataComponent.selectedUser === ""
               }
@@ -240,7 +266,8 @@ class EditDataComponent extends Component {
       <Paper className={classes.mainPaper}>
         <Typography variant="h6" className={classes.mainTitle}>
           {exists(editDataComponent.selectedUser) &&
-          editDataComponent.selectedUser !== ""
+          editDataComponent.selectedUser !== "" &&
+          exists(data.usersData[editDataComponent.selectedUser])
             ? `Użytkownik: ${
                 data.usersData[editDataComponent.selectedUser].name
               }`
