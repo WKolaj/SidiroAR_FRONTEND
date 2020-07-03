@@ -4,7 +4,6 @@ import { exists } from "../../utilities/utilities";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import { Edit, Delete, CloudUpload, CloudDownload } from "@material-ui/icons";
-import { isAdmin, isSuperAdmin } from "../../utilities/userMethods";
 import { Button, Grid } from "@material-ui/core";
 import { convertUsersDataToDataToDisplay } from "../../actions/editDataComponent";
 import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDialog";
@@ -12,6 +11,7 @@ import { showEditModelDialogActionCreator } from "../../actions/editModelDialog"
 import { fetchAndUploadFileActionCreatorWrapped } from "../../actions/file";
 import { fetchAndUploadIOSFileActionCreatorWrapped } from "../../actions/iosFile";
 import blueGrey from "@material-ui/core/colors/blueGrey";
+import { withTranslation } from "react-i18next";
 import {
   downloadModelFile,
   downloadModelIOSFile,
@@ -28,7 +28,7 @@ const styles = (theme) => ({
   fileExistsCellContainer: {},
   toolFourButtons: {
     margin: theme.spacing(1),
-    width: 110,
+    width: 125,
   },
   toolsButtonSpan: {},
 });
@@ -42,20 +42,6 @@ class DataTableComponent extends Component {
 
     //Object for storing references to upload buttons
     this.uploadIOSButtonsFormsRef = {};
-  }
-
-  checkPermissionsToOperateOnUser(usersPermissions) {
-    let { currentUser } = this.props;
-
-    let userToEditIsAdmin =
-      isAdmin(usersPermissions) || isSuperAdmin(usersPermissions);
-    let currentUserIsSuperAdmin = isSuperAdmin(currentUser.permissions);
-    let currentIsAdmin = isAdmin(currentUser.permissions);
-    let operationEnabled =
-      (userToEditIsAdmin && currentUserIsSuperAdmin) ||
-      (!userToEditIsAdmin && (currentIsAdmin || currentUserIsSuperAdmin));
-
-    return operationEnabled;
   }
 
   createUploadModelFileButtonRefIfNotExists = (userId, modelId) => {
@@ -72,6 +58,32 @@ class DataTableComponent extends Component {
 
     if (!exists(this.uploadIOSButtonsFormsRef[userId][modelId]))
       this.uploadIOSButtonsFormsRef[userId][modelId] = React.createRef();
+  };
+
+  handleUploadModelFileFormChanged = async (e, userId, modelId) => {
+    await this.props.fetchAndUploadFile(userId, modelId, e.target.files[0]);
+  };
+
+  handleUploadModelFileButtonClick = (userId, modelId) => {
+    let formRef = this.uploadButtonsFormsRef[userId][modelId];
+    formRef.current.click();
+  };
+
+  handleUploadModelIOSFileFormChanged = async (e, userId, modelId) => {
+    await this.props.fetchAndUploadIOSFile(userId, modelId, e.target.files[0]);
+  };
+
+  handleUploadModelIOSFileButtonClick = (userId, modelId) => {
+    let formRef = this.uploadIOSButtonsFormsRef[userId][modelId];
+    formRef.current.click();
+  };
+
+  handleDeleteModelClick = async (userId, modelId) => {
+    this.props.showRemoveModelDialog(userId, modelId);
+  };
+
+  handleEditModelClick = async (userId, modelId) => {
+    this.props.showEditModelDialog(userId, modelId);
   };
 
   renderUploadModelFileButton = (userId, modelId) => {
@@ -95,7 +107,7 @@ class DataTableComponent extends Component {
           startIcon={<CloudUpload />}
           onClick={() => this.handleUploadModelFileButtonClick(userId, modelId)}
         >
-          Wgraj
+          {this.props.t("editDataComponent.modelTableComponent.uploadFileText")}
         </Button>
       </React.Fragment>
     );
@@ -124,56 +136,27 @@ class DataTableComponent extends Component {
             this.handleUploadModelIOSFileButtonClick(userId, modelId)
           }
         >
-          Wgraj
+          {this.props.t(
+            "editDataComponent.modelTableComponent.uploadIOSFileText"
+          )}
         </Button>
       </React.Fragment>
     );
   };
 
-  renderEditModelButton = (userId, modelId) => {
+  renderFileDownload = (userId, modelId, fileExists) => {
     return (
       <Button
         className={this.props.classes.toolFourButtons}
         variant="contained"
         color="primary"
-        startIcon={<Edit />}
-        onClick={() => this.handleEditModelClick(userId, modelId)}
-      >
-        Edytuj
-      </Button>
-    );
-  };
-
-  handleUploadModelFileFormChanged = async (e, userId, modelId) => {
-    await this.props.fetchAndUploadFile(userId, modelId, e.target.files[0]);
-  };
-
-  handleUploadModelFileButtonClick = (userId, modelId) => {
-    let formRef = this.uploadButtonsFormsRef[userId][modelId];
-    formRef.current.click();
-  };
-
-  handleUploadModelIOSFileFormChanged = async (e, userId, modelId) => {
-    await this.props.fetchAndUploadIOSFile(userId, modelId, e.target.files[0]);
-  };
-
-  handleUploadModelIOSFileButtonClick = (userId, modelId) => {
-    let formRef = this.uploadIOSButtonsFormsRef[userId][modelId];
-    formRef.current.click();
-  };
-
-  renderDeleteModelButton = (userId, modelId) => {
-    return (
-      <Button
-        className={this.props.classes.toolFourButtons}
-        variant="contained"
-        color="secondary"
-        startIcon={<Delete />}
+        disabled={!fileExists}
+        startIcon={<CloudDownload />}
         onClick={() => {
-          this.handleDeleteModelClick(userId, modelId);
+          downloadModelFile(userId, modelId);
         }}
       >
-        Usuń
+        {this.props.t("editDataComponent.modelTableComponent.downloadFileText")}
       </Button>
     );
   };
@@ -190,24 +173,43 @@ class DataTableComponent extends Component {
           downloadModelIOSFile(userId, modelId);
         }}
       >
-        Pobierz
+        {this.props.t(
+          "editDataComponent.modelTableComponent.downloadIOSFileText"
+        )}
       </Button>
     );
   };
 
-  renderFileDownload = (userId, modelId, fileExists) => {
+  renderEditModelButton = (userId, modelId) => {
     return (
       <Button
         className={this.props.classes.toolFourButtons}
         variant="contained"
         color="primary"
-        disabled={!fileExists}
-        startIcon={<CloudDownload />}
+        startIcon={<Edit />}
+        onClick={() => this.handleEditModelClick(userId, modelId)}
+      >
+        {this.props.t(
+          "editDataComponent.modelTableComponent.editModelButtonText"
+        )}
+      </Button>
+    );
+  };
+
+  renderDeleteModelButton = (userId, modelId) => {
+    return (
+      <Button
+        className={this.props.classes.toolFourButtons}
+        variant="contained"
+        color="secondary"
+        startIcon={<Delete />}
         onClick={() => {
-          downloadModelFile(userId, modelId);
+          this.handleDeleteModelClick(userId, modelId);
         }}
       >
-        Pobierz
+        {this.props.t(
+          "editDataComponent.modelTableComponent.deleteModelButtonText"
+        )}
       </Button>
     );
   };
@@ -277,16 +279,8 @@ class DataTableComponent extends Component {
     );
   };
 
-  handleDeleteModelClick = async (userId, modelId) => {
-    this.props.showRemoveModelDialog(userId, modelId);
-  };
-
-  handleEditModelClick = async (userId, modelId) => {
-    this.props.showEditModelDialog(userId, modelId);
-  };
-
   render() {
-    let { classes, data, editDataComponent } = this.props;
+    let { classes, data, editDataComponent, t } = this.props;
 
     let dataToDisplay = convertUsersDataToDataToDisplay(
       editDataComponent.selectedUser,
@@ -299,25 +293,33 @@ class DataTableComponent extends Component {
         className={classes.materialTable}
         columns={[
           {
-            title: "Nazwa modelu",
+            title: t(
+              "editDataComponent.modelTableComponent.table.modelNameColumnName"
+            ),
             field: "modelName",
           },
           {
-            title: "Narzędzia",
+            title: t(
+              "editDataComponent.modelTableComponent.table.toolsColumnName"
+            ),
             render: this.renderToolsColumn,
             headerStyle: {
               textAlign: "center",
             },
           },
           {
-            title: "Plik - Android",
+            title: t(
+              "editDataComponent.modelTableComponent.table.androidFileColumnName"
+            ),
             render: this.renderFileExistsColumn,
             headerStyle: {
               textAlign: "center",
             },
           },
           {
-            title: "Plik - IOS",
+            title: t(
+              "editDataComponent.modelTableComponent.table.iosFileColumnName"
+            ),
             render: this.renderIOSFileExistsColumn,
             headerStyle: {
               textAlign: "center",
@@ -345,24 +347,52 @@ class DataTableComponent extends Component {
         }}
         localization={{
           pagination: {
-            labelDisplayedRows: `{from}-{to} z {count}`,
-            labelRowsSelect: "wierszy",
-            previousAriaLabel: "Poprzednia strona",
-            previousTooltip: "Poprzednia strona",
-            nextAriaLabel: "Następna strona",
-            nextTooltip: "Następna strona",
-            firstTooltip: "Pierwsza strona",
-            lastTooltip: "Ostatnia strona",
+            labelDisplayedRows: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.labelDisplayedRows"
+            ),
+            labelRowsSelect: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.labelRowsSelect"
+            ),
+            previousAriaLabel: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.previousAriaLabel"
+            ),
+            previousTooltip: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.previousTooltip"
+            ),
+            nextAriaLabel: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.nextAriaLabel"
+            ),
+            nextTooltip: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.nextTooltip"
+            ),
+            firstTooltip: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.firstTooltip"
+            ),
+            lastTooltip: t(
+              "editDataComponent.modelTableComponent.table.localization.pagination.lastTooltip"
+            ),
           },
           toolbar: {
-            exportTitle: "Eksport",
-            exportAriaLabel: "Eksport",
-            exportName: "Eksportuj do CSV",
-            searchTooltip: "Szukaj",
-            searchPlaceholder: "Szukaj",
+            exportTitle: t(
+              "editDataComponent.modelTableComponent.table.localization.toolbar.exportTitle"
+            ),
+            exportAriaLabel: t(
+              "editDataComponent.modelTableComponent.table.localization.toolbar.exportAriaLabel"
+            ),
+            exportName: t(
+              "editDataComponent.modelTableComponent.table.localization.toolbar.exportName"
+            ),
+            searchTooltip: t(
+              "editDataComponent.modelTableComponent.table.localization.toolbar.searchTooltip"
+            ),
+            searchPlaceholder: t(
+              "editDataComponent.modelTableComponent.table.localization.toolbar.searchPlaceholder"
+            ),
           },
           body: {
-            emptyDataSourceMessage: "Brak dostępnych danych",
+            emptyDataSourceMessage: t(
+              "editDataComponent.modelTableComponent.table.localization.body.emptyDataSourceMessage"
+            ),
           },
         }}
         components={{
@@ -385,9 +415,11 @@ const mapStateToProps = (state, props) => {
 
 const componentWithStyles = withStyles(styles)(DataTableComponent);
 
+const componentWithTrans = withTranslation()(componentWithStyles);
+
 export default connect(mapStateToProps, {
   showRemoveModelDialog: showRemoveModelDialogActionCreator,
   showEditModelDialog: showEditModelDialogActionCreator,
   fetchAndUploadFile: fetchAndUploadFileActionCreatorWrapped,
   fetchAndUploadIOSFile: fetchAndUploadIOSFileActionCreatorWrapped,
-})(componentWithStyles);
+})(componentWithTrans);

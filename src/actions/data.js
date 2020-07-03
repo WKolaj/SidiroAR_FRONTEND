@@ -27,6 +27,8 @@ import {
 
 import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
 
+import { resetActionCreator } from "./editDataComponent";
+
 export const fetchCurrentUserDataActionCreator = function () {
   return async function (dispatch, getState) {
     let currentUser = await getLoggedUserData();
@@ -171,7 +173,11 @@ export const postModelDataActionCreatorWrapped = function (
 export const deleteUserDataActionCreator = function (userId) {
   return async function (dispatch, getState) {
     let user = await deleteUserData(userId);
-    dispatch({
+
+    //befoer user deletion editDataComponent should be reset
+    await dispatch(resetActionCreator());
+
+    await dispatch({
       type: DELETE_USER_DATA,
       payload: {
         user: user,

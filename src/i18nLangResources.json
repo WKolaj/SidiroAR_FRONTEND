@@ -146,6 +146,56 @@
           "fileAvailable": "Dostępny",
           "fileUnavailable": "Niedostępny"
         }
+      },
+      "editDataComponent": {
+        "userLabel": {
+          "selectedUserText": "Użytkownik",
+          "unselectedUserText": "Użytkownicy"
+        },
+        "userSelectComponent": {
+          "addUserButtonText": "Dodaj",
+          "editUserButtonText": "Edytuj",
+          "deleteUserButtonText": "Usuń",
+          "addModelButtonText": "Dodaj model",
+          "SelectUserInputText": "Wybierz użytkownika",
+          "filterInputText": "Filtr"
+        },
+        "modelTableComponent": {
+          "uploadFileText": "Wyślij",
+          "downloadFileText": "Pobierz",
+          "uploadIOSFileText": "Wyślij",
+          "downloadIOSFileText": "Pobierz",
+          "editModelButtonText": "Edytuj",
+          "deleteModelButtonText": "Usuń",
+          "table": {
+            "modelNameColumnName": "Nazwa modelu",
+            "toolsColumnName": "Narzędzia",
+            "androidFileColumnName": "Plik - Android",
+            "iosFileColumnName": "Plik - IOS"
+          },
+          "localization": {
+            "pagination": {
+              "labelDisplayedRows": "{from}-{to} z {count}",
+              "labelRowsSelect": "wierszy",
+              "previousAriaLabel": "Poprzednia strona",
+              "previousTooltip": "Poprzednia strona",
+              "nextAriaLabel": "Następna strona",
+              "nextTooltip": "Następna strona",
+              "firstTooltip": "Pierwsza strona",
+              "lastTooltip": "Ostatnia strona"
+            },
+            "toolbar": {
+              "exportTitle": "Eksport",
+              "exportAriaLabel": "Eksport",
+              "exportName": "Eksportuj do CSV",
+              "searchTooltip": "Szukaj",
+              "searchPlaceholder": "Szukaj"
+            },
+            "body": {
+              "emptyDataSourceMessage": "Brak dostępnych modeli"
+            }
+          }
+        }
       }
     }
   },
@@ -296,6 +346,56 @@
         "fileCellLabel": {
           "fileAvailable": "Available",
           "fileUnavailable": "Not available"
+        }
+      },
+      "editDataComponent": {
+        "userLabel": {
+          "selectedUserText": "User",
+          "unselectedUserText": "Users"
+        },
+        "userSelectComponent": {
+          "addUserButtonText": "Create",
+          "editUserButtonText": "Edit",
+          "deleteUserButtonText": "Delete",
+          "addModelButtonText": "Create model",
+          "SelectUserInputText": "Select user",
+          "filterInputText": "Filter"
+        },
+        "modelTableComponent": {
+          "uploadFileText": "Upload",
+          "downloadFileText": "Download",
+          "uploadIOSFileText": "Upload",
+          "downloadIOSFileText": "Download",
+          "editModelButtonText": "Edit",
+          "deleteModelButtonText": "Delete",
+          "table": {
+            "modelNameColumnName": "Model name",
+            "toolsColumnName": "Tools",
+            "androidFileColumnName": "File - Android",
+            "iosFileColumnName": "File - IOS",
+            "localization": {
+              "pagination": {
+                "labelDisplayedRows": "{from}-{to} of {count}",
+                "labelRowsSelect": "rows",
+                "previousAriaLabel": "Previous Page",
+                "previousTooltip": "Previous Page",
+                "nextAriaLabel": "Next Page",
+                "nextTooltip": "Next Page",
+                "firstTooltip": "First Page",
+                "lastTooltip": "Last Page"
+              },
+              "toolbar": {
+                "exportTitle": "Export",
+                "exportAriaLabel": "Export",
+                "exportName": "Export as CSV",
+                "searchTooltip": "Search",
+                "searchPlaceholder": "Search"
+              },
+              "body": {
+                "emptyDataSourceMessage": "No models to display"
+              }
+            }
+          }
         }
       }
     }
