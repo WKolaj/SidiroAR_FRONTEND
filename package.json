@@ -1,6 +1,5 @@
 {
   "name": "sidiro-ar-frontend",
-  "proxy": "http://localhost:5000",
   "homepage": "/sidiroar",
   "version": "0.5.0",
   "private": true,
