@@ -58,27 +58,27 @@ export async function uploadModelIOSFile(userId, modelId, file) {
 }
 
 export async function downloadModelFile(userId, modelId) {
-  http
-    .get(`${fileRoute}/${userId}/${modelId}`, { responseType: "blob" })
-    .then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${modelId}.smdl`);
-      document.body.appendChild(link);
-      link.click();
-    });
+  let response = await http.get(`${fileRoute}/${userId}/${modelId}`, {
+    responseType: "blob",
+  });
+
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", `${modelId}.smdl`);
+  document.body.appendChild(link);
+  link.click();
 }
 
 export async function downloadModelIOSFile(userId, modelId) {
-  http
-    .get(`${iosFileRoute}/${userId}/${modelId}`, { responseType: "blob" })
-    .then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${modelId}.ismdl`);
-      document.body.appendChild(link);
-      link.click();
-    });
+  let response = await http.get(`${iosFileRoute}/${userId}/${modelId}`, {
+    responseType: "blob",
+  });
+
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", `${modelId}.ismdl`);
+  document.body.appendChild(link);
+  link.click();
 }

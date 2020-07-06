@@ -1,17 +1,20 @@
 import {
   FETCH_IOS_FILE_TO_SEND,
   SEND_IOS_FILE,
-  FETCH_USER_MODEL_DATA
+  FETCH_USER_MODEL_DATA,
 } from "./types";
-import { uploadModelIOSFile } from "../services/fileService";
+import {
+  uploadModelIOSFile,
+  downloadModelIOSFile,
+} from "../services/fileService";
 import { exists } from "../utilities/utilities";
 import config from "../config.json";
 import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
 
 export const maxFileSize = config["maxFileSize"];
 
-export const uploadIOSFileActionCreator = function() {
-  return async function(dispatch, getState) {
+export const uploadIOSFileActionCreator = function () {
+  return async function (dispatch, getState) {
     let currentState = await getState();
     let fileData = currentState.iosFile;
 
@@ -28,7 +31,7 @@ export const uploadIOSFileActionCreator = function() {
       );
 
     await dispatch({
-      type: SEND_IOS_FILE
+      type: SEND_IOS_FILE,
     });
 
     //Fetching new model data - fileExists should be now set to true
@@ -40,18 +43,22 @@ export const uploadIOSFileActionCreator = function() {
       type: FETCH_USER_MODEL_DATA,
       payload: {
         userId: fileData.userId,
-        model: newModelPayload
-      }
+        model: newModelPayload,
+      },
     });
   };
 };
 
-export const uploadIOSFileActionCreatorWrapped = function() {
+export const uploadIOSFileActionCreatorWrapped = function () {
   return wrapAsyncActionToHandleError(uploadIOSFileActionCreator());
 };
 
-export const fetchIOSFileToSendActionCreator = function(userId, modelId, file) {
-  return async function(dispatch, getState) {
+export const fetchIOSFileToSendActionCreator = function (
+  userId,
+  modelId,
+  file
+) {
+  return async function (dispatch, getState) {
     //If file is null - do not change anything, cause close was clicked
     if (!exists(file)) return;
 
@@ -68,18 +75,18 @@ export const fetchIOSFileToSendActionCreator = function(userId, modelId, file) {
       payload: {
         userId,
         modelId,
-        file
-      }
+        file,
+      },
     });
   };
 };
 
-export const fetchAndUploadIOSFileActionCreator = function(
+export const fetchAndUploadIOSFileActionCreator = function (
   userId,
   modelId,
   file
 ) {
-  return async function(dispatch, getState) {
+  return async function (dispatch, getState) {
     //If file is null - do not change anything, cause close was clicked
     if (!exists(file)) return;
 
@@ -97,20 +104,32 @@ export const fetchAndUploadIOSFileActionCreator = function(
       payload: {
         userId,
         modelId,
-        file
-      }
+        file,
+      },
     });
 
     await dispatch(uploadIOSFileActionCreator());
   };
 };
 
-export const fetchAndUploadIOSFileActionCreatorWrapped = function(
+export const fetchAndUploadIOSFileActionCreatorWrapped = function (
   userId,
   modelId,
   file
 ) {
   return wrapAsyncActionToHandleError(
     fetchAndUploadIOSFileActionCreator(userId, modelId, file)
+  );
+};
+
+export const downloadIOSFileActionCreator = function (userId, modelId) {
+  return async function (dispatch, getState) {
+    await downloadModelIOSFile(userId, modelId);
+  };
+};
+
+export const downloadIOSFileActionCreatorWrapped = function (userId, modelId) {
+  return wrapAsyncActionToHandleError(
+    downloadIOSFileActionCreator(userId, modelId)
   );
 };

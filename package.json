@@ -1,7 +1,7 @@
 {
   "name": "sidiro-ar-frontend",
   "homepage": "/sidiroar",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "dependencies": {
     "@hapi/joi": "^17.1.1",

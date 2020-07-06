@@ -1,13 +1,13 @@
 import { FETCH_FILE_TO_SEND, SEND_FILE, FETCH_USER_MODEL_DATA } from "./types";
-import { uploadModelFile } from "../services/fileService";
+import { uploadModelFile, downloadModelFile } from "../services/fileService";
 import { exists } from "../utilities/utilities";
 import config from "../config.json";
 import { wrapAsyncActionToHandleError } from "./asyncActionsErrorWrapper";
 
 export const maxFileSize = config["maxFileSize"];
 
-export const uploadFileActionCreator = function() {
-  return async function(dispatch, getState) {
+export const uploadFileActionCreator = function () {
+  return async function (dispatch, getState) {
     let currentState = await getState();
     let fileData = currentState.file;
 
@@ -20,7 +20,7 @@ export const uploadFileActionCreator = function() {
       await uploadModelFile(fileData.userId, fileData.modelId, fileData.file);
 
     await dispatch({
-      type: SEND_FILE
+      type: SEND_FILE,
     });
 
     //Fetching new model data - fileExists should be now set to true
@@ -32,18 +32,18 @@ export const uploadFileActionCreator = function() {
       type: FETCH_USER_MODEL_DATA,
       payload: {
         userId: fileData.userId,
-        model: newModelPayload
-      }
+        model: newModelPayload,
+      },
     });
   };
 };
 
-export const uploadFileActionCreatorWrapped = function() {
+export const uploadFileActionCreatorWrapped = function () {
   return wrapAsyncActionToHandleError(uploadFileActionCreator());
 };
 
-export const fetchFileToSendActionCreator = function(userId, modelId, file) {
-  return async function(dispatch, getState) {
+export const fetchFileToSendActionCreator = function (userId, modelId, file) {
+  return async function (dispatch, getState) {
     //If file is null - do not change anything, cause close was clicked
     if (!exists(file)) return;
 
@@ -60,14 +60,18 @@ export const fetchFileToSendActionCreator = function(userId, modelId, file) {
       payload: {
         userId,
         modelId,
-        file
-      }
+        file,
+      },
     });
   };
 };
 
-export const fetchAndUploadFileActionCreator = function(userId, modelId, file) {
-  return async function(dispatch, getState) {
+export const fetchAndUploadFileActionCreator = function (
+  userId,
+  modelId,
+  file
+) {
+  return async function (dispatch, getState) {
     //If file is null - do not change anything, cause close was clicked
     if (!exists(file)) return;
 
@@ -85,20 +89,32 @@ export const fetchAndUploadFileActionCreator = function(userId, modelId, file) {
       payload: {
         userId,
         modelId,
-        file
-      }
+        file,
+      },
     });
 
     await dispatch(uploadFileActionCreator());
   };
 };
 
-export const fetchAndUploadFileActionCreatorWrapped = function(
+export const fetchAndUploadFileActionCreatorWrapped = function (
   userId,
   modelId,
   file
 ) {
   return wrapAsyncActionToHandleError(
     fetchAndUploadFileActionCreator(userId, modelId, file)
+  );
+};
+
+export const downloadFileActionCreator = function (userId, modelId) {
+  return async function (dispatch, getState) {
+    await downloadModelFile(userId, modelId);
+  };
+};
+
+export const downloadFileActionCreatorWrapped = function (userId, modelId) {
+  return wrapAsyncActionToHandleError(
+    downloadFileActionCreator(userId, modelId)
   );
 };

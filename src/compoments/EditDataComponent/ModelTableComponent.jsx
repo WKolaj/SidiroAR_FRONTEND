@@ -8,14 +8,16 @@ import { Button, Grid } from "@material-ui/core";
 import { convertUsersDataToDataToDisplay } from "../../actions/editDataComponent";
 import { showRemoveModelDialogActionCreator } from "../../actions/removeModelDialog";
 import { showEditModelDialogActionCreator } from "../../actions/editModelDialog";
-import { fetchAndUploadFileActionCreatorWrapped } from "../../actions/file";
-import { fetchAndUploadIOSFileActionCreatorWrapped } from "../../actions/iosFile";
+import {
+  fetchAndUploadFileActionCreatorWrapped,
+  downloadFileActionCreatorWrapped,
+} from "../../actions/file";
+import {
+  fetchAndUploadIOSFileActionCreatorWrapped,
+  downloadIOSFileActionCreatorWrapped,
+} from "../../actions/iosFile";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import { withTranslation } from "react-i18next";
-import {
-  downloadModelFile,
-  downloadModelIOSFile,
-} from "../../services/fileService";
 
 const styles = (theme) => ({
   materialTable: {
@@ -153,7 +155,7 @@ class DataTableComponent extends Component {
         disabled={!fileExists}
         startIcon={<CloudDownload />}
         onClick={() => {
-          downloadModelFile(userId, modelId);
+          this.props.downloadFile(userId, modelId);
         }}
       >
         {this.props.t("editDataComponent.modelTableComponent.downloadFileText")}
@@ -170,7 +172,7 @@ class DataTableComponent extends Component {
         disabled={!fileExists}
         startIcon={<CloudDownload />}
         onClick={() => {
-          downloadModelIOSFile(userId, modelId);
+          this.props.downloadIOSFile(userId, modelId);
         }}
       >
         {this.props.t(
@@ -422,4 +424,6 @@ export default connect(mapStateToProps, {
   showEditModelDialog: showEditModelDialogActionCreator,
   fetchAndUploadFile: fetchAndUploadFileActionCreatorWrapped,
   fetchAndUploadIOSFile: fetchAndUploadIOSFileActionCreatorWrapped,
+  downloadFile: downloadFileActionCreatorWrapped,
+  downloadIOSFile: downloadIOSFileActionCreatorWrapped,
 })(componentWithTrans);
