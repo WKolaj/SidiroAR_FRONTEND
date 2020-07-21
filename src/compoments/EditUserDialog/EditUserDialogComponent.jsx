@@ -95,7 +95,13 @@ class EditUserDialog extends Component {
     //Preventing loggining in with invalid data - validation error exists if there is something wrong
     if (exists(syncErrors)) return;
 
-    let usersPayload = _.pick(formData.values, "name", "email", "permissions");
+    let usersPayload = _.pick(
+      formData.values,
+      "name",
+      "email",
+      "permissions",
+      "defaultLang"
+    );
 
     //Appending password only if it exist - as optional
     if (existsAndIsNotEmpty(formData.values.password))
