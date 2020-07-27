@@ -5,5 +5,5 @@
   "modelRoute": "api/model",
   "fileRoute": "api/file",
   "iosFileRoute": "api/file/ios",
-  "maxFileSize": 200000000
+  "maxFileSize": 314572800
 }
