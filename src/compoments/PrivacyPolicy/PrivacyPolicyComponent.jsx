@@ -648,7 +648,7 @@ class PrivacyPolicyComponent extends Component {
             <li>
               <Typography>
                 Polityka Prywatności ma jedynie charakter uzupełniający w
-                stosunku do polityki prywatności Google Play Store. Witold Kolaj
+                stosunku do polityki prywatności Google Play Store. Miłosz Rzeźnik
                 nie ponosi jakiejkolwiek odpowiedzialności za politykę
                 prywatności realizowaną przez podmioty zarządzające aplikacjami
                 Google Play store, Apple Appstore i Microsoft Store oraz
