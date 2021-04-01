@@ -40,14 +40,14 @@ class PrivacyPolicyComponent extends Component {
             <li>
               <Typography>
                 Operatorem serwisu oraz Administratorem danych osobowych jest:
-                Witold Kolaj OKM, 06-500, Mława
+                Miłosz Rzeźnik ul. Ziębicka 35, 60-164 Poznań
               </Typography>
             </li>
 
             <li>
               <Typography>
                 Adres kontaktowy poczty elektronicznej operatora:
-                WKolaj@gmail.com
+                sidiro.app@gmail.com
               </Typography>
             </li>
 
@@ -667,7 +667,7 @@ class PrivacyPolicyComponent extends Component {
             <li>
               <Typography>
                 W przypadku pytań lub wątpliwości prosimy o kontakt na:
-                WKolaj@gmail.com
+                sidiro.app@gmail.com
               </Typography>
             </li>
           </ol>
